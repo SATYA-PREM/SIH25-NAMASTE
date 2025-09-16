@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Reference - Medical Terminology Hub</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: #f8f9fa;
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header with tabs */
+      .main-header {
+        display: flex;
+        gap: 20px;
+        background: #34495e;
+        padding: 15px 30px;
+        border-radius: 12px;
+        color: #fff;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         align-items: center;
+        justify-content: center;
+      }
+
+      .main-header .tab {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #ecf0f1;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      
+      }
+
+      .main-header .tab:hover {
+        background-color: #27ae60;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+      }
+
+      .main-header .tab.active {
+        background-color: #27ae60;
+        color: white;
+      }
+
+      /* API Content */
+      .api-header {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .api-header h1 {
+        font-size: 2.5rem;
+        color: #2c3e50;
+        margin-bottom: 15px;
+      }
+
+      .api-header p {
+        font-size: 1.2rem;
+        color: #6c757d;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .api-version {
+        display: inline-block;
+        background: #27ae60;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-top: 15px;
+      }
+
+      /* Grid Layout */
+      .api-grid {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 30px;
+        align-items: start;
+      }
+
+      /* Sidebar Navigation */
+      .api-nav {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 20px;
+      }
+
+      .api-nav h3 {
+        font-size: 1.1rem;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #e9ecef;
+        padding-bottom: 8px;
+      }
+
+      .api-nav ul {
+        list-style: none;
+      }
+
+      .api-nav li {
+        margin-bottom: 8px;
+      }
+
+      .api-nav a {
+        color: #6c757d;
+        text-decoration: none;
+        padding: 8px 12px;
+        display: block;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .api-nav a:hover,
+      .api-nav a.active {
+        background: #27ae60;
+        color: white;
+      }
+
+      /* Main Content */
+      .api-content {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .section {
+        margin-bottom: 50px;
+      }
+
+      .section h2 {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #27ae60;
+        padding-bottom: 10px;
+      }
+
+      .section h3 {
+        font-size: 1.3rem;
+        color: #34495e;
+        margin: 25px 0 15px;
+      }
+
+      /* Code blocks */
+      .code-block {
+        background: #34495e;
+        color: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 15px 0;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        position: relative;
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #ecf0f1;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Method badges */
+      .method {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-right: 10px;
+      }
+
+      .method.get {
+        background: #27ae60;
+        color: white;
+      }
+      .method.post {
+        background: #3498db;
+        color: white;
+      }
+      .method.put {
+        background: #f39c12;
+        color: white;
+      }
+      .method.delete {
+        background: #e74c3c;
+        color: white;
+      }
+
+      /* Parameter tables */
+      .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        background: white;
+      }
+
+      .param-table th,
+      .param-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e9ecef;
+      }
+
+      .param-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .required {
+        color: #e74c3c;
+        font-weight: bold;
+      }
+
+      /* Response examples */
+      .response-example {
+        background: #f8f9fa;
+        border-left: 4px solid #27ae60;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .status-code {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .status-200 {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status-400 {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .status-401 {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .status-500 {
+        background: #f5c6cb;
+        color: #721c24;
+      }
+
+      @media (max-width: 768px) {
+        .api-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .api-nav {
+          position: static;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with tabs -->
+      <header class="main-header">
+        <div
+          class="tab"
+          data-tab="about"
+          onclick="window.location.href='enhanced_index.html'"
+        >
+          About
+        </div>
+        <div
+          class="tab"
+          data-tab="api"
+          onclick="window.location.href='api.html'"
+        >
+          API
+        </div>
+        <div class="tab" data-tab="demo">Demo</div>
+        <div
+          class="tab"
+          data-tab="docs"
+          onclick="window.location.href='doc.html'"
+        >
+          Docs
+        </div>
+        <div class="tab" data-tab="model">Model</div>
+      </header>
+
+      <!-- API Header -->
+      <div class="api-header">
+        <h1>Medical Terminology API</h1>
+        <p>
+          RESTful API for searching and managing cross-cultural medical
+          terminology across Ayurveda, Siddha, Unani, and ICD-11 databases
+        </p>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="api-grid">
+        <!-- Navigation Sidebar -->
+        <nav class="api-nav">
+          <h3>Quick Navigation</h3>
+          <ul>
+            <li><a href="#overview" class="active">Overview</a></li>
+            <li><a href="#base-url">Base URL</a></li>
+            <li><a href="#authentication">Authentication</a></li>
+            <li><a href="#endpoints">Endpoints</a></li>
+            <li><a href="#search">Search API</a></li>
+            <li><a href="#add-term">Add Terminology</a></li>
+            <li><a href="#databases">Database Info</a></li>
+            <li><a href="#debug">Debug Tools</a></li>
+            <li><a href="#errors">Error Handling</a></li>
+            <li><a href="#examples">Examples</a></li>
+          </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="api-content">
+          <!-- Overview Section -->
+          <section id="overview" class="section">
+            <h2>Overview</h2>
+            <p>
+              The Medical Terminology API provides access to a comprehensive
+              database of medical terms from traditional systems (Ayurveda,
+              Siddha, Unani) and modern medical standards (ICD-11). This RESTful
+              API supports healthcare applications, research platforms, and
+              medical information systems.
+            </p>
+
+            <h3>Key Features</h3>
+            <ul>
+              <li>
+                <strong>Cross-System Search:</strong> Search across multiple
+                medical terminology systems
+              </li>
+              <li>
+                <strong>Doctor Contributions:</strong> Healthcare professionals
+                can add verified terms
+              </li>
+              <li>
+                <strong>CSV Data Import:</strong> Bulk upload medical
+                terminology datasets
+              </li>
+              <li>
+                <strong>Real-time Results:</strong> Fast search with intelligent
+                matching
+              </li>
+              <li>
+                <strong>Structured Data:</strong> Consistent JSON responses with
+                rich metadata
+              </li>
+            </ul>
+          </section>
+
+          <!-- Base URL Section -->
+          <section id="base-url" class="section">
+            <h2>Base URL</h2>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>https://api.medunify.com/v1</pre>
+            </div>
+            <p>
+              <strong>Development:</strong> <code>http://localhost:5000</code>
+            </p>
+          </section>
+
+          <!-- Authentication Section -->
+          <section id="authentication" class="section">
+            <h2>Authentication</h2>
+            <p>
+              Currently, the API is open for demo purposes. In production, API
+              keys will be required:
+            </p>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>Authorization: Bearer YOUR_API_KEY</pre>
+            </div>
+          </section>
+
+          <!-- Endpoints Section -->
+          <section id="endpoints" class="section">
+            <h2>Available Endpoints</h2>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Endpoint</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td>/api/health</td>
+                  <td>Check API health status</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td>/api/search</td>
+                  <td>Search medical terminology</td>
+                </tr>
+                <tr>
+                  <td><span class="method post">POST</span></td>
+                  <td>/api/add-terminology</td>
+                  <td>Add new medical term</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td>/api/databases</td>
+                  <td>List available databases</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td>/api/debug/{database}</td>
+                  <td>Debug database structure</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- Search API Section -->
+          <section id="search" class="section">
+            <h2>Search API</h2>
+            <p><span class="method get">GET</span> <code>/api/search</code></p>
+
+            <h3>Query Parameters</h3>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Required</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>term</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Medical term to search for</td>
+                </tr>
+                <tr>
+                  <td><code>database</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>
+                    Specific database: ayurveda, icd11, siddha, unani, doctor
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>system</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>Filter by medical system</td>
+                </tr>
+                <tr>
+                  <td><code>total_limit</code></td>
+                  <td>integer</td>
+                  <td>No</td>
+                  <td>Maximum results to return (default: 300)</td>
+                </tr>
+                <tr>
+                  <td><code>limit_per_db</code></td>
+                  <td>integer</td>
+                  <td>No</td>
+                  <td>Results per database when searching all</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Example Request</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>
+GET /api/search?term=diabetes&database=ayurveda&total_limit=10</pre
+              >
+            </div>
+
+            <h3>Example Response</h3>
+            <div class="response-example">
+              <span class="status-code status-200">200 OK</span>
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>
+{
+  "database": "ayurveda",
+  "table_name": "data",
+  "columns_found": ["system", "id", "code", "term", "short_definition"],
+  "searchable_columns": ["term", "short_definition", "long_definition"],
+  "data": [
+    {
+      "system": "Ayurveda",
+      "id": "AYU001",
+      "code": "D001",
+      "term": "Madhumeha",
+      "short_definition": "Ayurvedic term for diabetes",
+      "long_definition": "A metabolic disorder characterized by...",
+      "reference": "Charaka Samhita",
+      "ontology_branches": "Metabolic Disorders",
+      "source_database": "ayurveda"
+    }
+  ],
+  "count": 1
+}</pre
+                >
+              </div>
+            </div>
+          </section>
+
+          <!-- Add Terminology Section -->
+          <section id="add-term" class="section">
+            <h2>Add New Terminology</h2>
+            <p>
+              <span class="method post">POST</span>
+              <code>/api/add-terminology</code>
+            </p>
+
+            <h3>Request Body</h3>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Required</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>doctor_name</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Name of contributing doctor</td>
+                </tr>
+                <tr>
+                  <td><code>system</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Medical system (e.g., Ayurveda)</td>
+                </tr>
+                <tr>
+                  <td><code>term</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Medical term</td>
+                </tr>
+                <tr>
+                  <td><code>short_definition</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Brief definition</td>
+                </tr>
+                <tr>
+                  <td><code>long_definition</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>Detailed explanation</td>
+                </tr>
+                <tr>
+                  <td><code>code</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>Medical code identifier</td>
+                </tr>
+                <tr>
+                  <td><code>reference</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>Source reference</td>
+                </tr>
+                <tr>
+                  <td><code>ontology_branches</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>Classification categories</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Example Request</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>
+POST /api/add-terminology
+Content-Type: application/json
+
+{
+  "doctor_name": "Dr. Rajesh Kumar",
+  "system": "Ayurveda",
+  "term": "Pittaja Jwara",
+  "short_definition": "Fever caused by pitta dosha imbalance",
+  "long_definition": "A type of fever in Ayurveda characterized by...",
+  "code": "PJ001",
+  "reference": "Charaka Samhita",
+  "ontology_branches": "Fever Types, Pitta Disorders"
+}</pre
+              >
+            </div>
+          </section>
+
+          <!-- Database Info Section -->
+          <section id="databases" class="section">
+            <h2>Database Information</h2>
+            <p>
+              <span class="method get">GET</span> <code>/api/databases</code>
+            </p>
+
+            <h3>Available Databases</h3>
+            <ul>
+              <li>
+                <strong>ayurveda:</strong> Traditional Indian medical system
+                terminology
+              </li>
+              <li>
+                <strong>siddha:</strong> Traditional Tamil medical system terms
+              </li>
+              <li>
+                <strong>unani:</strong> Greco-Arabic medical system vocabulary
+              </li>
+              <li>
+                <strong>icd11:</strong> WHO International Classification of
+                Diseases
+              </li>
+              <li><strong>doctor:</strong> User-contributed medical terms</li>
+            </ul>
+          </section>
+
+          <!-- Debug Tools Section -->
+          <section id="debug" class="section">
+            <h2>Debug Tools</h2>
+            <p>
+              <span class="method get">GET</span>
+              <code>/api/debug/{database}</code>
+            </p>
+
+            <p>
+              Get detailed information about database structure, including
+              tables, columns, and sample data.
+            </p>
+
+            <h3>Example</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>GET /api/debug/ayurveda</pre>
+            </div>
+          </section>
+
+          <!-- Error Handling Section -->
+          <section id="errors" class="section">
+            <h2>Error Handling</h2>
+
+            <h3>HTTP Status Codes</h3>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="status-code status-200">200</span></td>
+                  <td>Success</td>
+                </tr>
+                <tr>
+                  <td><span class="status-code status-400">400</span></td>
+                  <td>Bad Request - Missing or invalid parameters</td>
+                </tr>
+                <tr>
+                  <td><span class="status-code status-401">401</span></td>
+                  <td>Unauthorized - Invalid API key</td>
+                </tr>
+                <tr>
+                  <td><span class="status-code status-500">500</span></td>
+                  <td>Internal Server Error</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Error Response Format</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>
+{
+  "error": "Search term is required",
+  "code": 400,
+  "timestamp": "2025-09-14T00:40:00Z"
+}</pre
+              >
+            </div>
+          </section>
+
+          <!-- Examples Section -->
+          <section id="examples" class="section">
+            <h2>Usage Examples</h2>
+
+            <h3>JavaScript (Fetch API)</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>
+// Search for medical terms
+const response = await fetch('/api/search?term=fever&database=ayurveda');
+const data = await response.json();
+console.log(data.data);
+
+// Add new terminology
+const newTerm = {
+  doctor_name: "Dr. Smith",
+  system: "Ayurveda",
+  term: "Vata Dosha",
+  short_definition: "One of three fundamental doshas"
+};
+
+const addResponse = await fetch('/api/add-terminology', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(newTerm)
+});</pre
+              >
+            </div>
+
+            <h3>cURL Examples</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>
+# Search across all databases
+curl "http://localhost:5000/api/search?term=diabetes&total_limit=5"
+
+# Search specific database
+curl "http://localhost:5000/api/search?term=fever&database=ayurveda"
+
+# Add new term
+curl -X POST "http://localhost:5000/api/add-terminology" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doctor_name": "Dr. Patel",
+    "system": "Ayurveda",
+    "term": "Kapha Dosha",
+    "short_definition": "One of three fundamental energies"
+  }'</pre
+              >
+            </div>
+
+            <h3>Python Requests</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>
+import requests
+
+# Search example
+response = requests.get('http://localhost:5000/api/search', {
+    'term': 'diabetes',
+    'database': 'ayurveda',
+    'total_limit': 10
+})
+
+results = response.json()
+print(f"Found {results['count']} results")
+
+# Add term example
+new_term = {
+    'doctor_name': 'Dr. Sharma',
+    'system': 'Ayurveda',
+    'term': 'Pitta Dosha',
+    'short_definition': 'Fire and water element combination'
+}
+
+add_response = requests.post(
+    'http://localhost:5000/api/add-terminology',
+    json=new_term
+)</pre
+              >
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Tab click logic
+      document.querySelectorAll(".main-header .tab").forEach((tab) => {
+        tab.addEventListener("click", (e) => {
+          document
+            .querySelectorAll(".main-header .tab")
+            .forEach((t) => t.classList.remove("active"));
+          e.target.classList.add("active");
+          const tabName = e.target.getAttribute("data-tab");
+          console.log(`Switched to ${tabName.toUpperCase()} tab`);
+        });
+      });
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll(".api-nav a").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          document
+            .querySelectorAll(".api-nav a")
+            .forEach((l) => l.classList.remove("active"));
+          e.target.classList.add("active");
+
+          const targetId = e.target.getAttribute("href").substring(1);
+          document.getElementById(targetId).scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        });
+      });
+
+      // Copy code functionality
+      function copyCode(button) {
+        const codeBlock = button.nextElementSibling;
+        const text = codeBlock.textContent;
+
+        navigator.clipboard.writeText(text).then(() => {
+          const originalText = button.textContent;
+          button.textContent = "Copied!";
+          button.style.background = "rgba(39, 174, 96, 0.3)";
+
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = "rgba(255, 255, 255, 0.1)";
+          }, 2000);
+        });
+      }
+
+      // Highlight current section on scroll
+      window.addEventListener("scroll", () => {
+        const sections = document.querySelectorAll(".section");
+        const navLinks = document.querySelectorAll(".api-nav a");
+
+        let current = "";
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (scrollY >= sectionTop - 200) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href").substring(1) === current) {
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // Tab navigation for API page
+      document.querySelectorAll(".main-header .tab").forEach((tab) => {
+        tab.addEventListener("click", (e) => {
+          document
+            .querySelectorAll(".main-header .tab")
+            .forEach((t) => t.classList.remove("active"));
+          e.target.classList.add("active");
+
+          const tabName = e.target.textContent.trim().toLowerCase();
+
+          switch (tabName) {
+            case "about":
+              window.location.href = "enhanced_index.html";
+              break;
+            case "api":
+              // Already on API page
+              break;
+            case "demo":
+              window.location.href = "enhanced_index.html";
+              break;
+            case "docs":
+              window.location.href = "doc.html";
+              break;
+            case "model":
+              alert("Model page coming soon");
+              break;
+          }
+        });
+      });
+
+      // Copy code functionality
+      function copyCode(button) {
+        const codeBlock = button.nextElementSibling;
+        const text = codeBlock.textContent;
+
+        navigator.clipboard.writeText(text).then(() => {
+          const originalText = button.textContent;
+          button.textContent = "Copied!";
+          button.style.background = "rgba(39, 174, 96, 0.3)";
+
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = "rgba(255, 255, 255, 0.1)";
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

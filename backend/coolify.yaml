@@ -1,0 +1,57 @@
+# Coolify Configuration for AYUSH EMR Backend
+# Smart India Hackathon 2025
+
+version: '3.8'
+
+services:
+  ayush-emr-backend:
+    image: ayush-emr-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    environment:
+      # App Configuration
+      APP_NAME: 'AYUSH EMR API'
+      APP_VERSION: '1.0.0'
+
+      # Security (Set these in Coolify dashboard)
+      SECRET_KEY: '${SECRET_KEY:-change-this-secret-key-in-coolify-dashboard}'
+      ACCESS_TOKEN_EXPIRE_MINUTES: '60'
+
+      # Database
+      DATABASE_URL: 'sqlite:///./data/ayush_emr.db'
+
+      # External APIs
+      ABHA_API_URL: 'https://sandbox.abdm.gov.in'
+      ABHA_CLIENT_ID: '${ABHA_CLIENT_ID:-mock_client_id}'
+      ABHA_CLIENT_SECRET: '${ABHA_CLIENT_SECRET:-mock_client_secret}'
+      WHO_API_URL: '${WHO_API_URL:-http://localhost:5000}'
+
+      # Server
+      HOST: '0.0.0.0'
+      PORT: '8000'
+
+    volumes:
+      - ayush_emr_data:/app/data
+
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/api/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    restart: unless-stopped
+
+    labels:
+      # Coolify labels for automatic configuration
+      - 'coolify.managed=true'
+      - 'coolify.version=1.0.0'
+      - 'coolify.name=ayush-emr-backend'
+      - 'coolify.description=AYUSH EMR Backend API for SIH 2025'
+
+volumes:
+  ayush_emr_data:
+    driver: local

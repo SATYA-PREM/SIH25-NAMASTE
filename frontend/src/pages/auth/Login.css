@@ -1,0 +1,234 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #eaf8fd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  padding: 32px 32px 24px 32px;
+  text-align: center;
+  background: linear-gradient(135deg, #97ccf3 0%, #a7dcff 100%);;
+  border-radius: 16px 16px 0 0;
+}
+
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text {
+  text-align: center;
+}
+
+.brand-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.025em;
+}
+
+.login-subtitle {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+.modal-body {
+  padding: 32px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #1F2937;
+  background-color: #FAFAFA;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #60A5FA;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.form-input:disabled {
+  background-color: #F3F4F6;
+  color: #9CA3AF;
+  cursor: not-allowed;
+}
+
+.otp-input-group {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.otp-input {
+  flex: 1;
+}
+
+.generate-otp-btn {
+  padding: 12px 20px;
+  background: #F3F4F6;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.generate-otp-btn:hover:not(:disabled) {
+  background: #E5E7EB;
+  border-color: #D1D5DB;
+}
+
+.generate-otp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-footer {
+  padding: 24px 32px 32px 32px;
+  background: #FAFAFA;
+  border-radius: 0 0 16px 16px;
+}
+
+.footer-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.login-btn {
+  flex: 1;
+  padding: 14px 24px;
+  background:linear-gradient(135deg, #0073ff 0%, #0e76ee 100%);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.close-btn {
+  padding: 14px 24px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #6B7280;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.close-btn:hover {
+  border-color: #D1D5DB;
+  color: #374151;
+}
+
+.register-link {
+  text-align: center;
+}
+
+.register-anchor {
+  color: #60A5FA;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+}
+
+.register-anchor:hover {
+  color: #3B82F6;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .login-modal {
+    margin: 16px;
+    width: calc(100% - 32px);
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .footer-buttons {
+    flex-direction: column;
+  }
+
+  .otp-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .generate-otp-btn {
+    margin-top: 8px;
+  }
+}

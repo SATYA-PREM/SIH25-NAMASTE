@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Medical Terminology Search</title>
+    <style>
+      /* CSS Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+        overflow-x: hidden;
+      }
+      .sidebar {
+        background: var(--card);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+        position: sticky;
+        top: 32px;
+        height: fit-content;
+      }
+      .sidebar h4 {
+        margin: 0 0 14px;
+        font-size: 16px;
+        color: var(--accent);
+      }
+      .toc {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .toc li {
+        margin: 8px 0;
+      }
+      .toc a {
+        color: var(--accent-2);
+        text-decoration: none;
+      }
+      .toc a:hover {
+        text-decoration: underline;
+      }
+
+      /* Main */
+      .main {
+        padding-right: 20px;
+      }
+      h1 {
+        font-size: 40px;
+        margin: 0 0 10px;
+        color: var(--accent-2);
+      }
+      .sub {
+        color: var(--muted);
+        margin-bottom: 28px;
+      }
+      h2 {
+        font-size: 26px;
+        color: var(--accent-2);
+        margin-top: 32px;
+      }
+      h3 {
+        font-size: 20px;
+        color: var(--accent-2);
+        margin-top: 22px;
+      }
+      p {
+        line-height: 1.6;
+        color: #374151;
+      }
+      ul {
+        line-height: 1.6;
+      }
+
+      /* Code blocks - updated to use #34495e */
+      pre {
+        background: var(--code-bg);
+        color: var(--code-text);
+        padding: 16px;
+        border-radius: 8px;
+        overflow: auto;
+        margin: 16px 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New",
+          monospace;
+        font-size: 13px;
+      }
+      .code-toolbar {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 0;
+        padding: 6px 8px;
+        border-radius: 6px;
+        color: var(--code-text);
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .badge {
+        display: inline-block;
+        background: #eef3ff;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        color: #0b3d91;
+        margin-left: 8px;
+      }
+
+      /* Responsive */
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+          padding: 20px;
+        }
+        .sidebar {
+          position: relative;
+          top: auto;
+          margin-bottom: 20px;
+        }
+        .main-header {
+          margin: 0 0 30px;
+        }
+      }
+
+      /* Small helpers */
+      .muted {
+        color: var(--muted);
+      }
+      .kbd {
+        background: #34495e;
+        color: #fff;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-family: ui-monospace;
+        font-size: 12px;
+      } /* Updated to #34495e */
+      .section-note {
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 8px;
+        margin: 12px 0;
+      }
+
+      /* Footer */
+      .footer {
+        margin-top: 48px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- New header with tabs -->
+    <header class="main-header">
+      <div
+        class="tab"
+        data-tab="about"
+        onclick="window.location.href='enhanced_index.html'"
+      >
+        About
+      </div>
+      <div class="tab" data-tab="api" onclick="window.location.href='api.html'">
+        API
+      </div>
+      <div class="tab" data-tab="demo">Demo</div>
+      <div
+        class="tab"
+        data-tab="docs"
+        onclick="window.location.href='doc.html'"
+      >
+        Docs
+      </div>
+      <div class="tab" data-tab="model">Model</div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" aria-label="On this page">
+        <h4>On this page</h4>
+        <ul class="toc">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#cli-debugging-commands">CLI Debugging Commands</a></li>
+          <li>
+            <a href="#api-server-host-config">API Server Host Configuration</a>
+          </li>
+          <li><a href="#api-debug-endpoints">API Debug Endpoints</a></li>
+          <li>
+            <a href="#troubleshooting-workflow">Troubleshooting Workflow</a>
+          </li>
+          <li><a href="#debug-db-structure">Debug Database Structure</a></li>
+          <li><a href="#search-usage">Search Usage Examples</a></li>
+          <li>
+            <a href="#expected-response-format">Expected Response Format</a>
+          </li>
+          <li><a href="#common-issues">Common Issues & Solutions</a></li>
+          <li><a href="#quick-tests">Quick Test Commands</a></li>
+        </ul>
+      </aside>
+
+      <main class="main">
+        <h1>Documentation</h1>
+        <p class="sub">
+          Complete reference: how the API works, CLI commands, server options,
+          curl examples and a step-by-step troubleshooting workflow so anyone
+          can get the service running quickly.
+        </p>
+
+        <section id="overview">
+          <h2>Overview</h2>
+          <p>
+            This demo-ready terminology microservice bridges AYUSH NAMASTE
+            concepts with WHO ICD-11 TM2 via FHIR R4 patterns. It ships with
+            seeded values so you can search concepts, review dual-code mappings,
+            expand ValueSets, and validate FHIR Bundles without external
+            credentials.
+          </p>
+          <ul>
+            <li>Dual coding: NAMASTE concepts with suggested ICD-11 matches</li>
+            <li>
+              FHIR operations: ValueSet <code>$expand</code> and ConceptMap
+              <code>$translate</code>
+            </li>
+            <li>CSV ingestion for NAMASTE concepts</li>
+            <li>Demo-first: run immediately with seeded data</li>
+          </ul>
+        </section>
+
+        <section id="cli-debugging-commands">
+          <h2>CLI Debugging Commands</h2>
+          <p class="muted">
+            Use the bundled CLI (the same script that runs the server) to
+            inspect databases, run quick searches, and diagnose issues without
+            firing HTTP requests.
+          </p>
+
+          <h3>1. Debug All Databases</h3>
+          <p>Show structure of all databases (tables, columns, sample data):</p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-debug-all">Copy</button>
+            <pre
+              id="cmd-debug-all"
+            ><code>python fixed_api_server.py --mode debug</code></pre>
+          </div>
+
+          <h3>2. Debug Specific Database</h3>
+          <p>Inspect individual databases:</p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-debug-ayurveda">
+              Copy
+            </button>
+            <pre
+              id="cmd-debug-ayurveda"
+            ><code>python fixed_api_server.py --mode debug --db ayurveda
+python fixed_api_server.py --mode debug --db icd11
+python fixed_api_server.py --mode debug --db siddha
+python fixed_api_server.py --mode debug --db unani</code></pre>
+          </div>
+
+          <h3>3. CLI Search Commands</h3>
+          <p>
+            Run searches from the CLI — useful for scripted checks and smoke
+            tests.
+          </p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-search-all">Copy</button>
+            <pre id="cmd-search-all"><code># Search across all databases
+python fixed_api_server.py --mode search "diabetes"
+
+# Search in specific database
+python fixed_api_server.py --mode search "fever" --db ayurveda
+
+# Search with limit
+python fixed_api_server.py --mode search "heart" --db ayurveda --limit 10
+
+# Search with system filter
+python fixed_api_server.py --mode search "pain" --system "Ayurveda" --limit 5</code></pre>
+          </div>
+        </section>
+
+        <section id="api-server-host-config">
+          <h2>API Server Host Configuration</h2>
+          <p class="muted">
+            Run the server on localhost (development) or bind to all interfaces
+            for network access.
+          </p>
+
+          <h3>Run on Specific Host (Localhost Only)</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-localhost">Copy</button>
+            <pre
+              id="cmd-localhost"
+            ><code># Default - accessible only from same machine
+python fixed_api_server.py --host 127.0.0.1 --port 5000
+
+# Alternative localhost syntax
+python fixed_api_server.py --host localhost --port 5000</code></pre>
+          </div>
+
+          <h3>Run on All Hosts (Network Access)</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-allhosts">Copy</button>
+            <pre
+              id="cmd-allhosts"
+            ><code># Accessible from any machine on network
+python fixed_api_server.py --host 0.0.0.0 --port 5000
+
+# Custom port on all hosts
+python fixed_api_server.py --host 0.0.0.0 --port 8080</code></pre>
+          </div>
+
+          <h3>Custom Host and Port Options</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-custom-host">Copy</button>
+            <pre id="cmd-custom-host"><code># Specific IP address
+python fixed_api_server.py --host 192.168.1.100 --port 5000
+
+# Different port
+python fixed_api_server.py --host 0.0.0.0 --port 3000</code></pre>
+          </div>
+        </section>
+
+        <section id="api-debug-endpoints">
+          <h2>API Debug Endpoints (curl)</h2>
+          <p>
+            Use <code>curl</code> to call debug endpoints — useful when the
+            server is running on another machine or when you want to add checks
+            to CI.
+          </p>
+
+          <h3>Using curl for Localhost</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-curl-local-health">
+              Copy
+            </button>
+            <pre id="cmd-curl-local-health"><code># Health check
+curl "http://localhost:5000/api/health"
+
+# Debug specific database
+curl "http://localhost:5000/api/debug/ayurveda"
+curl "http://localhost:5000/api/debug/icd11"
+curl "http://localhost:5000/api/debug/siddha"
+curl "http://localhost:5000/api/debug/unani"
+
+# List all databases
+curl "http://localhost:5000/api/databases"
+
+# Search for term
+curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"</code></pre>
+          </div>
+
+          <h3>Using curl for Network Access (0.0.0.0)</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-curl-network">
+              Copy
+            </button>
+            <pre
+              id="cmd-curl-network"
+            ><code># Replace YOUR_SERVER_IP with actual IP
+curl "http://YOUR_SERVER_IP:5000/api/health"
+curl "http://YOUR_SERVER_IP:5000/api/debug/ayurveda"
+curl "http://YOUR_SERVER_IP:5000/api/search?term=diabetes"
+
+# Example with actual IP
+curl "http://192.168.1.100:5000/api/debug/ayurveda"</code></pre>
+          </div>
+        </section>
+
+        <section id="troubleshooting-workflow">
+          <h2>Complete Troubleshooting Workflow</h2>
+          <p class="muted">
+            Step-by-step flow from starting the server to verifying data and
+            search functionality.
+          </p>
+
+          <h3>Step 1: Start API Server</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-start-server">
+              Copy
+            </button>
+            <pre id="cmd-start-server"><code># For local development
+python fixed_api_server.py --host 127.0.0.1 --port 5000
+
+# For network access
+python fixed_api_server.py --host 0.0.0.0 --port 5000</code></pre>
+          </div>
+
+          <h3>Step 2: Verify Server is Running</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-verify-health">
+              Copy
+            </button>
+            <pre id="cmd-verify-health"><code># Test API health
+curl "http://localhost:5000/api/health"
+
+# Or for network access
+curl "http://YOUR_IP:5000/api/health"</code></pre>
+          </div>
+
+          <h3>Step 3: Debug Database Structure</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-debug-all-2">Copy</button>
+            <pre id="cmd-debug-all-2"><code># CLI method - debug all databases
+python fixed_api_server.py --mode debug
+
+# API method - check specific database
+curl "http://localhost:5000/api/debug/ayurveda"</code></pre>
+          </div>
+
+          <h3>Step 4: Test Search Functionality</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-search-test">Copy</button>
+            <pre id="cmd-search-test"><code># CLI search
+python fixed_api_server.py --mode search "diabetes" --db ayurveda
+
+# API search
+curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"</code></pre>
+          </div>
+        </section>
+
+        <section id="debug-db-structure">
+          <h2>Debug Database Structure — Example</h2>
+          <p>
+            Run this endpoint to see the exact table and column names — useful
+            when your searches return no results because the schema differs from
+            expectations.
+          </p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-curl-debug-ayurveda">
+              Copy
+            </button>
+            <pre
+              id="cmd-curl-debug-ayurveda"
+            ><code>curl "http://localhost:5000/api/debug/ayurveda"</code></pre>
+          </div>
+
+          <p>Expected Response (example):</p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="json-sample-response">
+              Copy
+            </button>
+            <pre id="json-sample-response"><code>{
+  "database": "ayurveda",
+  "file_path": "Ayurveda.db",
+  "table_name": "data",
+  "columns": [
+    "system",
+    "sr_no",
+    "id",
+    "code",
+    "term",
+    "short_definition",
+    "long_definition",
+    "reference",
+    "ontology_branches"
+  ],
+  "sample_data": [
+    {
+      "system": "Ayurveda",
+      "sr_no": 1,
+      "id": "A001",
+      "code": "C001",
+      "term": "Diabetes",
+      "short_definition": "A metabolic disease",
+      "long_definition": "Long description about diabetes",
+      "reference": "Ref1",
+      "ontology_branches": "Branch1"
+    }
+  ]
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="search-usage">
+          <h2>Search for Specific Terms</h2>
+          <p>Examples for various search modes.</p>
+
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="curl-search-specific">
+              Copy
+            </button>
+            <pre
+              id="curl-search-specific"
+            ><code>1. Search in Specific Database (Ayurveda)
+
+curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"
+
+2. Search Across All Databases
+
+curl "http://localhost:5000/api/search?term=diabetes"
+
+3. Search with Limit
+
+curl "http://localhost:5000/api/search?term=heart&database=ayurveda&total_limit=5"
+
+4. Search with System Filter
+
+curl "http://localhost:5000/api/search?term=fever&system=Ayurveda&total_limit=10"</code></pre>
+          </div>
+
+          <h3>Complete curl Examples for Different Searches</h3>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="curl-case-insensitive">
+              Copy
+            </button>
+            <pre id="curl-case-insensitive"><code># Case-Insensitive Search
+curl "http://localhost:5000/api/search?term=DIABETES&database=ayurveda"
+curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"
+curl "http://localhost:5000/api/search?term=Diabetes&database=ayurveda"
+
+# Partial Term Search
+curl "http://localhost:5000/api/search?term=diab&database=ayurveda"
+
+# Partial examples
+curl "http://localhost:5000/api/search?term=hyper&database=ayurveda"
+
+# Multiple DB search
+curl "http://localhost:5000/api/search?term=pain&total_limit=20"</code></pre>
+          </div>
+        </section>
+
+        <section id="expected-response-format">
+          <h2>Expected Search Response Format</h2>
+          <p>
+            When you call the search endpoint you should receive a JSON object
+            that includes the columns discovered, searchable columns and matched
+            rows.
+          </p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="json-search-response">
+              Copy
+            </button>
+            <pre id="json-search-response"><code>{
+  "database": "ayurveda",
+  "table_name": "data",
+  "columns_found": ["system","sr_no","id","code","term","short_definition","long_definition","reference","ontology_branches"],
+  "searchable_columns": ["term","short_definition","long_definition"],
+  "data": [
+    {
+      "system": "Ayurveda",
+      "sr_no": 1,
+      "id": "A001",
+      "code": "C001",
+      "term": "Diabetes",
+      "short_definition": "A metabolic disease",
+      "long_definition": "Long description about diabetes",
+      "reference": "Ref1",
+      "ontology_branches": "Branch1",
+      "source_database": "ayurveda",
+      "table_name": "data"
+    }
+  ],
+  "count": 1
+}</code></pre>
+          </div>
+        </section>
+
+        <section id="common-issues">
+          <h2>Common Issues & Solutions</h2>
+
+          <h3>Issue 1: "Connection refused"</h3>
+          <p><strong>Solution:</strong> Make sure the API server is running:</p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-issue-connection">
+              Copy
+            </button>
+            <pre
+              id="cmd-issue-connection"
+            ><code>python fixed_api_server.py</code></pre>
+          </div>
+
+          <h3>Issue 2: "No results found" for known terms</h3>
+          <p>
+            <strong>Solution:</strong> Run the debug command to inspect the
+            actual structure and sample rows:
+          </p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-issue-noresults">
+              Copy
+            </button>
+            <pre
+              id="cmd-issue-noresults"
+            ><code>curl "http://localhost:5000/api/debug/ayurveda"</code></pre>
+          </div>
+
+          <h3>Issue 3: Wrong database name</h3>
+          <p><strong>Solution:</strong> List available databases first:</p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-list-dbs">Copy</button>
+            <pre
+              id="cmd-list-dbs"
+            ><code>curl "http://localhost:5000/api/databases"</code></pre>
+          </div>
+        </section>
+
+        <section id="quick-tests">
+          <h2>Quick Test Commands</h2>
+          <p>Run these in sequence to validate your setup quickly.</p>
+          <div class="code-toolbar">
+            <button class="copy-btn" data-target="cmd-quick-test">Copy</button>
+            <pre id="cmd-quick-test"><code># 1. Check API health
+curl "http://localhost:5000/api/health"
+
+# 2. Check database structure
+curl "http://localhost:5000/api/debug/ayurveda"
+
+# 3. Search for a common medical term
+curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"
+
+# 4. Search across all databases
+curl "http://localhost:5000/api/search?term=fever&total_limit=10"</code></pre>
+          </div>
+
+          <p class="section-note">
+            <strong>Note:</strong> The debug endpoint will show you exactly what
+            tables and columns exist in your database, which helps identify why
+            searches might not be matching.
+          </p>
+        </section>
+
+        <div class="footer">
+          Made for your website — copy the code blocks for quick testing.
+          Customize the host/port and DB names to match your deployment.
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // Tab click logic
+      document.querySelectorAll(".main-header .tab").forEach((tab) => {
+        tab.addEventListener("click", (e) => {
+          document
+            .querySelectorAll(".main-header .tab")
+            .forEach((t) => t.classList.remove("active"));
+          e.target.classList.add("active");
+          const tabName = e.target.getAttribute("data-tab");
+
+          // Here you can add logic to switch displayed content according to the tab
+          console.log(`Switched to ${tabName.toUpperCase()} tab`);
+
+          // Example routing logic (you can customize this)
+          switch (tabName) {
+            case "about":
+              // Navigate to about page
+              break;
+            case "api":
+              // Navigate to API page
+              break;
+            case "demo":
+              // Navigate to demo page
+              window.location.href = "enhanced_index.html";
+
+              break;
+            case "docs":
+              // Already on docs page
+              break;
+            case "model":
+              // Navigate to model page
+              break;
+          }
+        });
+      });
+
+      // Smooth scrolling for sidebar links
+      document.querySelectorAll(".toc a").forEach((a) => {
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          const id = a.getAttribute("href").slice(1);
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      // Copy-to-clipboard for code blocks
+      function copyText(text) {
+        if (navigator.clipboard) {
+          return navigator.clipboard.writeText(text);
+        }
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+        } catch (e) {}
+        ta.remove();
+        return Promise.resolve();
+      }
+
+      document.querySelectorAll(".copy-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const targetId = btn.getAttribute("data-target");
+          const pre = document.getElementById(targetId);
+          if (!pre) return;
+          const text = pre.textContent;
+          try {
+            await copyText(text);
+            const old = btn.textContent;
+            btn.textContent = "Copied!";
+            setTimeout(() => (btn.textContent = old), 1500);
+          } catch (err) {
+            btn.textContent = "Failed";
+            setTimeout(() => (btn.textContent = "Copy"), 1500);
+          }
+        });
+      });
+
+      // Highlight current section in sidebar as you scroll
+      const sections = Array.from(document.querySelectorAll("main section"));
+      const tocLinks = Array.from(document.querySelectorAll(".toc a"));
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              tocLinks.forEach((l) =>
+                l.classList.toggle(
+                  "active",
+                  l.getAttribute("href") === "#" + id
+                )
+              );
+            }
+          });
+        },
+        { rootMargin: "-40% 0px -40% 0px" }
+      );
+      sections.forEach((s) => observer.observe(s));
+    </script>
+  </body>
+</html>

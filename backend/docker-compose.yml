@@ -1,0 +1,43 @@
+# AYUSH EMR Backend - Docker Compose for Local Testing
+# Smart India Hackathon 2025
+
+version: '3.8'
+
+services:
+  ayush-emr-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8143:8143'
+    environment:
+      - APP_NAME=AYUSH EMR API
+      - APP_VERSION=1.0.0
+      - SECRET_KEY=local-development-secret-key-change-in-production
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - DATABASE_URL=sqlite:///./ayush_emr.db
+      - WHO_API_URL=http://localhost:5000
+    volumes:
+      - ./data:/app/data # Persist database
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/api/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.ayush-emr.rule=PathPrefix(`/`)'
+      - 'traefik.http.services.ayush-emr.loadbalancer.server.port=8000'
+
+  # Optional: WHO Disease Service (if you want to run it together)
+  # who-service:
+  #   build: ../who-api
+  #   ports:
+  #     - "5000:5000"
+  #   restart: unless-stopped
+
+networks:
+  default:
+    name: ayush-emr-network
