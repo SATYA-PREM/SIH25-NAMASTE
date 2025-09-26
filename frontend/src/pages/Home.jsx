@@ -7,12 +7,12 @@ function Home() {
 
   useEffect(() => {
     setIsLoaded(true)
-
+    
     // Auto-rotate features
     const interval = setInterval(() => {
       setActiveFeature(prev => (prev + 1) % 6)
     }, 4000)
-
+    
     return () => clearInterval(interval)
   }, [])
 
@@ -71,7 +71,7 @@ function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-[1216px] z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
@@ -86,16 +86,15 @@ function Home() {
                 <p className="text-xs text-gray-600 font-medium">Healthcare Platform</p>
               </div>
             </div>
-
+            
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Features</a>
               <a href="#solution" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Solution</a>
               <a href="#compliance" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Compliance</a>
             </div>
-
+            
             <div className="flex items-center space-x-4">
-              <button className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                onClick={() => (window.location.href = "/login")}>
+              <button className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors">
                 Sign In
               </button>
               <button className="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5">
@@ -110,7 +109,7 @@ function Home() {
       <section className="pt-32 pb-20 bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`text-center transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-
+            
             {/* Announcement Badge */}
             <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-full mb-8">
               <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 animate-pulse"></div>
@@ -135,25 +134,14 @@ function Home() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <button
-                onClick={() => (window.location.href = "/login")}
-                className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-3"
-              >
+              <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex items-center space-x-3">
                 <span>Launch Platform</span>
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </button>
-
-
+              
               <button className="group px-8 py-4 bg-white text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 flex items-center space-x-3">
                 <Play className="h-5 w-5" />
-                <a
-                  href="https://www.youtube.com/watch?v=VIDEO_ID"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Watch Demo
-                </a>
-
+                <span>Watch Demo</span>
               </button>
             </div>
 
@@ -198,21 +186,22 @@ function Home() {
             {features.map((feature, index) => {
               const IconComponent = feature.icon
               const isActive = activeFeature === index
-
+              
               return (
                 <div
                   key={index}
-                  className={`bg-white rounded-2xl p-8 border transition-all duration-500 hover:shadow-xl hover:-translate-y-2 cursor-pointer ${isActive ? 'border-blue-200 shadow-lg' : 'border-gray-100 hover:border-gray-200'
-                    }`}
+                  className={`bg-white rounded-2xl p-8 border transition-all duration-500 hover:shadow-xl hover:-translate-y-2 cursor-pointer ${
+                    isActive ? 'border-blue-200 shadow-lg' : 'border-gray-100 hover:border-gray-200'
+                  }`}
                   onClick={() => setActiveFeature(index)}
                 >
                   <div className={`w-14 h-14 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}>
                     <IconComponent className="h-7 w-7 text-white" />
                   </div>
-
+                  
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">{feature.title}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
-
+                  
                   <div className="space-y-2">
                     {feature.benefits.map((benefit, idx) => (
                       <div key={idx} className="flex items-center space-x-2">
@@ -237,7 +226,7 @@ function Home() {
                 <div className="w-2 h-2 bg-white rounded-full mr-3 animate-pulse"></div>
                 Challenge & Solution
               </div>
-
+              
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
                 Bridging Traditional Medicine with
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Modern Standards</span>
@@ -251,14 +240,14 @@ function Home() {
                     <h3 className="font-bold text-red-900 mb-2">The Challenge</h3>
                     <p className="text-red-800">Traditional medicine systems lack standardized digital representation, creating barriers to integration with modern healthcare infrastructure.</p>
                   </div>
-
+                  
                   <div className="p-6 bg-green-50 border-l-4 border-green-500 rounded-r-xl">
                     <h3 className="font-bold text-green-900 mb-2">Our Solution</h3>
                     <p className="text-green-800">FHIR R4-compliant API that seamlessly integrates NAMASTE and ICD-11 TM2 terminologies into existing EMR systems.</p>
                   </div>
                 </div>
               </div>
-
+              
               <div className="bg-gray-50 rounded-2xl p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Technical Implementation</h3>
                 <div className="space-y-4">
@@ -271,7 +260,7 @@ function Home() {
                       <p className="text-sm text-gray-600">Complete terminology mapping for Ayurveda, Siddha, and Unani systems</p>
                     </div>
                   </div>
-
+                  
                   <div className="flex items-start space-x-3">
                     <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center mt-1">
                       <span className="text-white text-xs font-bold">2</span>
@@ -281,7 +270,7 @@ function Home() {
                       <p className="text-sm text-gray-600">Automated translation to WHO international standards</p>
                     </div>
                   </div>
-
+                  
                   <div className="flex items-start space-x-3">
                     <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mt-1">
                       <span className="text-white text-xs font-bold">3</span>
@@ -334,7 +323,7 @@ function Home() {
                 )
               })}
             </div>
-
+            
             <div className="mt-12 text-center">
               <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-6 py-3">
                 <Star className="h-5 w-5" />
@@ -375,7 +364,7 @@ function Home() {
                 </div>
               </div>
             </div>
-
+            
             <div>
               <h4 className="font-semibold mb-4">Platform</h4>
               <ul className="space-y-2 text-gray-300">
@@ -385,7 +374,7 @@ function Home() {
                 <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
               </ul>
             </div>
-
+            
             <div>
               <h4 className="font-semibold mb-4">Compliance</h4>
               <ul className="space-y-2 text-gray-300">
@@ -396,7 +385,7 @@ function Home() {
               </ul>
             </div>
           </div>
-
+          
           <div className="border-t border-gray-800 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center space-x-6 text-gray-400 text-sm">

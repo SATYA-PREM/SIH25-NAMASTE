@@ -63,7 +63,7 @@ Once the server is running, visit:
 
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/api/health
+- **Health Check**: http://localhost:8000/ap i/health
 
 ## 🧪 Testing with Mock Data
 

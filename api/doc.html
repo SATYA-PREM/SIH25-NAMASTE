@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>API Documentation — CLI & Server Commands</title>
+  <title>Enhanced Medical Terminology API — Complete Documentation</title>
   <style>
     :root{
       --bg:#ffffff;
@@ -154,7 +154,7 @@
       >
         Docs
       </div>
-      <div class="tab" data-tab="model">Model</div>
+      <div class="tab" data-tab="model" onclick="window.location.href='http://localhost:5173/'">Model</div>
     </header>
   </div>
 
@@ -163,350 +163,595 @@
       <h4>On this page</h4>
       <ul class="toc">
         <li><a href="#overview">Overview</a></li>
-        <li><a href="#cli-debugging-commands">CLI Debugging Commands</a></li>
-        <li><a href="#api-server-host-config">API Server Host Configuration</a></li>
-        <li><a href="#api-debug-endpoints">API Debug Endpoints</a></li>
-        <li><a href="#troubleshooting-workflow">Troubleshooting Workflow</a></li>
-        <li><a href="#debug-db-structure">Debug Database Structure</a></li>
-        <li><a href="#search-usage">Search Usage Examples</a></li>
-        <li><a href="#expected-response-format">Expected Response Format</a></li>
-        <li><a href="#common-issues">Common Issues & Solutions</a></li>
+        <li><a href="#system-architecture">System Architecture</a></li>
+        <li><a href="#cli-commands">CLI Commands</a></li>
+        <li><a href="#api-server-configuration">API Server Configuration</a></li>
+        <li><a href="#core-api-endpoints">Core API Endpoints</a></li>
+        <li><a href="#fhir-endpoints">FHIR Endpoints</a></li>
+        <li><a href="#concept-mapping-endpoints">Concept Mapping Endpoints</a></li>
+        <li><a href="#database-management">Database Management</a></li>
+        <li><a href="#search-examples">Search Examples</a></li>
+        <li><a href="#response-formats">Response Formats</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
         <li><a href="#quick-tests">Quick Test Commands</a></li>
       </ul>
     </aside>
 
     <main class="main">
-      <h1>Documentation</h1>
-      <p class="sub">Complete reference: how the API works, CLI commands, server options, curl examples and a step-by-step troubleshooting workflow so anyone can get the service running quickly.</p>
+      <h1>Enhanced Medical Terminology API</h1>
+      <p class="sub">Complete reference for the AYUSH-ICD-11 medical terminology microservice with FHIR R4 support, concept mapping, and unified search capabilities.</p>
 
       <section id="overview">
         <h2>Overview</h2>
-        <p>This demo-ready terminology microservice bridges AYUSH NAMASTE concepts with WHO ICD-11 TM2 via FHIR R4 patterns. It ships with seeded values so you can search concepts, review dual-code mappings, expand ValueSets, and validate FHIR Bundles without external credentials.</p>
+        <p>This enhanced medical terminology API bridges traditional AYUSH systems (Ayurveda, Siddha, Unani) with modern ICD-11 classifications. It provides unified search, concept mapping, FHIR R4 compliance, and extensible terminology management.</p>
         <ul>
-          <li>Dual coding: NAMASTE concepts with suggested ICD-11 matches</li>
-          <li>FHIR operations: ValueSet <code>$expand</code> and ConceptMap <code>$translate</code></li>
-          <li>CSV ingestion for NAMASTE concepts</li>
-          <li>Demo-first: run immediately with seeded data</li>
+          <li><strong>Multi-system search:</strong> Ayurveda, Siddha, Unani, ICD-11, and doctor-added terms</li>
+          <li><strong>Concept mapping:</strong> Automated cross-system term relationships</li>
+          <li><strong>FHIR R4 support:</strong> ValueSet $expand, ConceptMap $translate operations</li>
+          <li><strong>Doctor terminology:</strong> Extensible database for custom medical terms</li>
+          <li><strong>ICD-11 integration:</strong> Automated mapping and lookup capabilities</li>
+          <li><strong>Export functionality:</strong> FHIR Bundle generation for interoperability</li>
         </ul>
       </section>
 
-      <section id="cli-debugging-commands">
-        <h2>CLI Debugging Commands</h2>
-        <p class="muted">Use the bundled CLI (the same script that runs the server) to inspect databases, run quick searches, and diagnose issues without firing HTTP requests.</p>
-
-        <h3>1. Debug All Databases</h3>
-        <p>Show structure of all databases (tables, columns, sample data):</p>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-debug-all">Copy</button>
-          <pre id="cmd-debug-all"><code>python fixed_api_server.py --mode debug</code></pre>
-        </div>
-
-        <h3>2. Debug Specific Database</h3>
-        <p>Inspect individual databases:</p>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-debug-ayurveda">Copy</button>
-          <pre id="cmd-debug-ayurveda"><code>python fixed_api_server.py --mode debug --db ayurveda
-python fixed_api_server.py --mode debug --db icd11
-python fixed_api_server.py --mode debug --db siddha
-python fixed_api_server.py --mode debug --db unani</code></pre>
-        </div>
-
-        <h3>3. CLI Search Commands</h3>
-        <p>Run searches from the CLI — useful for scripted checks and smoke tests.</p>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-search-all">Copy</button>
-          <pre id="cmd-search-all"><code># Search across all databases
-python fixed_api_server.py --mode search "diabetes"
-
-# Search in specific database
-python fixed_api_server.py --mode search "fever" --db ayurveda
-
-# Search with limit
-python fixed_api_server.py --mode search "heart" --db ayurveda --limit 10
-
-# Search with system filter
-python fixed_api_server.py --mode search "pain" --system "Ayurveda" --limit 5</code></pre>
-        </div>
+      <section id="system-architecture">
+        <h2>System Architecture</h2>
+        <p>The system consists of multiple SQLite databases with unified access patterns:</p>
+        <ul>
+          <li><strong>Legacy Databases:</strong> Ayurveda.db, Siddha.db, Unani.db, ICD11.db</li>
+          <li><strong>Doctor Database:</strong> doctorterminology.db (extensible terminology)</li>
+          <li><strong>Mapping Database:</strong> conceptmappings.db (cross-system relationships)</li>
+          <li><strong>Search Engine:</strong> Multi-threaded unified search with relevance ranking</li>
+          <li><strong>FHIR Layer:</strong> Standards-compliant FHIR R4 operations</li>
+        </ul>
       </section>
 
-      <section id="api-server-host-config">
-        <h2>API Server Host Configuration</h2>
-        <p class="muted">Run the server on localhost (development) or bind to all interfaces for network access.</p>
+      <section id="cli-commands">
+        <h2>CLI Commands</h2>
+        <p class="muted">Use the command-line interface for debugging, testing, and administration without HTTP requests.</p>
 
-        <h3>Run on Specific Host (Localhost Only)</h3>
+        <h3>Server Mode</h3>
+        <p>Start the API server with various configuration options:</p>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-localhost">Copy</button>
-          <pre id="cmd-localhost"><code># Default - accessible only from same machine
-python fixed_api_server.py --host 127.0.0.1 --port 5000
+          <button class="copy-btn" data-target="cmd-server-basic">Copy</button>
+          <pre id="cmd-server-basic"><code># Basic server start (localhost:5000)
+python fixed_api_server.py
 
-# Alternative localhost syntax
-python fixed_api_server.py --host localhost --port 5000</code></pre>
+# Server with custom host and port
+python fixed_api_server.py --host 0.0.0.0 --port 8080
+
+# Server on specific interface
+python fixed_api_server.py --host 192.168.1.100 --port 5000</code></pre>
         </div>
 
-        <h3>Run on All Hosts (Network Access)</h3>
+        <h3>Debug Mode</h3>
+        <p>Inspect database structures, tables, and sample data:</p>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-allhosts">Copy</button>
-          <pre id="cmd-allhosts"><code># Accessible from any machine on network
-python fixed_api_server.py --host 0.0.0.0 --port 5000
-
-# Custom port on all hosts
-python fixed_api_server.py --host 0.0.0.0 --port 8080</code></pre>
-        </div>
-
-        <h3>Custom Host and Port Options</h3>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-custom-host">Copy</button>
-          <pre id="cmd-custom-host"><code># Specific IP address
-python fixed_api_server.py --host 192.168.1.100 --port 5000
-
-# Different port
-python fixed_api_server.py --host 0.0.0.0 --port 3000</code></pre>
-        </div>
-      </section>
-
-      <section id="api-debug-endpoints">
-        <h2>API Debug Endpoints (curl)</h2>
-        <p>Use <code>curl</code> to call debug endpoints — useful when the server is running on another machine or when you want to add checks to CI.</p>
-
-        <h3>Using curl for Localhost</h3>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-curl-local-health">Copy</button>
-          <pre id="cmd-curl-local-health"><code># Health check
-curl "http://localhost:5000/api/health"
+          <button class="copy-btn" data-target="cmd-debug-mode">Copy</button>
+          <pre id="cmd-debug-mode"><code># Debug all databases
+python fixed_api_server.py --mode debug
 
 # Debug specific database
+python fixed_api_server.py --mode debug --db ayurveda
+python fixed_api_server.py --mode debug --db icd11
+python fixed_api_server.py --mode debug --db siddha
+python fixed_api_server.py --mode debug --db unani
+python fixed_api_server.py --mode debug --db doctor</code></pre>
+        </div>
+
+        <h3>Search Mode</h3>
+        <p>Perform searches directly from command line:</p>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="cmd-search-mode">Copy</button>
+          <pre id="cmd-search-mode"><code># Search across all databases
+python fixed_api_server.py --mode search "diabetes"
+
+# Search specific database
+python fixed_api_server.py --mode search "fever" --db ayurveda
+
+# Search with system filter
+python fixed_api_server.py --mode search "pain" --system "Ayurveda" --limit 10
+
+# Search doctor terminology
+python fixed_api_server.py --mode search "hypertension" --db doctor
+
+# Search with result limit
+python fixed_api_server.py --mode search "respiratory" --limit 20</code></pre>
+        </div>
+      </section>
+
+      <section id="api-server-configuration">
+        <h2>API Server Configuration</h2>
+        <p class="muted">Configure server binding and accessibility options.</p>
+
+        <h3>Local Development</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="cmd-local-dev">Copy</button>
+          <pre id="cmd-local-dev"><code># Localhost only (default)
+python fixed_api_server.py --host 127.0.0.1 --port 5000
+python fixed_api_server.py --host localhost --port 5000
+
+# Custom local port
+python fixed_api_server.py --host 127.0.0.1 --port 3000</code></pre>
+        </div>
+
+        <h3>Network Access</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="cmd-network-access">Copy</button>
+          <pre id="cmd-network-access"><code># Allow all network interfaces
+python fixed_api_server.py --host 0.0.0.0 --port 5000
+
+# Specific network interface
+python fixed_api_server.py --host 192.168.1.100 --port 5000
+
+# Production deployment
+python fixed_api_server.py --host 0.0.0.0 --port 80</code></pre>
+        </div>
+      </section>
+
+      <section id="core-api-endpoints">
+        <h2>Core API Endpoints</h2>
+        <p>Primary API endpoints for search, terminology management, and system health.</p>
+
+        <h3>Health Check</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="api-health">Copy</button>
+          <pre id="api-health"><code># Check API health and database status
+curl "http://localhost:5000/api/health"
+
+# Network access
+curl "http://YOUR_IP:5000/api/health"</code></pre>
+        </div>
+
+        <h3>Database Information</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="api-databases">Copy</button>
+          <pre id="api-databases"><code># List all available databases
+curl "http://localhost:5000/api/databases"
+
+# Debug specific database structure
 curl "http://localhost:5000/api/debug/ayurveda"
 curl "http://localhost:5000/api/debug/icd11"
 curl "http://localhost:5000/api/debug/siddha"
 curl "http://localhost:5000/api/debug/unani"
-
-# List all databases
-curl "http://localhost:5000/api/databases"
-
-# Search for term
-curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"</code></pre>
+curl "http://localhost:5000/api/debug/doctor"</code></pre>
         </div>
 
-        <h3>Using curl for Network Access (0.0.0.0)</h3>
+        <h3>Unified Search</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-curl-network">Copy</button>
-          <pre id="cmd-curl-network"><code># Replace YOUR_SERVER_IP with actual IP
-curl "http://YOUR_SERVER_IP:5000/api/health"
-curl "http://YOUR_SERVER_IP:5000/api/debug/ayurveda"
-curl "http://YOUR_SERVER_IP:5000/api/search?term=diabetes"
+          <button class="copy-btn" data-target="api-search">Copy</button>
+          <pre id="api-search"><code># Search across all databases
+curl "http://localhost:5000/api/search?term=diabetes"
 
-# Example with actual IP
-curl "http://192.168.1.100:5000/api/debug/ayurveda"</code></pre>
-        </div>
-      </section>
+# Search specific database
+curl "http://localhost:5000/api/search?term=fever&database=ayurveda"
 
-      <section id="troubleshooting-workflow">
-        <h2>Complete Troubleshooting Workflow</h2>
-        <p class="muted">Step-by-step flow from starting the server to verifying data and search functionality.</p>
+# Search with system filter
+curl "http://localhost:5000/api/search?term=pain&system=Ayurveda"
 
-        <h3>Step 1: Start API Server</h3>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-start-server">Copy</button>
-          <pre id="cmd-start-server"><code># For local development
-python fixed_api_server.py --host 127.0.0.1 --port 5000
+# Search with limits
+curl "http://localhost:5000/api/search?term=heart&total_limit=20"
+curl "http://localhost:5000/api/search?term=respiratory&database=ayurveda&limit_per_db=5"
 
-# For network access
-python fixed_api_server.py --host 0.0.0.0 --port 5000</code></pre>
+# Advanced search parameters
+curl "http://localhost:5000/api/search?term=madhumeha&database=ayurveda&system=Ayurveda&total_limit=10"</code></pre>
         </div>
 
-        <h3>Step 2: Verify Server is Running</h3>
+        <h3>Add Terminology</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-verify-health">Copy</button>
-          <pre id="cmd-verify-health"><code># Test API health
-curl "http://localhost:5000/api/health"
-
-# Or for network access
-curl "http://YOUR_IP:5000/api/health"</code></pre>
-        </div>
-
-        <h3>Step 3: Debug Database Structure</h3>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-debug-all-2">Copy</button>
-          <pre id="cmd-debug-all-2"><code># CLI method - debug all databases
-python fixed_api_server.py --mode debug
-
-# API method - check specific database
-curl "http://localhost:5000/api/debug/ayurveda"</code></pre>
-        </div>
-
-        <h3>Step 4: Test Search Functionality</h3>
-        <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-search-test">Copy</button>
-          <pre id="cmd-search-test"><code># CLI search
-python fixed_api_server.py --mode search "diabetes" --db ayurveda
-
-# API search
-curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"</code></pre>
+          <button class="copy-btn" data-target="api-add-term">Copy</button>
+          <pre id="api-add-term"><code># Add new doctor terminology (POST request)
+curl -X POST "http://localhost:5000/api/add-terminology" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doctor_name": "Dr. Smith",
+    "system": "Modern Medicine",
+    "code": "HYP001",
+    "term": "Essential Hypertension",
+    "short_definition": "High blood pressure without known cause",
+    "long_definition": "Essential hypertension is high blood pressure that does not have a known secondary cause...",
+    "reference": "Medical textbook reference",
+    "ontology_branches": "Cardiovascular System"
+  }'</code></pre>
         </div>
       </section>
 
-      <section id="debug-db-structure">
-        <h2>Debug Database Structure — Example</h2>
-        <p>Run this endpoint to see the exact table and column names — useful when your searches return no results because the schema differs from expectations.</p>
+      <section id="fhir-endpoints">
+        <h2>FHIR R4 Endpoints</h2>
+        <p>Standards-compliant FHIR operations for interoperability.</p>
+
+        <h3>ValueSet Operations</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-curl-debug-ayurveda">Copy</button>
-          <pre id="cmd-curl-debug-ayurveda"><code>curl "http://localhost:5000/api/debug/ayurveda"</code></pre>
+          <button class="copy-btn" data-target="fhir-valueset">Copy</button>
+          <pre id="fhir-valueset"><code># Expand ValueSet - get all concepts
+curl "http://localhost:5000/fhir/ValueSet/\$expand?identifier=ayurveda-terms"
+curl "http://localhost:5000/fhir/ValueSet/\$expand?identifier=all-traditional"
+curl "http://localhost:5000/fhir/ValueSet/\$expand?identifier=icd11-terms"
+
+# Validate code in ValueSet
+curl -X POST "http://localhost:5000/fhir/ValueSet/\$validate-code" \
+  -H "Content-Type: application/fhir+json" \
+  -d '{
+    "resourceType": "Parameters",
+    "parameter": [
+      {
+        "name": "code",
+        "valueCode": "C001"
+      },
+      {
+        "name": "url",
+        "valueUri": "http://localhost:5000/fhir/ValueSet/ayurveda-terms"
+      }
+    ]
+  }'</code></pre>
         </div>
 
-        <p>Expected Response (example):</p>
+        <h3>ConceptMap Operations</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="json-sample-response">Copy</button>
-          <pre id="json-sample-response"><code>{
+          <button class="copy-btn" data-target="fhir-conceptmap">Copy</button>
+          <pre id="fhir-conceptmap"><code># Translate concept between systems
+curl -X POST "http://localhost:5000/fhir/ConceptMap/\$translate" \
+  -H "Content-Type: application/fhir+json" \
+  -d '{
+    "resourceType": "Parameters",
+    "parameter": [
+      {
+        "name": "code",
+        "valueCode": "NAMC"
+      },
+      {
+        "name": "system",
+        "valueUri": "http://localhost:5000/fhir/CodeSystem/ayurveda"
+      },
+      {
+        "name": "targetsystem",
+        "valueUri": "http://localhost:5000/fhir/CodeSystem/icd11"
+      }
+    ]
+  }'</code></pre>
+        </div>
+      </section>
+
+      <section id="concept-mapping-endpoints">
+        <h2>Concept Mapping Endpoints</h2>
+        <p>Manage cross-system terminology relationships and mappings.</p>
+
+        <h3>Add Concept Mapping</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="api-add-mapping">Copy</button>
+          <pre id="api-add-mapping"><code># Add new concept mapping
+curl -X POST "http://localhost:5000/api/add-mapping" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source_system": "ayurveda",
+    "source_code": "AYU001",
+    "source_term": "Prameha",
+    "target_system": "icd11",
+    "target_code": "5A10",
+    "target_term": "Diabetes mellitus",
+    "relationship_type": "equivalent",
+    "confidence_score": 0.95
+  }'</code></pre>
+        </div>
+
+        <h3>Get Concept Mappings</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="api-get-mappings">Copy</button>
+          <pre id="api-get-mappings"><code># Get mappings for specific term
+curl "http://localhost:5000/api/mappings?source_system=ayurveda&source_code=AYU001"
+
+# Get mappings with target system filter
+curl "http://localhost:5000/api/mappings?source_system=ayurveda&source_code=AYU001&target_system=icd11"
+
+# ICD-11 lookup for term mapping
+curl -X POST "http://localhost:5000/api/icd11-lookup" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "term": "Madhumeha",
+    "system": "Ayurveda"
+  }'</code></pre>
+        </div>
+
+        <h3>Mapping Statistics</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="api-mapping-stats">Copy</button>
+          <pre id="api-mapping-stats"><code># Get concept mapping statistics
+curl "http://localhost:5000/api/mapping-stats"
+
+# Get doctor terminology statistics
+curl "http://localhost:5000/api/doctor-stats"</code></pre>
+        </div>
+      </section>
+
+      <section id="database-management">
+        <h2>Database Management</h2>
+        <p>Database structures and sample data inspection.</p>
+
+        <h3>Database Structure Examples</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="db-structure-ayurveda">Copy</button>
+          <pre id="db-structure-ayurveda"><code># Ayurveda Database Structure
+{
   "database": "ayurveda",
   "file_path": "Ayurveda.db",
   "table_name": "data",
   "columns": [
-    "system",
-    "sr_no",
-    "id",
-    "code",
-    "term",
-    "short_definition",
-    "long_definition",
-    "reference",
-    "ontology_branches"
+    "system", "sr_no", "id", "code", "term",
+    "short_definition", "long_definition", 
+    "reference", "ontology_branches"
   ],
   "sample_data": [
     {
       "system": "Ayurveda",
       "sr_no": 1,
-      "id": "A001",
-      "code": "C001",
-      "term": "Diabetes",
-      "short_definition": "A metabolic disease",
-      "long_definition": "Long description about diabetes",
-      "reference": "Ref1",
-      "ontology_branches": "Branch1"
+      "code": "NAMC",
+      "term": "Madhumeha",
+      "short_definition": "A disease of high blood sugar",
+      "long_definition": "In Ayurveda, Madhumeha is described as Prameha subtype...",
+      "reference": null,
+      "ontology_branches": "concepts of dosha, dhatu, etc."
+    }
+  ]
+}</code></pre>
+        </div>
+
+        <h3>Doctor Database Structure</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="db-structure-doctor">Copy</button>
+          <pre id="db-structure-doctor"><code># Doctor Terminology Database
+{
+  "database": "doctor",
+  "file_path": "doctorterminology.db",
+  "table_name": "doctorterminology",
+  "columns": [
+    "id", "doctor_name", "system", "code", "term",
+    "short_definition", "long_definition", "reference",
+    "ontology_branches", "created_at", "updated_at"
+  ],
+  "status": "available"
+}</code></pre>
+        </div>
+
+        <h3>Concept Mapping Database</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="db-structure-mapping">Copy</button>
+          <pre id="db-structure-mapping"><code># Concept Mapping Database Structure
+{
+  "database": "conceptmappings",
+  "file_path": "conceptmappings.db",
+  "table_name": "conceptmappings",
+  "columns": [
+    "id", "source_system", "source_code", "source_term",
+    "target_system", "target_code", "target_term",
+    "relationship_type", "confidence_score", "created_date"
+  ],
+  "sample_mappings": [
+    {
+      "source_system": "ayurveda",
+      "source_code": "NAMC",
+      "source_term": "Madhumeha",
+      "target_system": "icd11",
+      "target_code": "5A10",
+      "target_term": "Diabetes mellitus",
+      "relationship_type": "equivalent",
+      "confidence_score": 0.95
     }
   ]
 }</code></pre>
         </div>
       </section>
 
-      <section id="search-usage">
-        <h2>Search for Specific Terms</h2>
-        <p>Examples for various search modes.</p>
+      <section id="search-examples">
+        <h2>Comprehensive Search Examples</h2>
+        <p>Real-world search scenarios with expected responses.</p>
 
+        <h3>Multi-Database Search</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="curl-search-specific">Copy</button>
-          <pre id="curl-search-specific"><code>1. Search in Specific Database (Ayurveda)
+          <button class="copy-btn" data-target="search-multi-db">Copy</button>
+          <pre id="search-multi-db"><code># Search diabetes across all systems
+curl "http://localhost:5000/api/search?term=diabetes&total_limit=20"
 
-curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"
+# Case-insensitive search
+curl "http://localhost:5000/api/search?term=DIABETES&total_limit=15"
+curl "http://localhost:5000/api/search?term=Diabetes&total_limit=15"
 
-2. Search Across All Databases
+# Partial term matching
+curl "http://localhost:5000/api/search?term=diab&total_limit=10"
 
-curl "http://localhost:5000/api/search?term=diabetes"
-
-3. Search with Limit
-
-curl "http://localhost:5000/api/search?term=heart&database=ayurveda&total_limit=5"
-
-4. Search with System Filter
-
-curl "http://localhost:5000/api/search?term=fever&system=Ayurveda&total_limit=10"</code></pre>
+# System-specific search
+curl "http://localhost:5000/api/search?term=madhumeha&system=Ayurveda"</code></pre>
         </div>
 
-        <h3>Complete curl Examples for Different Searches</h3>
+        <h3>Specialized Medical Terms</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="curl-case-insensitive">Copy</button>
-          <pre id="curl-case-insensitive"><code># Case-Insensitive Search
-curl "http://localhost:5000/api/search?term=DIABETES&database=ayurveda"
-curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"
-curl "http://localhost:5000/api/search?term=Diabetes&database=ayurveda"
+          <button class="copy-btn" data-target="search-specialized">Copy</button>
+          <pre id="search-specialized"><code># Traditional Ayurvedic terms
+curl "http://localhost:5000/api/search?term=vata&database=ayurveda&limit=10"
+curl "http://localhost:5000/api/search?term=pitta&database=ayurveda&limit=10"
+curl "http://localhost:5000/api/search?term=kapha&database=ayurveda&limit=10"
 
-# Partial Term Search
-curl "http://localhost:5000/api/search?term=diab&database=ayurveda"
+# Siddha system terms
+curl "http://localhost:5000/api/search?term=vatham&database=siddha&limit=10"
 
-# Partial examples
-curl "http://localhost:5000/api/search?term=hyper&database=ayurveda"
+# Unani system terms  
+curl "http://localhost:5000/api/search?term=balgham&database=unani&limit=10"
 
-# Multiple DB search
-curl "http://localhost:5000/api/search?term=pain&total_limit=20"</code></pre>
+# Modern ICD-11 terms
+curl "http://localhost:5000/api/search?term=hypertension&database=icd11&limit=10"</code></pre>
         </div>
       </section>
 
-      <section id="expected-response-format">
-        <h2>Expected Search Response Format</h2>
-        <p>When you call the search endpoint you should receive a JSON object that includes the columns discovered, searchable columns and matched rows.</p>
+      <section id="response-formats">
+        <h2>Response Formats</h2>
+        <p>Expected JSON response structures for different endpoints.</p>
+
+        <h3>Search Response Format</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="json-search-response">Copy</button>
-          <pre id="json-search-response"><code>{
-  "database": "ayurveda",
-  "table_name": "data",
-  "columns_found": ["system","sr_no","id","code","term","short_definition","long_definition","reference","ontology_branches"],
-  "searchable_columns": ["term","short_definition","long_definition"],
-  "data": [
+          <button class="copy-btn" data-target="response-search">Copy</button>
+          <pre id="response-search"><code>{
+  "combined_results": [
     {
-      "system": "Ayurveda",
-      "sr_no": 1,
-      "id": "A001",
-      "code": "C001",
-      "term": "Diabetes",
-      "short_definition": "A metabolic disease",
-      "long_definition": "Long description about diabetes",
-      "reference": "Ref1",
-      "ontology_branches": "Branch1",
+      "code": "NAMC",
+      "id": "2989",
+      "long_definition": "In Ayurveda, Madhumeha is described as Prameha subtype with disturbed glucose metabolism...",
+      "ontology_branches": "concepts of dosha, dhatu, etc.",
+      "reference": null,
+      "short_definition": "A disease of high blood sugar",
       "source_database": "ayurveda",
-      "table_name": "data"
+      "sr_no": "2999",
+      "system": "Ayurveda",
+      "table_name": "data",
+      "term": "Madhumeha",
+      "icd11_code": "5A10",
+      "icd11_term": "Diabetes mellitus"
     }
   ],
-  "count": 1
+  "total_count": 4,
+  "database_counts": {
+    "ayurveda": 1,
+    "icd11": 1,
+    "siddha": 1,
+    "unani": 1,
+    "doctor": 0
+  }
+}</code></pre>
+        </div>
+
+        <h3>FHIR ValueSet Response</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="response-valueset">Copy</button>
+          <pre id="response-valueset"><code>{
+  "resourceType": "ValueSet",
+  "id": "ayurveda-terms",
+  "url": "http://localhost:5000/fhir/ValueSet/ayurveda-terms",
+  "version": "1.0",
+  "name": "AyurvedaTerms",
+  "title": "Medical Terminology - Ayurveda Terms",
+  "status": "active",
+  "expansion": {
+    "identifier": "12345678-1234-1234-1234-123456789012",
+    "timestamp": "2025-09-21T08:30:00Z",
+    "total": 150,
+    "contains": [
+      {
+        "system": "http://localhost:5000/fhir/CodeSystem/ayurveda",
+        "code": "NAMC",
+        "display": "Madhumeha"
+      }
+    ]
+  }
+}</code></pre>
+        </div>
+
+        <h3>ICD-11 Lookup Response</h3>
+        <div class="code-toolbar">
+          <button class="copy-btn" data-target="response-icd11">Copy</button>
+          <pre id="response-icd11"><code>{
+  "code": "5A10",
+  "term": "Diabetes mellitus",
+  "system": "http://id.who.int/icd/release/11/mms",
+  "confidence": 0.95
 }</code></pre>
         </div>
       </section>
 
-      <section id="common-issues">
-        <h2>Common Issues & Solutions</h2>
+      <section id="troubleshooting">
+        <h2>Troubleshooting Guide</h2>
+        <p>Common issues and systematic debugging approach.</p>
 
-        <h3>Issue 1: "Connection refused"</h3>
-        <p><strong>Solution:</strong> Make sure the API server is running:</p>
+        <h3>Step 1: Verify Server Status</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-issue-connection">Copy</button>
-          <pre id="cmd-issue-connection"><code>python fixed_api_server.py</code></pre>
+          <button class="copy-btn" data-target="troubleshoot-step1">Copy</button>
+          <pre id="troubleshoot-step1"><code># Check if server is running
+curl "http://localhost:5000/api/health"
+
+# Expected response
+{
+  "status": "healthy",
+  "message": "Enhanced Medical Database API with Concept Mapping is running",
+  "available_databases": 4,
+  "total_databases": 4,
+  "doctor_database": "available",
+  "concept_mapping_database": "available"
+}</code></pre>
         </div>
 
-        <h3>Issue 2: "No results found" for known terms</h3>
-        <p><strong>Solution:</strong> Run the debug command to inspect the actual structure and sample rows:</p>
+        <h3>Step 2: Database Structure Verification</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-issue-noresults">Copy</button>
-          <pre id="cmd-issue-noresults"><code>curl "http://localhost:5000/api/debug/ayurveda"</code></pre>
+          <button class="copy-btn" data-target="troubleshoot-step2">Copy</button>
+          <pre id="troubleshoot-step2"><code># Debug database structure
+curl "http://localhost:5000/api/debug/ayurveda"
+
+# Check all databases
+curl "http://localhost:5000/api/databases"
+
+# CLI method
+python fixed_api_server.py --mode debug --db ayurveda</code></pre>
         </div>
 
-        <h3>Issue 3: Wrong database name</h3>
-        <p><strong>Solution:</strong> List available databases first:</p>
+        <h3>Common Issues</h3>
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-list-dbs">Copy</button>
-          <pre id="cmd-list-dbs"><code>curl "http://localhost:5000/api/databases"</code></pre>
+          <button class="copy-btn" data-target="troubleshoot-issues">Copy</button>
+          <pre id="troubleshoot-issues"><code># Issue: Connection refused
+# Solution: Start the server
+python fixed_api_server.py --host 0.0.0.0 --port 5000
+
+# Issue: No search results for known terms
+# Solution: Check database structure and column names
+curl "http://localhost:5000/api/debug/ayurveda"
+
+# Issue: ICD-11 mapping showing N/A
+# Solution: Verify concept mappings database
+curl "http://localhost:5000/api/mapping-stats"
+
+# Issue: FHIR endpoints not working
+# Solution: Check FHIR parameter format
+curl -X POST "http://localhost:5000/fhir/ValueSet/\$validate-code" \
+  -H "Content-Type: application/fhir+json" \
+  -d '{"resourceType": "Parameters", "parameter": [{"name": "code", "valueCode": "test"}]}'</code></pre>
         </div>
       </section>
 
       <section id="quick-tests">
-        <h2>Quick Test Commands</h2>
-        <p>Run these in sequence to validate your setup quickly.</p>
+        <h2>Quick Test Suite</h2>
+        <p>Run these commands in sequence to validate complete system functionality.</p>
+
         <div class="code-toolbar">
-          <button class="copy-btn" data-target="cmd-quick-test">Copy</button>
-          <pre id="cmd-quick-test"><code># 1. Check API health
+          <button class="copy-btn" data-target="test-suite">Copy</button>
+          <pre id="test-suite"><code># 1. Health Check
 curl "http://localhost:5000/api/health"
 
-# 2. Check database structure
-curl "http://localhost:5000/api/debug/ayurveda"
+# 2. Database Verification
+curl "http://localhost:5000/api/databases"
 
-# 3. Search for a common medical term
-curl "http://localhost:5000/api/search?term=diabetes&database=ayurveda"
+# 3. Basic Search Test
+curl "http://localhost:5000/api/search?term=diabetes&total_limit=5"
 
-# 4. Search across all databases
-curl "http://localhost:5000/api/search?term=fever&total_limit=10"</code></pre>
+# 4. System-Specific Search
+curl "http://localhost:5000/api/search?term=madhumeha&database=ayurveda"
+
+# 5. ICD-11 Lookup Test
+curl -X POST "http://localhost:5000/api/icd11-lookup" \
+  -H "Content-Type: application/json" \
+  -d '{"term": "Madhumeha", "system": "Ayurveda"}'
+
+# 6. FHIR ValueSet Expansion
+curl "http://localhost:5000/fhir/ValueSet/\$expand?identifier=ayurveda-terms"
+
+# 7. Concept Mapping Statistics
+curl "http://localhost:5000/api/mapping-stats"
+
+# 8. Doctor Database Statistics
+curl "http://localhost:5000/api/doctor-stats"</code></pre>
         </div>
 
-        <p class="section-note"><strong>Note:</strong> The debug endpoint will show you exactly what tables and columns exist in your database, which helps identify why searches might not be matching.</p>
+        <p class="section-note"><strong>Success Criteria:</strong> All endpoints should return valid JSON responses with status codes 200. Health check should show all databases as "available". Search should return relevant results with ICD-11 mappings populated.</p>
       </section>
 
-      <div class="footer">Made for your website — copy the code blocks for quick testing. Customize the host/port and DB names to match your deployment.</div>
+      <div class="footer">
+        <p>Enhanced Medical Terminology API v2.0 — Complete documentation for AYUSH-ICD-11 integration with FHIR R4 support.</p>
+        <p>For production deployment, ensure proper security measures, authentication, and database backup procedures.</p>
+      </div>
     </main>
   </div>
 
@@ -541,30 +786,20 @@ curl "http://localhost:5000/api/search?term=fever&total_limit=10"</code></pre>
         // Navigation logic
         switch (tabName) {
           case "about":
-            // Navigate to about/home page
             window.location.href = "enhanced_index.html";
             break;
-
           case "api":
-            // Navigate to API documentation page
             window.location.href = "api.html";
             break;
-
           case "demo":
-            // Navigate to demo section on home page
             window.location.href = "enhanced_index.html";
             break;
-
           case "docs":
-            // Stay on current page (doc.html) - this is the docs page
-            notify("Welcome to Documentation", "success");
+            notify("Welcome to Complete Documentation", "success");
             break;
-
           case "model":
-            // You can add model page navigation here
-            notify("Model page coming soon", "success");
+            window.open("http://localhost:5173/", "_blank");
             break;
-
           default:
             notify(`Switched to ${tabName.toUpperCase()} tab`, "success");
         }
@@ -607,9 +842,11 @@ curl "http://localhost:5000/api/search?term=fever&total_limit=10"</code></pre>
           const old = btn.textContent;
           btn.textContent = 'Copied!';
           setTimeout(()=> btn.textContent = old, 1500);
+          notify('Code copied to clipboard!', 'success');
         }catch(err){
           btn.textContent = 'Failed';
           setTimeout(()=> btn.textContent = 'Copy', 1500);
+          notify('Failed to copy code', 'error');
         }
       });
     });

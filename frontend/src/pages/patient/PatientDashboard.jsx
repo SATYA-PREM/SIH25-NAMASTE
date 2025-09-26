@@ -174,7 +174,7 @@ export default function PatientDashboard() {
                 <Activity className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">AYUSH EHR</h3>
+                <h3 className="text-xl font-bold text-slate-900">HealthFlow</h3>
                 <p className="text-xs text-slate-500">Patient Portal</p>
               </div>
             </div>
@@ -223,7 +223,16 @@ export default function PatientDashboard() {
               </div>
 
               <div className="flex items-center gap-4">
-                
+                {/* Enhanced Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search records, doctors, conditions..."
+                    className="w-80 pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                  />
+                </div>
 
                 {/* Notifications */}
                 <button className="relative p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-all duration-200">
@@ -298,25 +307,6 @@ export default function PatientDashboard() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center gap-3">
-                          {/* Search Box */}
-                          <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-                            <input
-                              value={query}
-                              onChange={(e) => setQuery(e.target.value)}
-                              placeholder="Search doctors, diseases, organisation..."
-                              className="w-175 pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
-                            />
-                          </div>
-            
-                          {/* New Patient Button */}
-                          <div>
-                            <button className="gap-2 px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg shadow-green-600/25">
-                              Generate Report
-                            </button>
-                          </div>
-                        </div>
 
             {/* Enhanced Reports Section */}
             <div className="space-y-6">

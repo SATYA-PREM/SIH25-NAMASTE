@@ -1,0 +1,63 @@
+Project Context for LLM
+1. Core Mission
+The main goal is to build an Electronic Medical Record (EMR) system for India. Doctors will use it to record patient diseases with official WHO codes. This data will be accessible to patients, the government, and insurance companies. The project is for the Smart India Hackathon (SIH).
+
+2. Required Features (User Stories)
+As a Doctor, I need to log in securely (the user mentioned email/password, but the UI has ABHA ID/OTP).
+
+As a Doctor, I need to see a list of all the patients I am treating.
+
+As a Doctor, I need to add a new patient to the system using their ABHA ID or mobile number.
+
+As a Doctor, I need to add a specific disease to a patient's record by searching for and selecting the correct WHO disease code.
+
+3. Current Project Status
+Frontend: The basic structure is complete. It has routing, state management, and a polished, responsive UI for the login page.
+
+Backend: The backend is not yet connected. All frontend logic (like login attempts) is currently a placeholder and does not communicate with a server.
+
+Overall: The project is in the initial development phase. The frontend is ready for backend integration, but no core features are functional yet.
+
+4. Technology Stack
+Frontend: React 19, Vite, react-router-dom, React Context.
+
+Backend (Planned): Python API with SQLite databases (Ayurveda.db, siddha.db, unani.db, icd11.db).
+
+5. Key Files & Components Analysis
+frontend/src/routes/Route.jsx: Correctly sets up public and protected routes.
+
+frontend/src/lib/AuthContext.jsx: Manages user authentication state, but the login function is a placeholder.
+
+frontend/src/pages/auth/Login.jsx: Contains the UI for login via ABHA ID and OTP. The form submission logic is not functional and needs to be connected to a real API.
+
+frontend/src/middleware/ProtectedRoute.jsx: Correctly protects routes based on a token in localStorage, but the token generation is not implemented.
+
+6. Gaps & Immediate Action Plan
+Build Backend API Endpoints:
+
+POST /api/doctor/login: To handle doctor authentication and return a JWT token.
+
+GET /api/patients: To fetch a list of patients for the logged-in doctor.
+
+POST /api/patients: To create a new patient.
+
+POST /api/patients/{patient_id}/diseases: To add a disease record to a patient.
+
+Integrate Frontend with Backend:
+
+Update the login function in AuthContext.jsx to call the backend login endpoint.
+
+Store the received JWT token in localStorage.
+
+Build Frontend Feature Components:
+
+Create a Dashboard Page to display the patient list fetched from GET /api/patients.
+
+Create a Patient Details Page that shows a patient's information and their recorded diseases.
+
+Create an "Add Disease" Component on the patient details page that allows searching for diseases and adding them via the API.
+
+7. Blockers
+ABHA API: The official ABHA API is unavailable, so this part of the system will remain mocked.
+
+Doctor Authentication Method: There is a conflict between the user request (email/password) and the UI (ABHA/OTP). A decision needs to be made on the final login method for doctors.

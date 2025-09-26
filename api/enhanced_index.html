@@ -1,1564 +1,1913 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enhanced Medical Terminology Search</title>
-    <style>
-      /* CSS Reset and Base Styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
 
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #f5f7fa;
-        color: #333;
-        overflow-x: hidden;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enhanced Medical Terminology Search</title>
+  <style>
+    /* CSS Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* Container and Layout Fixes */
-      .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-        box-sizing: border-box;
-      }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      overflow-x: hidden;
+    }
 
-      /* Fix any floating issues */
-      .clearfix::after {
-        content: "";
-        display: table;
-        clear: both;
-      }
+    /* Container and Layout Fixes */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-      /* Ensure all sections align properly */
-      section {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-      }
+    /* Fix any floating issues */
+    .clearfix::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
 
-      /* Header with tabs - Improved Alignment */
-      .main-header {
-        display: flex;
-        gap: 20px;
-        background: #34495e;
-        padding: 15px 30px;
-        border-radius: 12px;
-        color: #fff;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        align-items: center;
-        justify-content: left;
-      }
+    /* Ensure all sections align properly */
+    section {
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+    }
 
-      .main-header .tab {
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: #ecf0f1;
-        padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
+    /* Header with tabs - Improved Alignment */
+    .main-header {
+      display: flex;
+      gap: 20px;
+      background: #34495e;
+      padding: 15px 30px;
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      align-items: center;
+      justify-content: center;
+    }
 
-      .main-header .tab:hover,
-      .main-header .tab.active {
-        background-color: #27ae60;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
-      }
+    .main-header .tab {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #ecf0f1;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-      /* Hero Landing Section - Left Aligned and Integrated with Features */
-      .hero-landing {
-        background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
-        padding: 80px 0 60px 0;
-        margin-bottom: 30px;
-        margin-left: 0;
-        margin-right: 0;
-      }
+    .main-header .tab:hover,
+    .main-header .tab.active {
+      background-color: #27ae60;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+    }
 
-      .hero-content {
-        max-width: 1200px;
-        margin: 0 auto 40px;
-        text-align: left;
-        padding: 0 30px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    /* Hero Landing Section - Left Aligned and Integrated with Features */
+    .hero-landing {
+      background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+      padding: 80px 0 60px 0;
+      margin-bottom: 30px;
+      margin-left: 0;
+      margin-right: 0;
+    }
 
-      .hero-title {
-        font-size: 3.2rem;
-        font-weight: 700;
-        color: #2c3e50;
-        line-height: 1.2;
-        margin-bottom: 25px;
-        letter-spacing: -0.02em;
-        text-align: left;
-        width: 100%;
-        max-width: none;
-      }
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      text-align: left;
+      padding: 0 30px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-      .hero-description {
-        font-size: 1.2rem;
-        color: #5a6c7d;
-        line-height: 1.6;
-        margin-bottom: 35px;
-        font-weight: 400;
-        text-align: left;
-        width: 100%;
-        max-width: 800px;
-      }
+    .hero-title {
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      line-height: 1.2;
+      margin-bottom: 25px;
+      letter-spacing: -0.02em;
+      text-align: left;
+      width: 100%;
+      max-width: none;
+    }
 
-      .hero-buttons {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 0;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-      }
+    .hero-description {
+      font-size: 1.2rem;
+      color: #5a6c7d;
+      line-height: 1.6;
+      margin-bottom: 35px;
+      font-weight: 400;
+      text-align: left;
+      width: 100%;
+      max-width: 800px;
+    }
 
-      .btn-primary {
-        background: #27ae60;
-        color: white;
-        border: none;
-        padding: 16px 32px;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-      }
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 0;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+    }
 
-      .btn-primary:hover {
-        background: #219a52;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
-      }
+    .btn-primary {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
 
-      .btn-secondary {
-        background: transparent;
-        color: #5a6c7d;
-        border: 2px solid #e1e8ed;
-        padding: 14px 32px;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-      }
+    .btn-primary:hover {
+      background: #219a52;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+    }
 
-      .btn-secondary:hover {
-        background: #f8f9fa;
-        border-color: #cbd5e0;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
+    .btn-secondary {
+      background: transparent;
+      color: #5a6c7d;
+      border: 2px solid #e1e8ed;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
 
-      /* Features Grid - Fixed Size and No Wrapping */
+    .btn-secondary:hover {
+      background: #f8f9fa;
+      border-color: #cbd5e0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Features Grid - Fixed Size and No Wrapping */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      box-sizing: border-box;
+      align-items: stretch;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 25px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid #f0f4f7;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 200px;
+      width: 100%;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      border-color: #e3f2fd;
+    }
+
+    .feature-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    .feature-description {
+      font-size: 0.95rem;
+      color: #5a6c7d;
+      line-height: 1.5;
+      margin: 0;
+      font-weight: 400;
+      text-align: left;
+      flex-grow: 1;
+    }
+
+    /* Ensure hero and features are properly connected */
+    .hero-landing .features-grid {
+      margin-top: 0;
+    }
+
+    /* Ensure no wrapping on larger screens */
+    @media (min-width: 769px) {
       .features-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 30px;
-        box-sizing: border-box;
-        align-items: stretch;
+        grid-template-columns: repeat(4, 1fr) !important;
+        overflow: visible;
       }
 
       .feature-card {
-        background: white;
-        padding: 25px 20px;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        border: 1px solid #f0f4f7;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        min-height: 200px;
-        width: 100%;
-        flex: 1;
-        min-width: 0;
+        white-space: normal;
+        word-wrap: break-word;
       }
+    }
 
-      .feature-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-        border-color: #e3f2fd;
-      }
+    /* Additional fixes for consistent sizing */
+    .feature-card * {
+      box-sizing: border-box;
+    }
 
-      .feature-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #2c3e50;
-        margin-bottom: 15px;
-        line-height: 1.3;
-        text-align: left;
-      }
+    /* Search Interface Section - Fixed Alignment */
+    .search-interface-section {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      margin-left: 0;
+      margin-right: 0;
+      box-sizing: border-box;
+    }
 
-      .feature-description {
-        font-size: 0.95rem;
-        color: #5a6c7d;
-        line-height: 1.5;
-        margin: 0;
-        font-weight: 400;
-        text-align: left;
-        flex-grow: 1;
-      }
+    .search-interface-section h2 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #ecf0f1;
+      padding-bottom: 15px;
+    }
 
-      /* Ensure hero and features are properly connected */
-      .hero-landing .features-grid {
-        margin-top: 0;
-      }
+    .search-section {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
 
-      /* Ensure no wrapping on larger screens */
-      @media (min-width: 769px) {
-        .features-grid {
-          grid-template-columns: repeat(4, 1fr) !important;
-          overflow: visible;
-        }
+    .search-input {
+      flex: 1;
+      min-width: 300px;
+      padding: 15px 20px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 16px;
+      margin: 0;
+      box-sizing: border-box;
+    }
 
-        .feature-card {
-          white-space: normal;
-          word-wrap: break-word;
-        }
-      }
+    .search-input:focus {
+      outline: none;
+      border-color: #27ae60;
+    }
 
-      /* Additional fixes for consistent sizing */
-      .feature-card * {
-        box-sizing: border-box;
-      }
+    .database-select {
+      padding: 15px 20px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 16px;
+      min-width: 150px;
+    }
 
-      /* Search Interface Section - Fixed Alignment */
-      .search-interface-section {
-        background: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-        margin-left: 0;
-        margin-right: 0;
-        box-sizing: border-box;
-      }
+    .search-btn,
+    .add-btn {
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      transition: all 0.2s;
+    }
 
-      .search-interface-section h2 {
-        color: #2c3e50;
-        font-size: 1.8rem;
-        text-align: center;
-        margin-bottom: 25px;
-        border-bottom: 2px solid #ecf0f1;
-        padding-bottom: 15px;
-      }
+    .search-btn {
+      background: #27ae60;
+      color: #fff;
+    }
 
-      .search-section {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-      }
+    .search-btn:hover {
+      background: #219a52;
+    }
 
-      .search-input {
-        flex: 1;
-        min-width: 300px;
-        padding: 15px 20px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-size: 16px;
-        margin: 0;
-        box-sizing: border-box;
-      }
+    .search-btn:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+    }
 
-      .search-input:focus {
-        outline: none;
-        border-color: #27ae60;
-      }
+    .add-btn {
+      background: #3498db;
+      color: #fff;
+      margin-top: 15px;
+    }
 
-      .database-select {
-        padding: 15px 20px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-size: 16px;
-        min-width: 150px;
-      }
+    .add-btn:hover {
+      background: #2980b9;
+    }
 
-      .search-btn,
-      .add-btn {
-        border: none;
-        padding: 15px 30px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        transition: all 0.2s;
-      }
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-      .search-btn {
-        background: #27ae60;
-        color: #fff;
-      }
+    .limit-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
 
-      .search-btn:hover {
-        background: #219a52;
-      }
+    .limit-input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 90px;
+    }
 
-      .search-btn:disabled {
-        background: #95a5a6;
-        cursor: not-allowed;
-      }
+    /* Add Section - Fixed Alignment */
+    .add-section {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      margin-left: 0;
+      margin-right: 0;
+      box-sizing: border-box;
+      display: none;
+    }
 
-      .add-btn {
-        background: #3498db;
-        color: #fff;
-        margin-top: 15px;
-      }
+    .add-section h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
 
-      .add-btn:hover {
-        background: #2980b9;
-      }
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
 
-      .options {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-        gap: 15px;
-        flex-wrap: wrap;
-      }
+    .form-group {
+      flex: 1;
+      min-width: 220px;
+      margin-left: 0;
+      box-sizing: border-box;
+    }
 
-      .limit-group {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
 
-      .limit-input {
-        padding: 8px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        width: 90px;
-      }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 14px;
+    }
 
-      /* Add Section - Fixed Alignment */
-      .add-section {
-        background: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-        margin-left: 0;
-        margin-right: 0;
-        box-sizing: border-box;
-        display: none;
-      }
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
 
-      .add-section h2 {
-        text-align: center;
-        color: #2c3e50;
-        margin-bottom: 20px;
-      }
+    .save-btn {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
 
-      .form-row {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-        align-items: flex-start;
-      }
+    .save-btn:hover {
+      background: #c0392b;
+    }
 
-      .form-group {
-        flex: 1;
-        min-width: 220px;
-        margin-left: 0;
-        box-sizing: border-box;
-      }
+    .cancel-btn {
+      background: #95a5a6;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-      .form-group label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 600;
-        color: #2c3e50;
-      }
+    .cancel-btn:hover {
+      background: #7f8c8d;
+    }
 
-      .form-group input,
-      .form-group textarea {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-size: 14px;
-      }
+    /* Results Container - Fixed Alignment */
+    .results-container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 30px;
+      align-items: start;
+      margin-left: 0;
+      margin-right: 0;
+    }
 
-      .form-group textarea {
-        min-height: 90px;
-        resize: vertical;
-      }
+    .table-section,
+    .json-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-      .save-btn {
-        background: #e74c3c;
-        color: #fff;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-right: 10px;
-      }
+    .section-header,
+    .json-header {
+      background: #34495e;
+      color: #fff;
+      padding: 15px 20px;
+      margin: -20px -20px 20px;
+      border-radius: 12px 12px 0 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
 
-      .save-btn:hover {
-        background: #c0392b;
-      }
+    .results-stats {
+      background: #ecf0f1;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
 
-      .cancel-btn {
-        background: #95a5a6;
-        color: #fff;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-      }
+    /* Enhanced Table Container with Horizontal Scroll */
+    .table-container {
+      overflow-x: auto !important;
+      overflow-y: auto !important;
+      max-height: 600px;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+    }
 
-      .cancel-btn:hover {
-        background: #7f8c8d;
-      }
+    /* Make sure the table doesn't break out of container */
+    .table-container table {
+      min-width: 1200px;
+      /* Minimum width to trigger horizontal scroll */
+      width: 100%;
+      white-space: nowrap;
+      border-collapse: collapse;
+      table-layout: fixed;
+      /* Fixed layout for consistent column widths */
+    }
 
-      /* Results Container - Fixed Alignment */
+    /* Fixed column widths to ensure horizontal scrolling */
+    .table-container th,
+    .table-container td {
+      padding: 12px 8px;
+      vertical-align: top;
+      white-space: normal;
+      word-wrap: break-word;
+      border-bottom: 1px solid #e9ecef;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Specific column widths */
+    .table-container th:nth-child(1),
+    .table-container td:nth-child(1) {
+      /* Database */
+      min-width: 100px;
+      max-width: 120px;
+    }
+
+    .table-container th:nth-child(2),
+    .table-container td:nth-child(2) {
+      /* System */
+      min-width: 120px;
+      max-width: 150px;
+    }
+
+    .table-container th:nth-child(3),
+    .table-container td:nth-child(3) {
+      /* Code */
+      min-width: 100px;
+      max-width: 120px;
+    }
+
+    .table-container th:nth-child(4),
+    .table-container td:nth-child(4) {
+      /* Term */
+      min-width: 150px;
+      max-width: 200px;
+    }
+
+    .table-container th:nth-child(5),
+    .table-container td:nth-child(5) {
+      /* Short Definition */
+      min-width: 200px;
+      max-width: 300px;
+    }
+
+    .table-container th:nth-child(6),
+    .table-container td:nth-child(6) {
+      /* Long Definition */
+      min-width: 250px;
+      max-width: 400px;
+    }
+
+    .table-container th:nth-child(7),
+    .table-container td:nth-child(7) {
+      /* Reference */
+      min-width: 120px;
+      max-width: 180px;
+    }
+
+    .table-container th:nth-child(8),
+    .table-container td:nth-child(8) {
+      /* Ontology Branches */
+      min-width: 150px;
+      max-width: 200px;
+    }
+
+    /* Sticky first column (Database) for better navigation */
+    .table-container th:first-child,
+    .table-container td:first-child {
+      position: sticky;
+      left: 0;
+      background: #f8f9fa;
+      z-index: 10;
+    }
+
+    .table-container td:first-child {
+      background: white;
+    }
+
+    /* Header styling */
+    th {
+      background: #f8f9fa;
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 2px solid #e9ecef;
+      font-weight: 700;
+      color: #495057;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #e9ecef;
+      vertical-align: top;
+      font-size: 13px;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #e3f2fd;
+    }
+
+    .database-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-ayurveda {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+
+    .badge-icd11 {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .badge-siddha {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .badge-unani {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-doctor {
+      background: #fce4ec;
+      color: #c2185b;
+    }
+
+    /* Custom scrollbar styling */
+    .table-container::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+      background: #27ae60;
+      border-radius: 4px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: #219a52;
+    }
+
+    /* Horizontal scroll indicator */
+    .table-container.has-overflow::after {
+      content: "← Scroll horizontally to see all columns →";
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #666;
+      background: #f9f9f9;
+      padding: 5px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .code-block {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 52px 20px;
+      color: #7f8c8d;
+    }
+
+    .json-section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .json-upload-area {
+      top: 60px;
+      /* Adjust based on your header height */
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #2d3748;
+      z-index: 2;
+    }
+
+    .table-container {
+      box-sizing: border-box;
+      padding-right: 8px;
+      /* Reserve space for scrollbar */
+      scrollbar-gutter: stable;
+    }
+
+    .code-block {
+      box-sizing: border-box;
+      padding-right: 8px;
+      /* Reserve space for scrollbar */
+      scrollbar-gutter: stable;
+    }
+
+    .results-container {
+      min-height: 0;
+      /* Important for flex children */
+      overflow: hidden;
+    }
+
+    .table-section,
+    .json-section {
+      min-width: 0;
+      /* Prevent flex items from overflowing */
+      overflow: hidden;
+    }
+
+    .table-container,
+    .code-block {
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 100%;
+    }
+
+    .resizer {
+      z-index: 10;
+      position: relative;
+      flex-shrink: 0;
+      /* Prevent resizer from shrinking */
+    }
+
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 700;
+      z-index: 9999;
+      transform: translateX(420px);
+      transition: transform 0.25s ease;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: #27ae60;
+    }
+
+    .notification.error {
+      background: #e74c3c;
+    }
+
+    /* Bundle JSON Section Styles */
+    .json-bundle-container {
+      display: block;
+      margin-top: 30px;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 30px;
+    }
+
+    .json-bundle-section {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .json-bundle-section h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .json-info {
+      background: #ecf0f1;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .json-upload-area {
+      border: 2px dashed #3498db;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 25px;
+      background: #f8fbff;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .json-upload-area:hover {
+      border-color: #2980b9;
+      background: #f0f8ff;
+    }
+
+    .json-upload-area.dragover {
+      border-color: #27ae60;
+      background: #f0fff4;
+    }
+
+    .json-textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 15px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-family: 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      resize: vertical;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .json-textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .json-stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .json-stat {
+      background: #3498db;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .json-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .json-btn {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .validate-json-btn {
+      background: #27ae60;
+      color: #fff;
+    }
+
+    .validate-json-btn:hover {
+      background: #219a52;
+    }
+
+    .upload-json-btn {
+      background: #16a085;
+      color: #fff;
+    }
+
+    .upload-json-btn:hover {
+      background: #138d75;
+    }
+
+    .sample-json-btn {
+      background: #9b59b6;
+      color: #fff;
+    }
+
+    .sample-json-btn:hover {
+      background: #8e44ad;
+    }
+
+    .clear-json-btn {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    .clear-json-btn:hover {
+      background: #c0392b;
+    }
+
+    .json-preview {
+      max-height: 300px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 15px;
+      overflow-x: auto;
+    }
+
+    .json-preview table {
+      font-size: 12px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .json-preview th {
+      background: #34495e;
+      color: #fff;
+      padding: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .json-preview td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #eee;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .json-preview tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .json-preview tr:hover {
+      background: #e3f2fd;
+    }
+
+    /* CSV Section - Fixed Alignment */
+    .csv-container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 30px;
+      margin-top: 30px;
+      margin-left: 0;
+      margin-right: 0;
+      align-items: start;
+    }
+
+    .csv-section {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .csv-json-section {
+      height: 625x;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .csv-section h2,
+    .csv-json-section h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .csv-upload-area {
+      border: 2px dashed #3498db;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 25px;
+      background: #f8fbff;
+      transition: all 0.3s ease;
+    }
+
+    .csv-upload-area:hover {
+      border-color: #2980b9;
+      background: #f0f8ff;
+    }
+
+    .csv-upload-area.dragover {
+      border-color: #27ae60;
+      background: #f0fff4;
+    }
+
+    .csv-textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 15px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      resize: vertical;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .csv-textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .csv-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .csv-btn {
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .convert-json-btn {
+      background: #f39c12;
+      color: #fff;
+    }
+
+    .convert-json-btn:hover {
+      background: #e67e22;
+    }
+
+    .upload-csv-btn {
+      background: #16a085;
+      color: #fff;
+    }
+
+    .upload-csv-btn:hover {
+      background: #138d75;
+    }
+
+    .clear-csv-btn {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    .clear-csv-btn:hover {
+      background: #c0392b;
+    }
+
+    .sample-csv-btn {
+      background: #9b59b6;
+      color: #fff;
+    }
+
+    .sample-csv-btn:hover {
+      background: #8e44ad;
+    }
+
+    .csv-info {
+      background: #ecf0f1;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .csv-preview {
+      max-height: 300px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 15px;
+      overflow-x: auto;
+    }
+
+    .csv-preview table {
+      font-size: 12px;
+    }
+
+    .csv-preview th {
+      background: #34495e;
+      color: #fff;
+      padding: 8px;
+    }
+
+    .csv-preview td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .json-download {
+      background: #34495e;
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .download-btn {
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .download-btn:hover {
+      background: #219a52;
+    }
+
+    .csv-stats {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .csv-stat {
+      background: #3498db;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ValueSet and ConceptMap Sections - Fixed Alignment */
+    .valueset-section,
+    .conceptmap-section {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      margin-left: 0;
+      margin-top: 30px;
+      margin-top: 30;
+      margin-right: 0;
+      box-sizing: border-box;
+    }
+
+    .valueset-section h2,
+    .conceptmap-section h2 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #ecf0f1;
+      padding-bottom: 15px;
+    }
+
+    .fhir-operations {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .fhir-btn {
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .expand-btn {
+      background: #3498db;
+      color: #fff;
+    }
+
+    .expand-btn:hover {
+      background: #2980b9;
+    }
+
+    .validate-btn {
+      background: #27ae60;
+      color: #fff;
+    }
+
+    .validate-btn:hover {
+      background: #219a52;
+    }
+
+    .translate-btn {
+      background: #e67e22;
+      color: #fff;
+    }
+
+    .results-container {
+      display: flex;
+      height: calc(100vh - 200px);
+      /* Adjust based on your header height */
+      width: 100%;
+      position: relative;
+      background: #f8f9fa;
+    }
+
+    .table-section {
+      flex: 1;
+      min-width: 800px;
+      background: white;
+      border-radius: 8px 0 0 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-header {
+      background: #495057;
+      color: white;
+      padding: 15px 20px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .table-container {
+      flex: 1;
+      overflow: auto;
+      padding: 20px;
+    }
+
+    .resizer {
+      width: 8px;
+      background: #e9ecef;
+      cursor: ew-resize;
+      position: relative;
+      border-left: 1px solid #dee2e6;
+      border-right: 1px solid #dee2e6;
+      transition: background-color 0.2s ease;
+    }
+
+    .resizer:hover {
+      background: #6c757d;
+    }
+
+    .resizer:active {
+      background: #495057;
+    }
+
+    /* Add a visual indicator */
+    .resizer::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3px;
+      height: 30px;
+      background: #adb5bd;
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    .resizer:hover::before {
+      background: white;
+      opacity: 1;
+    }
+
+    .json-section {
+      flex: 1;
+      min-width: 300px;
+      background: #2d3748;
+      border-radius: 0 8px 8px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .json-header {
+      background: #1a202c;
+      color: white;
+      padding: 15px 20px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .code-block {
+      flex: 1;
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
       .results-container {
-        display: grid;
-        grid-template-columns: 1fr 420px;
-        gap: 30px;
-        align-items: start;
-        margin-left: 0;
-        margin-right: 0;
+        flex-direction: column;
+        height: auto;
+      }
+
+      .resizer {
+        width: 100%;
+        height: 8px;
+        cursor: ns-resize;
+      }
+
+      .resizer::before {
+        width: 30px;
+        height: 3px;
       }
 
       .table-section,
       .json-section {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        min-height: 300px;
+      }
+    }
+
+    .translate-btn:hover {
+      background: #d35400;
+    }
+
+    .fhir-input {
+      padding: 12px 15px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-right: 10px;
+      min-width: 200px;
+    }
+
+    .fhir-select {
+      padding: 12px 15px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-right: 10px;
+      min-width: 150px;
+    }
+
+    .fhir-results {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .mapping-result {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 4px solid #27ae60;
+    }
+
+    .equivalence-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .equiv-equivalent {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .equiv-narrower {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .equiv-broader {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .equiv-related {
+      background: #cce7ff;
+      color: #004085;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
       }
 
-      .section-header,
-      .json-header {
-        background: #34495e;
-        color: #fff;
-        padding: 15px 20px;
-        margin: -20px -20px 20px;
-        border-radius: 12px 12px 0 0;
-        font-size: 1.15rem;
-        font-weight: 700;
+      100% {
+        transform: rotate(360deg);
       }
+    }
 
-      .results-stats {
-        background: #ecf0f1;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        font-weight: 600;
-        color: #2c3e50;
-      }
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
 
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
       .table-container {
-        overflow-x: auto;
-        max-height: 600px;
-        overflow-y: auto;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #fff;
-      }
-
-      th {
-        background: #f8f9fa;
-        padding: 12px 8px;
-        text-align: left;
-        border-bottom: 2px solid #e9ecef;
-        font-weight: 700;
-        color: #495057;
-        white-space: nowrap;
-        font-size: 14px;
-      }
-
-      td {
-        padding: 12px 8px;
-        border-bottom: 1px solid #e9ecef;
-        vertical-align: top;
-        font-size: 13px;
-      }
-
-      tr:nth-child(even) {
-        background: #f8f9fa;
-      }
-
-      tr:hover {
-        background: #e3f2fd;
-      }
-
-      .database-badge {
-        display: inline-block;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-
-      .badge-ayurveda {
-        background: #e8f5e8;
-        color: #2e7d32;
-      }
-
-      .badge-icd11 {
-        background: #fff3e0;
-        color: #f57c00;
-      }
-
-      .badge-siddha {
-        background: #f3e5f5;
-        color: #7b1fa2;
-      }
-
-      .badge-unani {
-        background: #e3f2fd;
-        color: #1976d2;
-      }
-
-      .badge-doctor {
-        background: #fce4ec;
-        color: #c2185b;
-      }
-
-      .code-block {
-        background: #2c3e50;
-        color: #ecf0f1;
-        padding: 20px;
-        border-radius: 8px;
-        overflow-x: auto;
-        font-family: Consolas, monospace;
-        font-size: 13px;
-        line-height: 1.45;
-        white-space: pre-wrap;
-        max-height: 500px;
-        overflow-y: auto;
-      }
-
-      .no-results {
-        text-align: center;
-        padding: 52px 20px;
-        color: #7f8c8d;
-      }
-
-      .notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 8px;
-        color: #fff;
-        font-weight: 700;
-        z-index: 9999;
-        transform: translateX(420px);
-        transition: transform 0.25s ease;
-      }
-
-      .notification.show {
-        transform: translateX(0);
-      }
-
-      .notification.success {
-        background: #27ae60;
-      }
-
-      .notification.error {
-        background: #e74c3c;
-      }
-
-      /* CSV Section - Fixed Alignment */
-      .csv-container {
-        display: grid;
-        grid-template-columns: 1fr 420px;
-        gap: 30px;
-        margin-top: 30px;
-        margin-left: 0;
-        margin-right: 0;
-        align-items: start;
-      }
-
-      .csv-section,
-      .csv-json-section {
-        background: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .csv-section h2,
-      .csv-json-section h2 {
-        color: #2c3e50;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-
-      .csv-upload-area {
-        border: 2px dashed #3498db;
-        border-radius: 12px;
-        padding: 40px;
-        text-align: center;
-        margin-bottom: 25px;
-        background: #f8fbff;
-        transition: all 0.3s ease;
-      }
-
-      .csv-upload-area:hover {
-        border-color: #2980b9;
-        background: #f0f8ff;
-      }
-
-      .csv-upload-area.dragover {
-        border-color: #27ae60;
-        background: #f0fff4;
-      }
-
-      .csv-textarea {
-        width: 100%;
-        min-height: 200px;
-        padding: 15px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-family: Consolas, monospace;
-        font-size: 13px;
-        line-height: 1.4;
-        resize: vertical;
         max-height: 400px;
-        overflow-y: auto;
       }
 
-      .csv-textarea:focus {
-        outline: none;
-        border-color: #3498db;
-      }
-
-      .csv-buttons {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-      }
-
-      .csv-btn {
-        border: none;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .convert-json-btn {
-        background: #f39c12;
-        color: #fff;
-      }
-
-      .convert-json-btn:hover {
-        background: #e67e22;
-      }
-
-      .upload-csv-btn {
-        background: #16a085;
-        color: #fff;
-      }
-
-      .upload-csv-btn:hover {
-        background: #138d75;
-      }
-
-      .clear-csv-btn {
-        background: #e74c3c;
-        color: #fff;
-      }
-
-      .clear-csv-btn:hover {
-        background: #c0392b;
-      }
-
-      .sample-csv-btn {
-        background: #9b59b6;
-        color: #fff;
-      }
-
-      .sample-csv-btn:hover {
-        background: #8e44ad;
-      }
-
-      .csv-info {
-        background: #ecf0f1;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
-      }
-
-      .csv-preview {
-        max-height: 300px;
-        overflow: auto;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        margin-top: 15px;
-        overflow-x: auto;
-      }
-
-      .csv-preview table {
-        font-size: 12px;
-      }
-
-      .csv-preview th {
-        background: #34495e;
-        color: #fff;
-        padding: 8px;
-      }
-
-      .csv-preview td {
-        padding: 6px 8px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .json-download {
-        background: #34495e;
-        color: #fff;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        text-align: center;
-      }
-
-      .download-btn {
-        background: #27ae60;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-      }
-
-      .download-btn:hover {
-        background: #219a52;
-      }
-
-      .csv-stats {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 15px;
-      }
-
-      .csv-stat {
-        background: #3498db;
-        color: #fff;
-        padding: 8px 15px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: 600;
-      }
-
-      /* ValueSet and ConceptMap Sections - Fixed Alignment */
-      .valueset-section,
-      .conceptmap-section {
-        background: #fff;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-        margin-left: 0;
-        margin-right: 0;
-        box-sizing: border-box;
-      }
-
-      .valueset-section h2,
-      .conceptmap-section h2 {
-        color: #2c3e50;
-        font-size: 1.8rem;
-        text-align: center;
-        margin-bottom: 25px;
-        border-bottom: 2px solid #ecf0f1;
-        padding-bottom: 15px;
-      }
-
-      .fhir-operations {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: flex-start;
-      }
-
-      .fhir-btn {
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 14px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .expand-btn {
-        background: #3498db;
-        color: #fff;
-      }
-
-      .expand-btn:hover {
-        background: #2980b9;
-      }
-
-      .validate-btn {
-        background: #27ae60;
-        color: #fff;
-      }
-
-      .validate-btn:hover {
-        background: #219a52;
-      }
-
-      .translate-btn {
-        background: #e67e22;
-        color: #fff;
-      }
-
-      .translate-btn:hover {
-        background: #d35400;
-      }
-
-      .fhir-input {
-        padding: 12px 15px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-size: 14px;
-        margin-right: 10px;
-        min-width: 200px;
-      }
-
-      .fhir-select {
-        padding: 12px 15px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-size: 14px;
-        margin-right: 10px;
-        min-width: 150px;
-      }
-
-      .fhir-results {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
-        margin-top: 20px;
-        max-height: 400px;
-        overflow-y: auto;
-      }
-
-      .mapping-result {
-        background: #fff;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        border-left: 4px solid #27ae60;
-      }
-
-      .equivalence-badge {
-        display: inline-block;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-
-      .equiv-equivalent {
-        background: #d4edda;
-        color: #155724;
-      }
-      .equiv-narrower {
-        background: #fff3cd;
-        color: #856404;
-      }
-      .equiv-broader {
-        background: #f8d7da;
-        color: #721c24;
-      }
-      .equiv-related {
-        background: #cce7ff;
-        color: #004085;
-      }
-
-      /* Custom scrollbar styling for webkit browsers */
-      .code-block::-webkit-scrollbar,
-      .table-container::-webkit-scrollbar,
-      .csv-textarea::-webkit-scrollbar,
-      .csv-preview::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-
-      .code-block::-webkit-scrollbar-track,
-      .table-container::-webkit-scrollbar-track,
-      .csv-textarea::-webkit-scrollbar-track,
-      .csv-preview::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-      }
-
-      .code-block::-webkit-scrollbar-thumb,
-      .table-container::-webkit-scrollbar-thumb,
-      .csv-textarea::-webkit-scrollbar-thumb,
-      .csv-preview::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-      }
-
-      .code-block::-webkit-scrollbar-thumb:hover,
-      .table-container::-webkit-scrollbar-thumb:hover,
-      .csv-textarea::-webkit-scrollbar-thumb:hover,
-      .csv-preview::-webkit-scrollbar-thumb:hover {
-        background: #555;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      .spinner {
-        animation: spin 1s linear infinite;
-      }
-
-      /* Responsive Design - Enhanced */
-      @media (max-width: 1200px) {
-        .features-grid {
-          grid-template-columns: repeat(4, 1fr);
-          gap: 15px;
-          padding: 0 20px;
-        }
-
-        .feature-card {
-          padding: 20px 15px;
-          min-height: 180px;
-        }
-
-        .feature-title {
-          font-size: 1.2rem;
-        }
-
-        .feature-description {
-          font-size: 0.9rem;
-        }
-      }
-
-      @media (max-width: 992px) {
-        .features-grid {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 20px;
-        }
-
-        .feature-card {
-          min-height: 160px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          padding: 15px;
-        }
-
-        .hero-landing {
-          padding: 60px 0;
-        }
-
-        .hero-title {
-          font-size: 2.4rem;
-          text-align: left;
-        }
-
-        .hero-description {
-          font-size: 1.1rem;
-        }
-
-        .hero-content {
-          padding: 0 20px;
-        }
-
-        .hero-buttons {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .btn-primary,
-        .btn-secondary {
-          width: 100%;
-          text-align: center;
-          max-width: 280px;
-        }
-
-        .features-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
-          padding: 0 20px;
-        }
-
-        .feature-card {
-          min-height: auto;
-          padding: 25px 20px;
-        }
-
-        .results-container,
-        .csv-container {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-
-        .database-select {
-          min-width: 180px;
-        }
-
-        .search-section {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .search-input {
-          min-width: auto;
-          width: 100%;
-        }
-
-        .main-header {
-          padding: 15px 20px;
-          flex-wrap: wrap;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .container {
-          padding: 10px;
-        }
-
-        .hero-content,
-        .features-grid {
-          padding: 0 15px;
-        }
-
-        .search-interface-section,
-        .add-section,
-        .valueset-section,
-        .conceptmap-section {
-          padding: 20px;
-        }
-
-        .hero-title {
-          font-size: 2rem;
-        }
-      }
-      /* Enhanced Table Container with Horizontal Scroll */
-      .table-container {
-        overflow-x: auto;
-        overflow-y: auto;
-        max-height: 600px;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        position: relative;
-      }
-
-      /* Make sure the table doesn't break out of container */
       .table-container table {
-        min-width: 100%;
-        white-space: nowrap;
-        border-collapse: collapse;
+        min-width: 800px;
+        /* Smaller minimum width on mobile */
       }
 
-      /* Fixed width columns to ensure horizontal scrolling */
-      .table-container th,
-      .table-container td {
-        min-width: 120px;
-        max-width: 250px;
-        padding: 12px 8px;
-        vertical-align: top;
-        white-space: normal;
-        word-wrap: break-word;
+      .results-container,
+      .csv-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
       }
 
-      /* Sticky first column (Database) */
-      .table-container th:first-child,
-      .table-container td:first-child {
-        position: sticky;
-        left: 0;
-        background: #f8f9fa;
-        z-index: 10;
-        min-width: 100px;
+      .search-section {
+        flex-direction: column;
+        align-items: stretch;
       }
 
-      .table-container td:first-child {
-        background: white;
+      .search-input {
+        min-width: auto;
+        width: 100%;
       }
+    }
 
-      /* Custom scrollbar styling */
-      .table-container::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
+    .table-container th:nth-child(5),
+    .table-container td:nth-child(5) {
+      /* ICD-11 Code */
+      min-width: 120px;
+      max-width: 150px;
+    }
 
-      .table-container::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-      }
+    .table-container th:nth-child(6),
+    .table-container td:nth-child(6) {
+      /* ICD-11 Term */
+      min-width: 180px;
+      max-width: 250px;
+    }
 
-      .table-container::-webkit-scrollbar-thumb {
-        background: #27ae60;
-        border-radius: 4px;
-      }
+    /* Shift other columns */
+    .table-container th:nth-child(7),
+    .table-container td:nth-child(7) {
+      /* Short Definition */
+      min-width: 200px;
+      max-width: 300px;
+    }
 
-      .table-container::-webkit-scrollbar-thumb:hover {
-        background: #219a52;
-      }
+    .table-container th:nth-child(8),
+    .table-container td:nth-child(8) {
+      /* Long Definition */
+      min-width: 250px;
+      max-width: 400px;
+    }
 
-      /* Horizontal scroll indicator */
-      .table-container.has-overflow::after {
-        content: "← Scroll horizontally to see all columns →";
-        position: absolute;
-        bottom: -25px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 12px;
-        color: #666;
-        background: #f9f9f9;
-        padding: 5px 10px;
-        border-radius: 4px;
-        white-space: nowrap;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container clearfix">
-      <!-- New header with tabs -->
-      <header class="main-header">
-        <div
-          class="tab"
-          data-tab="about"
-          onclick="window.location.href='enhanced_index.html'"
-        >
-          About
+    .table-container th:nth-child(9),
+    .table-container td:nth-child(9) {
+      /* Reference */
+      min-width: 120px;
+      max-width: 180px;
+    }
+
+    .table-container th:nth-child(10),
+    .table-container td:nth-child(10) {
+      /* Ontology Branches */
+      min-width: 150px;
+      max-width: 200px;
+    }
+
+    .icd11-mapping {
+      background: #fff3e0;
+      color: #f57c00;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .no-mapping {
+      color: #95a5a6;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container clearfix">
+    <!-- New header with tabs -->
+    <header class="main-header">
+      <div class="tab" data-tab="about" onclick="window.location.href='enhanced_index.html'">
+        About
+      </div>
+      <div class="tab" data-tab="api" onclick="window.location.href='api.html'">
+        API
+      </div>
+      <div class="tab" data-tab="demo">Demo</div>
+      <div class="tab" data-tab="docs" onclick="window.location.href='doc.html'">
+        Docs
+      </div>
+      <div class="tab" data-tab="model" onclick="window.location.href='http://localhost:5173/'">Model</div>
+    </header>
+
+    <!-- Hero Landing Section -->
+    <section class="hero-landing">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          API × Cross-Cultural Medical Terminology Hub
+        </h1>
+        <p class="hero-description">
+          Demo-ready microservice bridging AYUSH traditional systems
+          (Ayurveda, Siddha, Unani) and modern ICD-11 standards using advanced
+          search algorithms. Discover terms, map cross-references, expand
+          medical vocabularies, and enable doctor contributions—no external
+          setup required.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="btn-primary">Read the Docs</button>
+          <button class="btn-secondary">Try the Demo</button>
         </div>
-        <div
-          class="tab"
-          data-tab="api"
-          onclick="window.location.href='api.html'"
-        >
-          API
-        </div>
-        <div class="tab" data-tab="demo">Demo</div>
-        <div
-          class="tab"
-          data-tab="docs"
-          onclick="window.location.href='doc.html'"
-        >
-          Docs
-        </div>
-        <div class="tab"
-          data-tab="model"
-          onclick="window.location.href='http://localhost:5173/'">Model</div>
-      </header>
+      </div>
 
-      <!-- Hero Landing Section -->
-      <section class="hero-landing">
-        <div class="hero-content">
-          <h1 class="hero-title">
-            MedUnify API × Cross-Cultural Medical Terminology Hub
-          </h1>
-          <p class="hero-description">
-            Demo-ready microservice bridging AYUSH traditional systems
-            (Ayurveda, Siddha, Unani) and modern ICD-11 standards using advanced
-            search algorithms. Discover terms, map cross-references, expand
-            medical vocabularies, and enable doctor contributions—no external
-            setup required.
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3 class="feature-title">Cross-System Mapping</h3>
+          <p class="feature-description">
+            Search across Ayurveda, Siddha, Unani, and ICD-11 databases with
+            intelligent cross-referencing for comprehensive medical
+            terminology coverage.
           </p>
+        </div>
 
-          <div class="hero-buttons">
-            <button class="btn-primary">Read the Docs</button>
-            <button class="btn-secondary">Try the Demo</button>
+        <div class="feature-card">
+          <h3 class="feature-title">Doctor Contributions</h3>
+          <p class="feature-description">
+            Enable healthcare professionals to add verified medical terms with
+            structured data validation and real-time database integration.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3 class="feature-title">CSV Data Ingestion</h3>
+          <p class="feature-description">
+            Load medical terminology datasets from CSV files to power rapid
+            deployment and bulk data operations efficiently.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3 class="feature-title">API-First Design</h3>
+          <p class="feature-description">
+            RESTful API endpoints with JSON responses, ready for integration
+            into healthcare applications and medical research platforms.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Interface Section -->
+    <section class="search-interface-section">
+      <h2>Medical Terminology Search Interface</h2>
+
+      <div class="search-section">
+        <input id="searchInput" class="search-input" placeholder="Enter medical terminology to search..." />
+        <select id="databaseSelect" class="database-select">
+          <option value="">All Databases</option>
+          <option value="ayurveda">Ayurveda</option>
+          <option value="icd11">ICD-11</option>
+          <option value="siddha">Siddha</option>
+          <option value="unani">Unani</option>
+          <option value="doctor">Doctor Added</option>
+        </select>
+        <button id="searchBtn" class="search-btn">
+          <span>🔍</span> Search
+        </button>
+      </div>
+
+      <button id="addBtn" class="add-btn">
+        <span>➕</span> Add Terminology
+      </button>
+
+      <div class="options">
+        <div class="limit-group">
+          <label for="limitInput">Limit:</label>
+          <input id="limitInput" class="limit-input" type="number" min="1" max="1000" value="300" />
+        </div>
+        <div>
+          <span>🟢</span>
+          <span>API Online</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Terminology Form -->
+    <div id="addSection" class="add-section">
+      <h2>Add New Medical Terminology</h2>
+      <form id="addForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="doctorName">Doctor Name *</label>
+            <input id="doctorName" name="doctor_name" required />
+          </div>
+          <div class="form-group">
+            <label for="systemField">System *</label>
+            <input id="systemField" name="system" required placeholder="e.g., Ayurveda, Modern Medicine" />
           </div>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-card">
-            <h3 class="feature-title">Cross-System Mapping</h3>
-            <p class="feature-description">
-              Search across Ayurveda, Siddha, Unani, and ICD-11 databases with
-              intelligent cross-referencing for comprehensive medical
-              terminology coverage.
-            </p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="codeField">Code</label>
+            <input id="codeField" name="code" placeholder="e.g., A01.1, AYU001" />
           </div>
-
-          <div class="feature-card">
-            <h3 class="feature-title">Doctor Contributions</h3>
-            <p class="feature-description">
-              Enable healthcare professionals to add verified medical terms with
-              structured data validation and real-time database integration.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <h3 class="feature-title">CSV Data Ingestion</h3>
-            <p class="feature-description">
-              Load medical terminology datasets from CSV files to power rapid
-              deployment and bulk data operations efficiently.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <h3 class="feature-title">API-First Design</h3>
-            <p class="feature-description">
-              RESTful API endpoints with JSON responses, ready for integration
-              into healthcare applications and medical research platforms.
-            </p>
+          <div class="form-group">
+            <label for="termField">Term *</label>
+            <input id="termField" name="term" required placeholder="Medical term or condition" />
           </div>
         </div>
-      </section>
 
-      <!-- Search Interface Section -->
-      <section class="search-interface-section">
-        <h2>🔍 Medical Terminology Search Interface</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="shortDefinition">Short Definition *</label>
+            <textarea id="shortDefinition" name="short_definition" required placeholder="Brief description"></textarea>
+          </div>
+        </div>
 
-        <div class="search-section">
-          <input
-            id="searchInput"
-            class="search-input"
-            placeholder="Enter medical terminology to search..."
-          />
-          <select id="databaseSelect" class="database-select">
-            <option value="">All Databases</option>
-            <option value="ayurveda">Ayurveda</option>
-            <option value="icd11">ICD-11</option>
-            <option value="siddha">Siddha</option>
-            <option value="unani">Unani</option>
-            <option value="doctor">Doctor Added</option>
-          </select>
-          <button id="searchBtn" class="search-btn">
-            <span>🔍</span> Search
+        <div class="form-row">
+          <div class="form-group">
+            <label for="longDefinition">Long Definition</label>
+            <textarea id="longDefinition" name="long_definition"
+              placeholder="Detailed description, symptoms, treatment, etc."></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="referenceField">Reference</label>
+            <input id="referenceField" name="reference" placeholder="Source reference, book, journal, etc." />
+          </div>
+          <div class="form-group">
+            <label for="ontologyBranches">Ontology Branches</label>
+            <input id="ontologyBranches" name="ontology_branches" placeholder="Related categories or branches" />
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 18px">
+          <button type="submit" class="save-btn">Save Terminology</button>
+          <button type="button" id="cancelBtn" class="cancel-btn">
+            ❌ Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Results -->
+    <div class="results-container">
+      <div class="table-section">
+        <div class="section-header">Search Results</div>
+        <div id="resultsStats" class="results-stats" style="display: none"></div>
+        <div class="table-container">
+          <div id="tableContent">
+            <div class="no-results">
+              <h3>Ready to Search</h3>
+              <p>Enter a medical term above to search across databases</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resizable Divider -->
+      <div class="resizer" id="dragMe"></div>
+
+      <div class="json-section">
+        <div class="json-header">Raw JSON Response</div>
+        <div id="jsonResponse" class="code-block">
+          // JSON appears here after search
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Bundle JSON Upload Section -->
+    <div class="json-bundle-container">
+      <div class="json-bundle-section">
+        <h2>Bundle JSON Upload</h2>
+        <div class="json-info">
+          <strong>Expected JSON Format:</strong><br>
+          Array of objects with fields: doctorname, system, code, term, shortdefinition, longdefinition, reference,
+          ontologybranches
+        </div>
+
+        <div class="json-upload-area" id="jsonUploadArea">
+          <div>Paste JSON bundle data here or upload a file</div>
+          <div style="font-size: 13px; color: #666; margin-top: 8px;">
+            Supports .json files
+          </div>
+          <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+        </div>
+
+        <textarea id="jsonTextarea" class="json-textarea" placeholder="Paste JSON bundle data here...
+
+Example:
+[
+  {
+    &quot;doctorname&quot;: &quot;Dr. Smith&quot;,
+    &quot;system&quot;: &quot;Ayurveda&quot;,
+    &quot;code&quot;: &quot;AYU001&quot;,
+    &quot;term&quot;: &quot;Vata Dosha&quot;,
+    &quot;shortdefinition&quot;: &quot;Primary life force&quot;,
+    &quot;longdefinition&quot;: &quot;Detailed description...&quot;,
+    &quot;reference&quot;: &quot;Classical Text&quot;,
+    &quot;ontologybranches&quot;: &quot;Tridosha&quot;
+  }
+]"></textarea>
+
+        <div id="jsonStats" class="json-stats" style="display: none;">
+          <div class="json-stat" id="jsonRecordCount">Records: 0</div>
+          <div class="json-stat" id="jsonFieldCount">Fields: 0</div>
+        </div>
+
+        <div class="json-buttons">
+          <button id="validateJsonBtn" class="json-btn validate-json-btn">
+            <span>✓</span> Validate JSON
+          </button>
+          <button id="uploadJsonBtn" class="json-btn upload-json-btn">
+            <span></span> Add to Database
+          </button>
+          <button id="sampleJsonBtn" class="json-btn sample-json-btn">
+            <span></span> Load Sample
+          </button>
+          <button id="clearJsonBtn" class="json-btn clear-json-btn">
+            <span>🗑</span> Clear
           </button>
         </div>
 
-        <button id="addBtn" class="add-btn">
-          <span>➕</span> Add Terminology
+        <div id="jsonPreview" class="json-preview" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- CSV Ignition Section -->
+    <div class="csv-container">
+      <div class="csv-section">
+        <h2> CSV Data Ingesting</h2>
+
+        <div class="csv-info">
+          <strong>Expected CSV Format:</strong><br />
+          doctor_name,system,code,term,short_definition,long_definition,reference,ontology_branches
+        </div>
+
+        <div class="csv-upload-area" id="csvUploadArea">
+          <div>📁 Drop CSV file here or click to select</div>
+          <div style="font-size: 13px; color: #666; margin-top: 8px">
+            Supports .csv files
+          </div>
+          <input type="file" id="csvFileInput" accept=".csv" style="display: none" />
+        </div>
+
+        <textarea id="csvTextarea" class="csv-textarea"
+          placeholder="Paste CSV data here or upload a file above...&#10;&#10;Example:&#10;Dr. Smith,Ayurveda,AYU001,Vata Dosha,Primary life force,Detailed description...,Classical Text,Tridosha"></textarea>
+
+        <div id="csvStats" class="csv-stats" style="display: none">
+          <div class="csv-stat" id="rowCount">Rows: 0</div>
+          <div class="csv-stat" id="colCount">Columns: 0</div>
+        </div>
+
+        <div class="csv-buttons">
+          <button id="convertJsonBtn" class="csv-btn convert-json-btn">
+            <span></span> Convert to JSON
+          </button>
+          <button id="uploadCsvBtn" class="csv-btn upload-csv-btn">
+            <span>⬆</span> Add to Database
+          </button>
+          <button id="sampleCsvBtn" class="csv-btn sample-csv-btn">
+            <span></span> Load Sample
+          </button>
+          <button id="clearCsvBtn" class="csv-btn clear-csv-btn">
+            <span>🗑️</span> Clear
+          </button>
+        </div>
+
+        <div id="csvPreview" class="csv-preview" style="display: none"></div>
+      </div>
+
+      <div class="csv-json-section">
+        <h2> JSON Output</h2>
+
+        <div id="jsonDownload" class="json-download" style="display: none">
+          <div style="margin-bottom: 10px">Ready for download</div>
+          <button id="downloadJsonBtn" class="download-btn">
+            Download JSON
+          </button>
+        </div>
+
+        <div id="csvJsonOutput" class="code-block">
+          // Converted JSON will appear here
+        </div>
+      </div>
+    </div>
+
+    <!-- ValueSet Section -->
+    <section class="valueset-section">
+      <h2> FHIR ValueSet Operations</h2>
+
+      <div class="fhir-operations">
+        <select id="valueSetSelect" class="fhir-select">
+          <option value="ayurveda-terms">Ayurveda Terms</option>
+          <option value="siddha-terms">Siddha Terms</option>
+          <option value="unani-terms">Unani Terms</option>
+          <option value="icd11-terms">ICD-11 Terms</option>
+          <option value="all-traditional">All Traditional Systems</option>
+        </select>
+
+        <button id="expandBtn" class="fhir-btn expand-btn">
+          <span></span> $expand
         </button>
 
-        <div class="options">
-          <div class="limit-group">
-            <label for="limitInput">Limit:</label>
-            <input
-              id="limitInput"
-              class="limit-input"
-              type="number"
-              min="1"
-              max="1000"
-              value="300"
-            />
-          </div>
-          <div>
-            <span>🟢</span>
-            <span>Enhanced API Online</span>
-          </div>
-        </div>
-      </section>
+        <input id="validateCodeInput" class="fhir-input" placeholder="Enter code to validate (e.g., AYU001)" />
 
-      <!-- Add Terminology Form -->
-      <div id="addSection" class="add-section">
-        <h2>Add New Medical Terminology</h2>
-        <form id="addForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="doctorName">Doctor Name *</label>
-              <input id="doctorName" name="doctor_name" required />
-            </div>
-            <div class="form-group">
-              <label for="systemField">System *</label>
-              <input
-                id="systemField"
-                name="system"
-                required
-                placeholder="e.g., Ayurveda, Modern Medicine"
-              />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="codeField">Code</label>
-              <input
-                id="codeField"
-                name="code"
-                placeholder="e.g., A01.1, AYU001"
-              />
-            </div>
-            <div class="form-group">
-              <label for="termField">Term *</label>
-              <input
-                id="termField"
-                name="term"
-                required
-                placeholder="Medical term or condition"
-              />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="shortDefinition">Short Definition *</label>
-              <textarea
-                id="shortDefinition"
-                name="short_definition"
-                required
-                placeholder="Brief description"
-              ></textarea>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="longDefinition">Long Definition</label>
-              <textarea
-                id="longDefinition"
-                name="long_definition"
-                placeholder="Detailed description, symptoms, treatment, etc."
-              ></textarea>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="referenceField">Reference</label>
-              <input
-                id="referenceField"
-                name="reference"
-                placeholder="Source reference, book, journal, etc."
-              />
-            </div>
-            <div class="form-group">
-              <label for="ontologyBranches">Ontology Branches</label>
-              <input
-                id="ontologyBranches"
-                name="ontology_branches"
-                placeholder="Related categories or branches"
-              />
-            </div>
-          </div>
-
-          <div style="text-align: center; margin-top: 18px">
-            <button type="submit" class="save-btn">💾 Save Terminology</button>
-            <button type="button" id="cancelBtn" class="cancel-btn">
-              ❌ Cancel
-            </button>
-          </div>
-        </form>
+        <button id="validateBtn" class="fhir-btn validate-btn">
+          <span>✅</span> $validate-code
+        </button>
       </div>
 
-      <!-- Results -->
-      <div class="results-container">
-        <div class="table-section">
-          <div class="section-header">Search Results</div>
-          <div
-            id="resultsStats"
-            class="results-stats"
-            style="display: none"
-          ></div>
-          <div class="table-container">
-            <div id="tableContent">
-              <div class="no-results">
-                <h3>🔍 Ready to Search</h3>
-                <p>Enter a medical term above to search across databases</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div id="valueSetResults" class="fhir-results" style="display: none">
+        <h4>ValueSet Operation Results:</h4>
+        <div id="valueSetContent"></div>
+      </div>
+    </section>
 
-        <div class="json-section">
-          <div class="json-header">Raw JSON Response</div>
-          <div id="jsonResponse" class="code-block">
-            // JSON appears here after search
-          </div>
-        </div>
+    <!-- ConceptMap Section -->
+    <section class="conceptmap-section">
+      <h2> FHIR ConceptMap Operations</h2>
+
+      <div class="fhir-operations">
+        <select id="sourceSystemSelect" class="fhir-select">
+          <option value="ayurveda">Ayurveda</option>
+          <option value="siddha">Siddha</option>
+          <option value="unani">Unani</option>
+        </select>
+
+        <span style="margin: 0 10px">→</span>
+
+        <select id="targetSystemSelect" class="fhir-select">
+          <option value="icd11">ICD-11</option>
+          <option value="snomed">SNOMED CT</option>
+        </select>
+
+        <input id="translateCodeInput" class="fhir-input" placeholder="Enter code to translate (e.g., AYU001)" />
+
+        <button id="translateBtn" class="fhir-btn translate-btn">
+          <span>🔄</span> $translate
+        </button>
       </div>
 
-      <!-- CSV Ignition Section -->
-      <div class="csv-container">
-        <div class="csv-section">
-          <h2>📊 CSV Data Ignition</h2>
-
-          <div class="csv-info">
-            <strong>Expected CSV Format:</strong><br />
-            doctor_name,system,code,term,short_definition,long_definition,reference,ontology_branches
-          </div>
-
-          <div class="csv-upload-area" id="csvUploadArea">
-            <div>📁 Drop CSV file here or click to select</div>
-            <div style="font-size: 13px; color: #666; margin-top: 8px">
-              Supports .csv files
-            </div>
-            <input
-              type="file"
-              id="csvFileInput"
-              accept=".csv"
-              style="display: none"
-            />
-          </div>
-
-          <textarea
-            id="csvTextarea"
-            class="csv-textarea"
-            placeholder="Paste CSV data here or upload a file above...&#10;&#10;Example:&#10;Dr. Smith,Ayurveda,AYU001,Vata Dosha,Primary life force,Detailed description...,Classical Text,Tridosha"
-          ></textarea>
-
-          <div id="csvStats" class="csv-stats" style="display: none">
-            <div class="csv-stat" id="rowCount">Rows: 0</div>
-            <div class="csv-stat" id="colCount">Columns: 0</div>
-          </div>
-
-          <div class="csv-buttons">
-            <button id="convertJsonBtn" class="csv-btn convert-json-btn">
-              <span>📄</span> Convert to JSON
-            </button>
-            <button id="uploadCsvBtn" class="csv-btn upload-csv-btn">
-              <span>⬆️</span> Add to Database
-            </button>
-            <button id="sampleCsvBtn" class="csv-btn sample-csv-btn">
-              <span>📋</span> Load Sample
-            </button>
-            <button id="clearCsvBtn" class="csv-btn clear-csv-btn">
-              <span>🗑️</span> Clear
-            </button>
-          </div>
-
-          <div id="csvPreview" class="csv-preview" style="display: none"></div>
-        </div>
-
-        <div class="csv-json-section">
-          <h2>📋 JSON Output</h2>
-
-          <div id="jsonDownload" class="json-download" style="display: none">
-            <div style="margin-bottom: 10px">Ready for download</div>
-            <button id="downloadJsonBtn" class="download-btn">
-              💾 Download JSON
-            </button>
-          </div>
-
-          <div id="csvJsonOutput" class="code-block">
-            // Converted JSON will appear here
-          </div>
-        </div>
+      <div id="conceptMapResults" class="fhir-results" style="display: none">
+        <h4>Translation Results:</h4>
+        <div id="conceptMapContent"></div>
       </div>
-      <!-- ValueSet Section -->
-      <section class="valueset-section">
-        <h2>📚 FHIR ValueSet Operations</h2>
+    </section>
 
-        <div class="fhir-operations">
-          <select id="valueSetSelect" class="fhir-select">
-            <option value="ayurveda-terms">Ayurveda Terms</option>
-            <option value="siddha-terms">Siddha Terms</option>
-            <option value="unani-terms">Unani Terms</option>
-            <option value="icd11-terms">ICD-11 Terms</option>
-            <option value="all-traditional">All Traditional Systems</option>
-          </select>
-
-          <button id="expandBtn" class="fhir-btn expand-btn">
-            <span>🔍</span> $expand
-          </button>
-
-          <input
-            id="validateCodeInput"
-            class="fhir-input"
-            placeholder="Enter code to validate"
-          />
-
-          <button id="validateBtn" class="fhir-btn validate-btn">
-            <span>✅</span> $validate-code
-          </button>
-        </div>
-
-        <div id="valueSetResults" class="fhir-results" style="display: none">
-          <h4>ValueSet Expansion Results:</h4>
-          <div id="valueSetContent"></div>
-        </div>
-      </section>
-
-      <!-- ConceptMap Section -->
-      <section class="conceptmap-section">
-        <h2>🔄 FHIR ConceptMap Operations</h2>
-
-        <div class="fhir-operations">
-          <select id="sourceSystemSelect" class="fhir-select">
-            <option value="ayurveda">Ayurveda</option>
-            <option value="siddha">Siddha</option>
-            <option value="unani">Unani</option>
-          </select>
-
-          <span style="margin: 0 10px">→</span>
-
-          <select id="targetSystemSelect" class="fhir-select">
-            <option value="icd11">ICD-11</option>
-            <option value="snomed">SNOMED CT</option>
-          </select>
-
-          <input
-            id="translateCodeInput"
-            class="fhir-input"
-            placeholder="Enter code to translate"
-          />
-
-          <button id="translateBtn" class="fhir-btn translate-btn">
-            <span>🔄</span> $translate
-          </button>
-        </div>
-
-        <div id="conceptMapResults" class="fhir-results" style="display: none">
-          <h4>Translation Results:</h4>
-          <div id="conceptMapContent"></div>
-        </div>
-      </section>
-    </div>
 
     <script>
       const API_BASE = "http://localhost:5000";
       let currentResults = null;
       let csvData = [];
       let jsonData = null;
+      let jsonBundleData = null;
 
       const searchInput = document.getElementById("searchInput");
       const databaseSelect = document.getElementById("databaseSelect");
@@ -1571,6 +1920,19 @@
       const resultsStats = document.getElementById("resultsStats");
       const tableContent = document.getElementById("tableContent");
       const jsonResponse = document.getElementById("jsonResponse");
+
+      // Bundle JSON Elements
+      const jsonUploadArea = document.getElementById('jsonUploadArea');
+      const jsonFileInput = document.getElementById('jsonFileInput');
+      const jsonTextarea = document.getElementById('jsonTextarea');
+      const jsonStats = document.getElementById('jsonStats');
+      const jsonRecordCount = document.getElementById('jsonRecordCount');
+      const jsonFieldCount = document.getElementById('jsonFieldCount');
+      const validateJsonBtn = document.getElementById('validateJsonBtn');
+      const uploadJsonBtn = document.getElementById('uploadJsonBtn');
+      const sampleJsonBtn = document.getElementById('sampleJsonBtn');
+      const clearJsonBtn = document.getElementById('clearJsonBtn');
+      const jsonPreview = document.getElementById('jsonPreview');
 
       // CSV Elements
       const csvUploadArea = document.getElementById("csvUploadArea");
@@ -1603,17 +1965,14 @@
           // Navigation logic
           switch (tabName) {
             case "about":
-              // Stay on current page (enhanced_index.html) - this is the about/home page
               notify("Welcome to MedUnify API Hub", "success");
               break;
 
             case "api":
-              // Navigate to API documentation page
               window.location.href = "api.html";
               break;
 
             case "demo":
-              // Scroll to demo section on current page
               document
                 .querySelector(".search-interface-section")
                 ?.scrollIntoView({
@@ -1624,12 +1983,10 @@
               break;
 
             case "docs":
-              // Navigate to documentation page
               window.location.href = "doc.html";
               break;
 
             case "model":
-              // You can add model page navigation here
               notify("Model page coming soon", "success");
               break;
 
@@ -1707,7 +2064,6 @@
         setLoading(true);
 
         try {
-          // Build search parameters
           const params = new URLSearchParams({
             term: term,
             total_limit: limitInput.value || 300,
@@ -1720,23 +2076,17 @@
           const url = `${API_BASE}/api/search?${params}`;
           console.log("🔍 Making search request to:", url);
 
-          // Make the API request with proper headers
           const response = await fetch(url, {
             method: "GET",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            mode: "cors", // Handle CORS
+            mode: "cors",
           });
 
           console.log("📡 Response status:", response.status);
-          console.log(
-            "📡 Response headers:",
-            Object.fromEntries(response.headers.entries())
-          );
 
-          // Check if response is ok
           if (!response.ok) {
             let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
             try {
@@ -1748,27 +2098,22 @@
             throw new Error(errorMessage);
           }
 
-          // Parse response data
           const data = await response.json();
           console.log("📊 Response data:", data);
 
-          // Check for API-level errors
           if (data.error) {
             throw new Error(data.error);
           }
 
-          // Store and render results
           currentResults = data;
           renderResults(data);
           jsonResponse.textContent = JSON.stringify(data, null, 2);
 
-          // Show success notification
           const resultCount = data.count || data.total_count || 0;
           notify(`Found ${resultCount} results`, "success");
         } catch (err) {
           console.error("❌ Search failed:", err);
 
-          // Show user-friendly error
           let errorMsg = "Search failed";
           if (err.message.includes("fetch")) {
             errorMsg =
@@ -1781,7 +2126,6 @@
 
           notify(errorMsg, "error");
 
-          // Show error in results
           tableContent.innerHTML = `
             <div class="no-results">
               <h3>❌ Search Error</h3>
@@ -1789,7 +2133,6 @@
               <p><small>Check browser console for details</small></p>
             </div>`;
 
-          // Show error in JSON response
           jsonResponse.textContent = JSON.stringify(
             {
               error: errorMsg,
@@ -1804,13 +2147,28 @@
         }
       }
 
-      function renderResults(data) {
+      // Function to check and enable horizontal scroll for tables
+      function checkTableOverflow() {
+        const tableContainer = document.querySelector('.table-container');
+        if (tableContainer) {
+          const hasHorizontalScrollbar = tableContainer.scrollWidth > tableContainer.clientWidth;
+
+          if (hasHorizontalScrollbar) {
+            tableContainer.classList.add('has-overflow');
+          } else {
+            tableContainer.classList.remove('has-overflow');
+          }
+        }
+      }
+
+      // Enhanced renderResults function with ICD-11 lookup
+      async function renderResults(data) {
         let results = [];
         let totalCount = 0;
 
-        if (data.combined_results) {
-          results = data.combined_results;
-          totalCount = data.total_count;
+        if (data.combined_results || data.combinedresults) {
+          results = data.combined_results || data.combinedresults;
+          totalCount = data.total_count || data.totalcount;
           resultsStats.textContent = `Found ${totalCount} results across databases (including doctor-added terms)`;
         } else if (data.data) {
           results = data.data;
@@ -1821,65 +2179,284 @@
           totalCount = 0;
         }
 
-        resultsStats.style.display = totalCount > 0 ? "block" : "none";
+        resultsStats.style.display = totalCount > 0 ? 'block' : 'none';
 
         if (!results.length) {
-          tableContent.innerHTML = `<div class="no-results"><h3>No Results Found</h3><p>Try another term or check different database.</p></div>`;
+          tableContent.innerHTML = `
+            <div class="no-results">
+                <h3>No Results Found</h3>
+                <p>Try another term or check different database.</p>
+            </div>
+        `;
           return;
         }
 
+        // Fetch ICD-11 mappings for each result
+        const enhancedResults = await Promise.all(results.map(async (r) => {
+          try {
+            // Call ICD-11 lookup API
+            const icd11Response = await fetch(`${API_BASE}/api/icd11-lookup`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                term: r.term || r.Term,
+                system: r.system || r.System
+              })
+            });
+
+            if (icd11Response.ok) {
+              const icd11Data = await icd11Response.json();
+              return {
+                ...r,
+                icd11_code: icd11Data.code || 'N/A',
+                icd11_term: icd11Data.term || 'N/A'
+              };
+            }
+          } catch (error) {
+            console.error('ICD-11 lookup failed:', error);
+          }
+
+          return {
+            ...r,
+            icd11_code: 'N/A',
+            icd11_term: 'N/A'
+          };
+        }));
+
         const html = `
-        <table>
-          <thead>
-            <tr>
-              <th>Database</th>
-              <th>System</th>
-              <th>Code</th>
-              <th>Term</th>
-              <th>Short Definition</th>
-              <th>Long Definition</th>
-              <th>Reference</th>
-              <th>Ontology Branches</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${results
-              .map(
-                (r) => `
-              <tr>
-                <td><span class="database-badge badge-${
-                  r.source_database || "unknown"
-                }">${r.source_database || "N/A"}</span></td>
-                <td>${r.system || r.System || "N/A"}</td>
-                <td>${r.code || r.Code || "N/A"}</td>
-                <td><strong>${r.term || r.Term || "N/A"}</strong></td>
-                <td>${(r.short_definition || r.Short_Definition || "N/A")
-                  .toString()
-                  .slice(0, 120)}${
-                  (r.short_definition || r.Short_Definition || "").toString()
-                    .length > 120
-                    ? "…"
-                    : ""
-                }</td>
-                <td>${(r.long_definition || r.Long_Definition || "N/A")
-                  .toString()
-                  .slice(0, 180)}${
-                  (r.long_definition || r.Long_Definition || "").toString()
-                    .length > 180
-                    ? "…"
-                    : ""
-                }</td>
-                <td>${r.reference || r.Reference || "N/A"}</td>
-                <td>${r.ontology_branches || r.Ontology_Branches || "N/A"}</td>
-              </tr>
-            `
-              )
-              .join("")}
-          </tbody>
+        <div class="export-section" style="margin-bottom: 15px; text-align: right;">
+            <button id="exportBundleBtn" class="search-btn" style="background: #8e44ad;">
+                <span>📦</span> Export Bundle
+            </button>
+        </div>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Database</th>
+                    <th>System</th>
+                    <th>Code</th>
+                    <th>Term</th>
+                    <th>ICD-11 Code</th>
+                    <th>ICD-11 Term</th>
+                    <th>Short Definition</th>
+                    <th>Long Definition</th>
+                    <th>Reference</th>
+                    <th>Ontology Branches</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${enhancedResults.map(r => `
+                    <tr>
+                        <td>
+                            <span class="database-badge badge-${(r.sourcedatabase || r.source_database || 'unknown').toLowerCase()}">
+                                ${r.sourcedatabase || r.source_database || 'N/A'}
+                            </span>
+                        </td>
+                        <td>${r.system || r.System || 'N/A'}</td>
+                        <td>${r.code || r.Code || 'N/A'}</td>
+                        <td><strong>${r.term || r.Term || 'N/A'}</strong></td>
+                        <td><span class="${r.icd11_code !== 'N/A' ? 'icd11-mapping' : 'no-mapping'}">${r.icd11_code}</span></td>
+                        <td>${r.icd11_term}</td>
+                        <td title="${(r.shortdefinition || r.short_definition || r.ShortDefinition || 'N/A').toString()}">
+                            ${(r.shortdefinition || r.short_definition || r.ShortDefinition || 'N/A').toString().slice(0, 120)}${(r.shortdefinition || r.short_definition || r.ShortDefinition || '').toString().length > 120 ? '...' : ''}
+                        </td>
+                        <td title="${(r.longdefinition || r.long_definition || r.LongDefinition || 'N/A').toString()}">
+                            ${(r.longdefinition || r.long_definition || r.LongDefinition || 'N/A').toString().slice(0, 180)}${(r.longdefinition || r.long_definition || r.LongDefinition || '').toString().length > 180 ? '...' : ''}
+                        </td>
+                        <td>${r.reference || r.Reference || 'N/A'}</td>
+                        <td>${r.ontologybranches || r.ontology_branches || r.OntologyBranches || 'N/A'}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
         </table>
-      `;
+    `;
+
         tableContent.innerHTML = html;
+
+        // Add export bundle functionality
+        document.getElementById('exportBundleBtn').addEventListener('click', () => exportBundle(enhancedResults));
+
+        // Check for overflow after rendering
+        setTimeout(() => checkTableOverflow(), 100);
       }
+      // Export Bundle Functionality
+      function exportBundle(results) {
+        if (!results || results.length === 0) {
+          notify('No results to export', 'error');
+          return;
+        }
+
+        const bundle = {
+          resourceType: "Bundle",
+          id: `terminology-bundle-${Date.now()}`,
+          meta: {
+            lastUpdated: new Date().toISOString(),
+            profile: ["http://terminology.hub/fhir/Bundle/terminology-search-results"]
+          },
+          identifier: {
+            system: "http://terminology.hub/bundle-identifier",
+            value: `bundle-${Date.now()}`
+          },
+          type: "searchset",
+          timestamp: new Date().toISOString(),
+          total: results.length,
+          entry: results.map((result, index) => ({
+            fullUrl: `http://terminology.hub/terminology/${result.code || result.Code || index}`,
+            resource: {
+              resourceType: "CodeSystem",
+              id: `terminology-${index}`,
+              url: `http://terminology.hub/CodeSystem/${result.system || result.System}`,
+              identifier: [
+                {
+                  system: "http://terminology.hub/identifier",
+                  value: result.code || result.Code || `term-${index}`
+                }
+              ],
+              version: "1.0.0",
+              name: (result.system || result.System || 'Unknown').replace(/\s+/g, ''),
+              title: `${result.system || result.System} Terminology`,
+              status: "active",
+              experimental: false,
+              date: new Date().toISOString(),
+              publisher: "Medical Terminology Hub",
+              description: result.longdefinition || result.long_definition || result.LongDefinition || 'No description available',
+              concept: [
+                {
+                  code: result.code || result.Code || `term-${index}`,
+                  display: result.term || result.Term || 'Unknown Term',
+                  definition: result.shortdefinition || result.short_definition || result.ShortDefinition || 'No definition available',
+                  property: [
+                    {
+                      code: "source_database",
+                      valueString: result.sourcedatabase || result.source_database || 'Unknown'
+                    },
+                    {
+                      code: "reference",
+                      valueString: result.reference || result.Reference || 'No reference'
+                    },
+                    {
+                      code: "ontology_branches",
+                      valueString: result.ontologybranches || result.ontology_branches || result.OntologyBranches || 'No branches'
+                    },
+                    ...(result.icd11_code && result.icd11_code !== 'N/A' ? [{
+                      code: "icd11_mapping",
+                      valueString: `${result.icd11_code}: ${result.icd11_term}`
+                    }] : [])
+                  ]
+                }
+              ]
+            },
+            search: {
+              mode: "match",
+              score: 1.0
+            }
+          }))
+        };
+
+        // Create downloadable file
+        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/fhir+json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `terminology-bundle-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        notify(`FHIR Bundle exported with ${results.length} entries`, 'success');
+      }
+
+
+
+      // Export Bundle Functionality
+      function exportBundle(results) {
+        if (!results || results.length === 0) {
+          notify('No results to export', 'error');
+          return;
+        }
+
+        const bundle = {
+          resourceType: "Bundle",
+          id: `terminology-bundle-${Date.now()}`,
+          meta: {
+            lastUpdated: new Date().toISOString(),
+            profile: ["http://terminology.hub/fhir/Bundle/terminology-search-results"]
+          },
+          identifier: {
+            system: "http://terminology.hub/bundle-identifier",
+            value: `bundle-${Date.now()}`
+          },
+          type: "searchset",
+          timestamp: new Date().toISOString(),
+          total: results.length,
+          entry: results.map((result, index) => ({
+            fullUrl: `http://terminology.hub/terminology/${result.code || result.Code || index}`,
+            resource: {
+              resourceType: "CodeSystem",
+              id: `terminology-${index}`,
+              url: `http://terminology.hub/CodeSystem/${result.system || result.System}`,
+              identifier: [
+                {
+                  system: "http://terminology.hub/identifier",
+                  value: result.code || result.Code || `term-${index}`
+                }
+              ],
+              version: "1.0.0",
+              name: (result.system || result.System || 'Unknown').replace(/\s+/g, ''),
+              title: `${result.system || result.System} Terminology`,
+              status: "active",
+              experimental: false,
+              date: new Date().toISOString(),
+              publisher: "Medical Terminology Hub",
+              description: result.longdefinition || result.long_definition || result.LongDefinition || 'No description available',
+              concept: [
+                {
+                  code: result.code || result.Code || `term-${index}`,
+                  display: result.term || result.Term || 'Unknown Term',
+                  definition: result.shortdefinition || result.short_definition || result.ShortDefinition || 'No definition available',
+                  property: [
+                    {
+                      code: "source_database",
+                      valueString: result.sourcedatabase || result.source_database || 'Unknown'
+                    },
+                    {
+                      code: "reference",
+                      valueString: result.reference || result.Reference || 'No reference'
+                    },
+                    {
+                      code: "ontology_branches",
+                      valueString: result.ontologybranches || result.ontology_branches || result.OntologyBranches || 'No branches'
+                    },
+                    ...(result.icd11_code && result.icd11_code !== 'N/A' ? [{
+                      code: "icd11_mapping",
+                      valueString: `${result.icd11_code}: ${result.icd11_term}`
+                    }] : [])
+                  ]
+                }
+              ]
+            },
+            search: {
+              mode: "match",
+              score: 1.0
+            }
+          }))
+        };
+
+        // Create downloadable file
+        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/fhir+json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `terminology-bundle-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        notify(`FHIR Bundle exported with ${results.length} entries`, 'success');
+      }
+
 
       function setLoading(on) {
         if (on) {
@@ -1913,9 +2490,298 @@
         if (e.key === "Enter") performSearch();
       });
 
+      // ============ Bundle JSON Functionality ============
+
+      // JSON File upload functionality
+      jsonUploadArea.addEventListener('click', () => {
+        jsonFileInput.click();
+      });
+
+      jsonUploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        jsonUploadArea.classList.add('dragover');
+      });
+
+      jsonUploadArea.addEventListener('dragleave', () => {
+        jsonUploadArea.classList.remove('dragover');
+      });
+
+      jsonUploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        jsonUploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleJsonFileUpload(files[0]);
+        }
+      });
+
+      jsonFileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          handleJsonFileUpload(e.target.files[0]);
+        }
+      });
+
+      function handleJsonFileUpload(file) {
+        if (!file.name.toLowerCase().endsWith('.json')) {
+          notify('Please select a JSON file', 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          jsonTextarea.value = e.target.result;
+          parseJsonData();
+        };
+        reader.readAsText(file);
+      }
+
+      // JSON parsing and validation
+      jsonTextarea.addEventListener('input', parseJsonData);
+
+      function parseJsonData() {
+        const jsonText = jsonTextarea.value.trim();
+
+        if (!jsonText) {
+          jsonStats.style.display = 'none';
+          jsonPreview.style.display = 'none';
+          jsonBundleData = null;
+          return;
+        }
+
+        try {
+          const parsedData = JSON.parse(jsonText);
+
+          if (!Array.isArray(parsedData)) {
+            throw new Error('JSON must be an array of objects');
+          }
+
+          if (parsedData.length === 0) {
+            jsonStats.style.display = 'none';
+            jsonPreview.style.display = 'none';
+            jsonBundleData = null;
+            return;
+          }
+
+          const requiredFields = ['doctorname', 'system', 'term', 'shortdefinition'];
+          const firstRecord = parsedData[0];
+          const availableFields = Object.keys(firstRecord);
+
+          jsonBundleData = parsedData;
+
+          jsonRecordCount.textContent = `Records: ${parsedData.length}`;
+          jsonFieldCount.textContent = `Fields: ${availableFields.length}`;
+          jsonStats.style.display = 'flex';
+
+          createJsonPreview(parsedData.slice(0, 5));
+
+          const missingFields = requiredFields.filter(field => !availableFields.includes(field));
+          if (missingFields.length > 0) {
+            notify(`Warning: Missing recommended fields: ${missingFields.join(', ')}`, 'error');
+          } else {
+            notify('JSON bundle validated successfully', 'success');
+          }
+
+        } catch (error) {
+          notify(`Invalid JSON format: ${error.message}`, 'error');
+          jsonStats.style.display = 'none';
+          jsonPreview.style.display = 'none';
+          jsonBundleData = null;
+        }
+      }
+
+      function createJsonPreview(data) {
+        if (data.length === 0) {
+          jsonPreview.style.display = 'none';
+          return;
+        }
+
+        const fields = Object.keys(data[0]);
+        const table = `
+              <table>
+                  <thead>
+                      <tr>${fields.map(field => `<th>${field}</th>`).join('')}</tr>
+                  </thead>
+                  <tbody>
+                      ${data.map(record => `
+                          <tr>
+                              ${fields.map(field => `
+                                  <td title="${(record[field] || '').toString()}">
+                                      ${(record[field] || '').toString().slice(0, 50)}${(record[field] || '').toString().length > 50 ? '...' : ''}
+                                  </td>
+                              `).join('')}
+                          </tr>
+                      `).join('')}
+                      ${jsonBundleData && jsonBundleData.length > 5 ? `
+                          <tr>
+                              <td colspan="${fields.length}" style="text-align:center;font-style:italic;padding:12px;">
+                                  ... and ${jsonBundleData.length - 5} more records
+                              </td>
+                          </tr>
+                      ` : ''}
+                  </tbody>
+              </table>
+          `;
+
+        jsonPreview.innerHTML = table;
+        jsonPreview.style.display = 'block';
+      }
+
+      // Validate JSON button
+      validateJsonBtn.addEventListener('click', () => {
+        if (!jsonBundleData || jsonBundleData.length === 0) {
+          notify('No JSON data to validate', 'error');
+          return;
+        }
+
+        const requiredFields = ['doctorname', 'system', 'term', 'shortdefinition'];
+        let validRecords = 0;
+        let invalidRecords = 0;
+
+        jsonBundleData.forEach((record, index) => {
+          const missingFields = requiredFields.filter(field =>
+            !record[field] || record[field].toString().trim() === ''
+          );
+
+          if (missingFields.length === 0) {
+            validRecords++;
+          } else {
+            invalidRecords++;
+          }
+        });
+
+        if (invalidRecords === 0) {
+          notify(`All ${validRecords} records are valid and ready for upload`, 'success');
+        } else {
+          notify(`${validRecords} valid, ${invalidRecords} invalid records found`, 'error');
+        }
+      });
+
+      // Upload JSON to database
+      uploadJsonBtn.addEventListener('click', async () => {
+        if (!jsonBundleData || jsonBundleData.length === 0) {
+          notify('No JSON data to upload', 'error');
+          return;
+        }
+
+        const requiredFields = ['doctorname', 'system', 'term', 'shortdefinition'];
+        const invalidRecords = jsonBundleData.filter((record, index) => {
+          return requiredFields.some(field =>
+            !record[field] || record[field].toString().trim() === ''
+          );
+        });
+
+        if (invalidRecords.length > 0) {
+          notify(`${invalidRecords.length} records missing required fields (doctorname, system, term, shortdefinition)`, 'error');
+          return;
+        }
+
+        uploadJsonBtn.disabled = true;
+        uploadJsonBtn.innerHTML = `<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block;"></span> Uploading...`;
+
+        try {
+          let successCount = 0;
+          let errorCount = 0;
+
+          for (const record of jsonBundleData) {
+            const payload = {
+              doctor_name: (record.doctorname || '').toString().trim(),
+              system: (record.system || '').toString().trim(),
+              code: (record.code || '').toString().trim(),
+              term: (record.term || '').toString().trim(),
+              short_definition: (record.shortdefinition || '').toString().trim(),
+              long_definition: (record.longdefinition || '').toString().trim(),
+              reference: (record.reference || '').toString().trim(),
+              ontology_branches: (record.ontologybranches || '').toString().trim(),
+            };
+
+            try {
+              const response = await fetch(`${API_BASE}/api/add-terminology`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+              });
+
+              if (response.ok) {
+                successCount++;
+              } else {
+                errorCount++;
+              }
+            } catch (error) {
+              errorCount++;
+            }
+          }
+
+          if (successCount > 0) {
+            notify(`Successfully uploaded ${successCount} terminology records`, 'success');
+          }
+          if (errorCount > 0) {
+            notify(`${errorCount} records failed to upload`, 'error');
+          } else if (successCount === 0) {
+            notify('Failed to upload any records', 'error');
+          }
+
+        } catch (error) {
+          notify('Network error during upload', 'error');
+          console.error(error);
+        } finally {
+          uploadJsonBtn.disabled = false;
+          uploadJsonBtn.innerHTML = '<span>📤</span> Add to Database';
+        }
+      });
+
+      // Load sample JSON
+      sampleJsonBtn.addEventListener('click', () => {
+        const sampleJson = [
+          {
+            "doctorname": "Dr. Rajesh Kumar",
+            "system": "Ayurveda",
+            "code": "AYU001",
+            "term": "Vata Dosha",
+            "shortdefinition": "Primary life force responsible for movement and circulation",
+            "longdefinition": "Vata is one of the three fundamental doshas in Ayurvedic medicine, governing bodily functions related to movement, circulation, breathing, and nervous system activity. It is composed of air and space elements.",
+            "reference": "Charaka Samhita",
+            "ontologybranches": "Tridosha Theory"
+          },
+          {
+            "doctorname": "Dr. Priya Sharma",
+            "system": "Ayurveda",
+            "code": "AYU002",
+            "term": "Pitta Dosha",
+            "shortdefinition": "Bio-energy responsible for digestion and metabolism",
+            "longdefinition": "Pitta dosha governs all metabolic processes, digestion, absorption, assimilation, nutrition, temperature regulation, and energy production. It consists of fire and water elements.",
+            "reference": "Sushruta Samhita",
+            "ontologybranches": "Tridosha Theory"
+          },
+          {
+            "doctorname": "Dr. Anand Patel",
+            "system": "Unani",
+            "code": "UNA001",
+            "term": "Mizaj",
+            "shortdefinition": "Constitutional temperament in Unani medicine",
+            "longdefinition": "Mizaj refers to the individual constitutional makeup determined by the balance of four humors (Akhlat). It determines a person's physical and mental characteristics, disease susceptibility, and treatment response.",
+            "reference": "Canon of Medicine - Ibn Sina",
+            "ontologybranches": "Humoral Theory"
+          }
+        ];
+
+        jsonTextarea.value = JSON.stringify(sampleJson, null, 2);
+        parseJsonData();
+        notify('Sample JSON bundle loaded', 'success');
+      });
+
+      // Clear JSON
+      clearJsonBtn.addEventListener('click', () => {
+        jsonTextarea.value = '';
+        jsonBundleData = null;
+        jsonStats.style.display = 'none';
+        jsonPreview.style.display = 'none';
+        notify('JSON data cleared', 'success');
+      });
+
       // ============ CSV Functionality ============
 
-      // File drag and drop
       csvUploadArea.addEventListener("click", () => csvFileInput.click());
       csvUploadArea.addEventListener("dragover", (e) => {
         e.preventDefault();
@@ -1949,7 +2815,6 @@
         reader.readAsText(file);
       }
 
-      // CSV parsing and preview
       csvTextarea.addEventListener("input", parseCsvData);
 
       function parseCsvData() {
@@ -1983,12 +2848,10 @@
             return obj;
           });
 
-          // Update stats
           rowCount.textContent = `Rows: ${csvData.length}`;
           colCount.textContent = `Columns: ${headers.length}`;
           csvStats.style.display = "flex";
 
-          // Create preview
           createCsvPreview(headers, csvData.slice(0, 5));
         } catch (error) {
           notify("Error parsing CSV data", "error");
@@ -2003,42 +2866,37 @@
         }
 
         const table = `
-        <table>
-          <thead>
-            <tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
-          </thead>
-          <tbody>
-            ${data
-              .map(
-                (row) => `
-              <tr>${headers
-                .map(
-                  (h) =>
-                    `<td>${(row[h] || "").toString().slice(0, 50)}${
-                      (row[h] || "").toString().length > 50 ? "..." : ""
-                    }</td>`
-                )
-                .join("")}</tr>
-            `
-              )
-              .join("")}
-            ${
-              csvData.length > 5
-                ? `<tr><td colspan="${
-                    headers.length
-                  }" style="text-align:center;font-style:italic;">... and ${
-                    csvData.length - 5
-                  } more rows</td></tr>`
-                : ""
-            }
-          </tbody>
-        </table>
-      `;
+          <table>
+            <thead>
+              <tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+            </thead>
+            <tbody>
+              ${data
+            .map(
+              (row) => `
+                <tr>${headers
+                  .map(
+                    (h) =>
+                      `<td>${(row[h] || "").toString().slice(0, 50)}${(row[h] || "").toString().length > 50 ? "..." : ""
+                      }</td>`
+                  )
+                  .join("")}</tr>
+              `
+            )
+            .join("")}
+              ${csvData.length > 5
+            ? `<tr><td colspan="${headers.length
+            }" style="text-align:center;font-style:italic;">... and ${csvData.length - 5
+            } more rows</td></tr>`
+            : ""
+          }
+            </tbody>
+          </table>
+        `;
         csvPreview.innerHTML = table;
         csvPreview.style.display = "block";
       }
 
-      // Convert to JSON
       convertJsonBtn.addEventListener("click", () => {
         if (csvData.length === 0) {
           notify("No CSV data to convert", "error");
@@ -2063,7 +2921,6 @@
         notify(`Converted ${jsonData.length} records to JSON`, "success");
       });
 
-      // Download JSON
       downloadJsonBtn.addEventListener("click", () => {
         if (!jsonData) {
           notify("No JSON data to download", "error");
@@ -2076,9 +2933,8 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `medical_terminology_${
-          new Date().toISOString().split("T")[0]
-        }.json`;
+        a.download = `medical_terminology_${new Date().toISOString().split("T")[0]
+          }.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -2086,7 +2942,6 @@
         notify("JSON file downloaded successfully", "success");
       });
 
-      // Upload to database
       uploadCsvBtn.addEventListener("click", async () => {
         if (csvData.length === 0) {
           notify("No CSV data to upload", "error");
@@ -2106,10 +2961,10 @@
               row[field.charAt(0).toUpperCase() + field.slice(1)] ||
               row[field.replace(/_/g, " ")] ||
               row[
-                field
-                  .split("_")
-                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                  .join(" ")
+              field
+                .split("_")
+                .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                .join(" ")
               ];
             return !value || value.toString().trim() === "";
           });
@@ -2202,7 +3057,6 @@
         }
       });
 
-      // Load sample CSV
       sampleCsvBtn.addEventListener("click", () => {
         const sampleCsv = `doctor_name,system,code,term,short_definition,long_definition,reference,ontology_branches
 Dr. Rajesh Kumar,Ayurveda,AYU001,Vata Dosha,"Primary life force responsible for movement and circulation","Vata is one of the three fundamental doshas in Ayurvedic medicine, governing bodily functions related to movement, circulation, breathing, and nervous system activity. It is composed of air and space elements.",Charaka Samhita,Tridosha Theory
@@ -2216,7 +3070,6 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
         notify("Sample CSV data loaded", "success");
       });
 
-      // Clear CSV
       clearCsvBtn.addEventListener("click", () => {
         csvTextarea.value = "";
         csvData = [];
@@ -2241,6 +3094,37 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
         });
       });
 
+      // Add keyboard navigation for horizontal scrolling
+      document.addEventListener("keydown", function (e) {
+        const tableContainer = document.querySelector(".table-container");
+        if (
+          tableContainer &&
+          (e.target.closest(".table-container") ||
+            document.activeElement === tableContainer)
+        ) {
+          if (e.key === "ArrowLeft") {
+            tableContainer.scrollLeft -= 50;
+            e.preventDefault();
+          } else if (e.key === "ArrowRight") {
+            tableContainer.scrollLeft += 50;
+            e.preventDefault();
+          }
+        }
+      });
+
+      // Add mouse wheel horizontal scrolling support (Shift + wheel)
+      document.querySelector('.table-container')?.addEventListener('wheel', function (e) {
+        if (e.shiftKey) {
+          e.preventDefault();
+          this.scrollLeft += e.deltaY;
+        }
+      });
+
+      // Check overflow on window resize
+      window.addEventListener('resize', function () {
+        setTimeout(checkTableOverflow, 100);
+      });
+
       // API health check on load
       window.addEventListener("load", async () => {
         try {
@@ -2256,33 +3140,9 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
           );
         }
       });
+      // ============ FHIR ValueSet and ConceptMap Operations ============
 
-      // Debug function for testing API calls
-      window.testAPI = async function () {
-        console.log("🧪 Testing API endpoints...");
-
-        try {
-          // Test health endpoint
-          const healthRes = await fetch(`${API_BASE}/api/health`);
-          console.log(
-            "Health check:",
-            healthRes.status,
-            await healthRes.text()
-          );
-
-          // Test search endpoint
-          const searchRes = await fetch(`${API_BASE}/api/search?term=test`);
-          console.log("Search test:", searchRes.status, await searchRes.text());
-
-          // Test databases endpoint
-          const dbRes = await fetch(`${API_BASE}/api/databases`);
-          console.log("Databases:", dbRes.status, await dbRes.text());
-        } catch (err) {
-          console.error("API Debug Error:", err);
-        }
-      };
-
-      // FHIR ValueSet and ConceptMap Operations
+      // FHIR Elements
       const valueSetSelect = document.getElementById("valueSetSelect");
       const expandBtn = document.getElementById("expandBtn");
       const validateBtn = document.getElementById("validateBtn");
@@ -2304,10 +3164,11 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
         try {
           expandBtn.disabled = true;
           expandBtn.innerHTML =
-            '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Expanding...';
+            '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></span> Expanding...';
 
+          // Call your API endpoint for ValueSet expansion
           const response = await fetch(
-            `${API_BASE}/fhir/ValueSet/$expand?identifier=${selectedValueSet}`,
+            `${API_BASE}/fhir/ValueSet/$expand?url=${encodeURIComponent(selectedValueSet)}`,
             {
               method: "GET",
               headers: {
@@ -2324,37 +3185,82 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
           const data = await response.json();
           renderValueSetExpansion(data);
           valueSetResults.style.display = "block";
-          notify(
-            `Expanded ValueSet: ${
-              data.expansion?.contains?.length || 0
-            } concepts`,
-            "success"
-          );
+
+          const conceptCount = data.expansion?.contains?.length || 0;
+          notify(`Expanded ValueSet: ${conceptCount} concepts found`, "success");
+
         } catch (err) {
           console.error("ValueSet $expand failed:", err);
           notify(`ValueSet expansion failed: ${err.message}`, "error");
-          valueSetContent.innerHTML = `<p style="color: #e74c3c;">Error: ${err.message}</p>`;
+
+          // Show mock data for demonstration
+          const mockData = {
+            resourceType: "ValueSet",
+            id: selectedValueSet,
+            url: `http://localhost:5000/fhir/ValueSet/${selectedValueSet}`,
+            expansion: {
+              timestamp: new Date().toISOString(),
+              total: 5,
+              contains: [
+                {
+                  system: "http://ayurveda-terminology.org",
+                  code: "AYU001",
+                  display: "Vata Dosha",
+                  definition: "Primary life force responsible for movement"
+                },
+                {
+                  system: "http://ayurveda-terminology.org",
+                  code: "AYU002",
+                  display: "Pitta Dosha",
+                  definition: "Bio-energy responsible for digestion"
+                },
+                {
+                  system: "http://ayurveda-terminology.org",
+                  code: "AYU003",
+                  display: "Kapha Dosha",
+                  definition: "Structural principle of the body"
+                },
+                {
+                  system: "http://siddha-terminology.org",
+                  code: "SID001",
+                  display: "Vali",
+                  definition: "Life force in Siddha medicine"
+                },
+                {
+                  system: "http://unani-terminology.org",
+                  code: "UNA001",
+                  display: "Mizaj",
+                  definition: "Constitutional temperament"
+                }
+              ]
+            }
+          };
+
+          renderValueSetExpansion(mockData);
           valueSetResults.style.display = "block";
+          notify("Showing demo data - API endpoint not available", "error");
+
         } finally {
           expandBtn.disabled = false;
           expandBtn.innerHTML = "<span>🔍</span> $expand";
         }
       });
 
-      // ValueSet $validate-code operation
+      // ValueSet $validate-code operation  
       validateBtn.addEventListener("click", async () => {
         const code = validateCodeInput.value.trim();
         const selectedValueSet = valueSetSelect.value;
 
         if (!code) {
           notify("Please enter a code to validate", "error");
+          validateCodeInput.focus();
           return;
         }
 
         try {
           validateBtn.disabled = true;
           validateBtn.innerHTML =
-            '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Validating...';
+            '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></span> Validating...';
 
           const response = await fetch(
             `${API_BASE}/fhir/ValueSet/$validate-code`,
@@ -2387,9 +3293,35 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
           const data = await response.json();
           renderValidationResult(data, code);
           valueSetResults.style.display = "block";
+
         } catch (err) {
           console.error("ValueSet $validate-code failed:", err);
-          notify(`Code validation failed: ${err.message}`, "error");
+
+          // Show mock validation result
+          const mockResult = {
+            resourceType: "Parameters",
+            parameter: [
+              {
+                name: "result",
+                valueBoolean: code.toLowerCase().includes("ayu") || code.toLowerCase().includes("001")
+              },
+              {
+                name: "message",
+                valueString: code.toLowerCase().includes("ayu") || code.toLowerCase().includes("001")
+                  ? `Code '${code}' is valid in the selected ValueSet`
+                  : `Code '${code}' is not found in the selected ValueSet`
+              },
+              {
+                name: "display",
+                valueString: code.toLowerCase().includes("ayu") ? "Ayurvedic Term" : "Unknown Term"
+              }
+            ]
+          };
+
+          renderValidationResult(mockResult, code);
+          valueSetResults.style.display = "block";
+          notify("Showing demo validation - API endpoint not available", "error");
+
         } finally {
           validateBtn.disabled = false;
           validateBtn.innerHTML = "<span>✅</span> $validate-code";
@@ -2404,13 +3336,14 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
 
         if (!code) {
           notify("Please enter a code to translate", "error");
+          translateCodeInput.focus();
           return;
         }
 
         try {
           translateBtn.disabled = true;
           translateBtn.innerHTML =
-            '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Translating...';
+            '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></span> Translating...';
 
           const response = await fetch(
             `${API_BASE}/fhir/ConceptMap/$translate`,
@@ -2424,20 +3357,16 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
                 resourceType: "Parameters",
                 parameter: [
                   {
-                    name: "url",
-                    valueUri: `http://localhost:5000/fhir/ConceptMap/${sourceSystem}-to-${targetSystem}`,
+                    name: "system",
+                    valueUri: getSystemUri(sourceSystem),
                   },
                   {
                     name: "code",
                     valueCode: code,
                   },
                   {
-                    name: "system",
-                    valueUri: `http://localhost:5000/fhir/CodeSystem/${sourceSystem}`,
-                  },
-                  {
-                    name: "targetsystem",
-                    valueUri: `http://localhost:5000/fhir/CodeSystem/${targetSystem}`,
+                    name: "target",
+                    valueUri: getSystemUri(targetSystem),
                   },
                 ],
               }),
@@ -2451,603 +3380,304 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
           const data = await response.json();
           renderTranslationResult(data, code, sourceSystem, targetSystem);
           conceptMapResults.style.display = "block";
+
         } catch (err) {
           console.error("ConceptMap $translate failed:", err);
-          notify(`Code translation failed: ${err.message}`, "error");
+
+          // Show mock translation result
+          const mockTranslation = {
+            resourceType: "Parameters",
+            parameter: [
+              {
+                name: "result",
+                valueBoolean: true
+              },
+              {
+                name: "match",
+                part: [
+                  {
+                    name: "equivalence",
+                    valueCode: "equivalent"
+                  },
+                  {
+                    name: "concept",
+                    valueCoding: {
+                      system: getSystemUri(targetSystem),
+                      code: generateMockTargetCode(code, sourceSystem, targetSystem),
+                      display: generateMockTargetDisplay(code, sourceSystem, targetSystem)
+                    }
+                  },
+                  {
+                    name: "source",
+                    valueUri: `http://localhost:5000/fhir/ConceptMap/${sourceSystem}-to-${targetSystem}`
+                  }
+                ]
+              }
+            ]
+          };
+
+          renderTranslationResult(mockTranslation, code, sourceSystem, targetSystem);
+          conceptMapResults.style.display = "block";
+          notify("Showing demo translation - API endpoint not available", "error");
+
         } finally {
           translateBtn.disabled = false;
           translateBtn.innerHTML = "<span>🔄</span> $translate";
         }
       });
 
-      // Render ValueSet expansion results
-      function renderValueSetExpansion(valueSet) {
-        if (!valueSet.expansion || !valueSet.expansion.contains) {
-          valueSetContent.innerHTML =
-            "<p>No concepts found in ValueSet expansion.</p>";
+      // Helper functions for FHIR operations
+      function getSystemUri(system) {
+        const systemUris = {
+          ayurveda: "http://ayurveda-terminology.org",
+          siddha: "http://siddha-terminology.org",
+          unani: "http://unani-terminology.org",
+          icd11: "http://id.who.int/icd/release/11/mms",
+          snomed: "http://snomed.info/sct"
+        };
+        return systemUris[system] || `http://terminology.hl7.org/CodeSystem/${system}`;
+      }
+
+      function generateMockTargetCode(sourceCode, sourceSystem, targetSystem) {
+        if (targetSystem === "icd11") {
+          return `MG30.${Math.floor(Math.random() * 99).toString().padStart(2, '0')}`;
+        } else if (targetSystem === "snomed") {
+          return `${Math.floor(Math.random() * 900000) + 100000}007`;
+        }
+        return `${targetSystem.toUpperCase()}${Math.floor(Math.random() * 900) + 100}`;
+      }
+
+      function generateMockTargetDisplay(sourceCode, sourceSystem, targetSystem) {
+        const mockMappings = {
+          ayurveda: {
+            icd11: "Constitutional medicine disorder",
+            snomed: "Traditional medicine finding"
+          },
+          siddha: {
+            icd11: "Traditional Tamil medicine condition",
+            snomed: "Siddha medicine finding"
+          },
+          unani: {
+            icd11: "Greco-Arabic medicine disorder",
+            snomed: "Unani medicine finding"
+          }
+        };
+
+        return mockMappings[sourceSystem]?.[targetSystem] || `Mapped term for ${sourceCode}`;
+      }
+
+      function renderValueSetExpansion(data) {
+        if (!data.expansion || !data.expansion.contains) {
+          valueSetContent.innerHTML = `
+      <div style="color: #e74c3c; padding: 20px; text-align: center;">
+        <h4>No concepts found in expansion</h4>
+        <p>The ValueSet expansion returned no results.</p>
+      </div>
+    `;
           return;
         }
 
-        const concepts = valueSet.expansion.contains;
+        const concepts = data.expansion.contains;
         const html = `
-          <div style="margin-bottom: 15px;">
-            <strong>ValueSet:</strong> ${
-              valueSet.title || valueSet.name || "Unknown"
-            }<br>
-            <strong>Total Concepts:</strong> ${concepts.length}<br>
-            <strong>Expansion Timestamp:</strong> ${
-              valueSet.expansion.timestamp || "Unknown"
-            }
-          </div>
-          <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-              <tr style="background: #f8f9fa;">
-                <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Code</th>
-                <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Display</th>
-                <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">System</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${concepts
-                .map(
-                  (concept) => `
-                <tr>
-                  <td style="padding: 8px; border: 1px solid #ddd;"><code>${
-                    concept.code || "N/A"
-                  }</code></td>
-                  <td style="padding: 8px; border: 1px solid #ddd;">${
-                    concept.display || "N/A"
-                  }</td>
-                  <td style="padding: 8px; border: 1px solid #ddd; font-size: 12px;">${
-                    concept.system || "N/A"
-                  }</td>
-                </tr>
-              `
-                )
-                .join("")}
-            </tbody>
-          </table>
-        `;
+    <div style="margin-bottom: 15px;">
+      <strong>ValueSet:</strong> ${data.url || 'Unknown'}<br>
+      <strong>Total Concepts:</strong> ${data.expansion.total || concepts.length}<br>
+      <strong>Timestamp:</strong> ${new Date(data.expansion.timestamp).toLocaleString()}
+    </div>
+    
+    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px;">
+      <table style="width: 100%; font-size: 12px;">
+        <thead>
+          <tr style="background: #f8f9fa;">
+            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Code</th>
+            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Display</th>  
+            <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">System</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${concepts.map(concept => `
+            <tr>
+              <td style="padding: 6px; border-bottom: 1px solid #eee;">
+                <code style="background: #f1f3f4; padding: 2px 4px; border-radius: 3px;">${concept.code}</code>
+              </td>
+              <td style="padding: 6px; border-bottom: 1px solid #eee; font-weight: 500;">${concept.display || 'N/A'}</td>
+              <td style="padding: 6px; border-bottom: 1px solid #eee; font-size: 10px; color: #666;">
+                ${concept.system ? concept.system.split('/').pop() : 'N/A'}
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
 
         valueSetContent.innerHTML = html;
       }
 
-      // Render validation result
-      function renderValidationResult(result, originalCode) {
-        const isValid = result.parameter?.find(
-          (p) => p.name === "result"
-        )?.valueBoolean;
-        const message = result.parameter?.find(
-          (p) => p.name === "message"
-        )?.valueString;
-        const display = result.parameter?.find(
-          (p) => p.name === "display"
-        )?.valueString;
+      function renderValidationResult(data, code) {
+        const parameters = data.parameter || [];
+        const resultParam = parameters.find(p => p.name === "result");
+        const messageParam = parameters.find(p => p.name === "message");
+        const displayParam = parameters.find(p => p.name === "display");
+
+        const isValid = resultParam?.valueBoolean === true;
+        const message = messageParam?.valueString || "No validation message";
+        const display = displayParam?.valueString || "";
 
         const html = `
-          <div class="mapping-result" style="border-left-color: ${
-            isValid ? "#27ae60" : "#e74c3c"
-          };">
-            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-              <span style="font-size: 20px; margin-right: 10px;">${
-                isValid ? "✅" : "❌"
-              }</span>
-              <strong>Validation Result for Code: <code>${originalCode}</code></strong>
-            </div>
-            <div><strong>Valid:</strong> ${isValid ? "Yes" : "No"}</div>
-            ${display ? `<div><strong>Display:</strong> ${display}</div>` : ""}
-            ${message ? `<div><strong>Message:</strong> ${message}</div>` : ""}
-          </div>
-        `;
+    <div style="padding: 20px; border-radius: 8px; ${isValid ? 'background: #d4edda; border: 1px solid #c3e6cb;' : 'background: #f8d7da; border: 1px solid #f5c6cb;'}">
+      <h4 style="margin: 0 0 10px 0; color: ${isValid ? '#155724' : '#721c24'};">
+        ${isValid ? '✅ Code Valid' : '❌ Code Invalid'}
+      </h4>
+      <p style="margin: 0 0 10px 0;"><strong>Code:</strong> <code>${code}</code></p>
+      ${display ? `<p style="margin: 0 0 10px 0;"><strong>Display:</strong> ${display}</p>` : ''}
+      <p style="margin: 0; color: ${isValid ? '#155724' : '#721c24'};">${message}</p>
+    </div>
+  `;
 
         valueSetContent.innerHTML = html;
-        notify(
-          `Code ${originalCode} is ${isValid ? "valid" : "invalid"}`,
-          isValid ? "success" : "error"
-        );
       }
 
-      // Render translation result
-      function renderTranslationResult(
-        result,
-        originalCode,
-        sourceSystem,
-        targetSystem
-      ) {
-        const matches =
-          result.parameter?.filter((p) => p.name === "match") || [];
+      function renderTranslationResult(data, sourceCode, sourceSystem, targetSystem) {
+        const parameters = data.parameter || [];
+        const resultParam = parameters.find(p => p.name === "result");
+        const matchParam = parameters.find(p => p.name === "match");
 
-        if (matches.length === 0) {
+        const hasResult = resultParam?.valueBoolean === true;
+
+        if (!hasResult || !matchParam) {
           conceptMapContent.innerHTML = `
-            <div class="mapping-result" style="border-left-color: #e74c3c;">
-              <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                <span style="font-size: 20px; margin-right: 10px;">❌</span>
-                <strong>No Translation Found</strong>
-              </div>
-              <div>No mapping found for code <code>${originalCode}</code> from ${sourceSystem} to ${targetSystem}</div>
-            </div>
-          `;
-          notify(`No translation found for ${originalCode}`, "error");
+      <div style="padding: 20px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px;">
+        <h4 style="margin: 0 0 10px 0; color: #721c24;">❌ No Translation Found</h4>
+        <p style="margin: 0;">No mapping exists for code <code>${sourceCode}</code> from ${sourceSystem} to ${targetSystem}.</p>
+      </div>
+    `;
           return;
         }
 
-        const html = `
-          <div style="margin-bottom: 15px;">
-            <strong>Source:</strong> <code>${originalCode}</code> (${sourceSystem})<br>
-            <strong>Target System:</strong> ${targetSystem}<br>
-            <strong>Matches Found:</strong> ${matches.length}
-          </div>
-          ${matches
-            .map((match, index) => {
-              const concept = match.part?.find(
-                (p) => p.name === "concept"
-              )?.valueCoding;
-              const equivalence =
-                match.part?.find((p) => p.name === "relationship")?.valueCode ||
-                "equivalent";
-              const source = match.part?.find(
-                (p) => p.name === "source"
-              )?.valueUri;
+        const matchParts = matchParam.part || [];
+        const equivalence = matchParts.find(p => p.name === "equivalence")?.valueCode || "unknown";
+        const concept = matchParts.find(p => p.name === "concept")?.valueCoding;
+        const source = matchParts.find(p => p.name === "source")?.valueUri;
 
-              return `
-              <div class="mapping-result">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                  <strong>Match ${index + 1}</strong>
-                  <span class="equivalence-badge equiv-${equivalence}">${equivalence}</span>
-                </div>
-                <div><strong>Target Code:</strong> <code>${
-                  concept?.code || "N/A"
-                }</code></div>
-                <div><strong>Target Display:</strong> ${
-                  concept?.display || "N/A"
-                }</div>
-                <div><strong>Target System:</strong> <span style="font-size: 12px;">${
-                  concept?.system || "N/A"
-                }</span></div>
-                ${
-                  source
-                    ? `<div><strong>Source:</strong> <span style="font-size: 12px;">${source}</span></div>`
-                    : ""
-                }
-              </div>
-            `;
-            })
-            .join("")}
-        `;
+        const equivalenceBadge = getEquivalenceBadge(equivalence);
+
+        const html = `
+    <div style="padding: 20px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px;">
+      <h4 style="margin: 0 0 15px 0; color: #155724;">🔄 Translation Found</h4>
+      
+      <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+        <div>
+          <strong>Source:</strong> 
+          <code style="background: #f1f3f4; padding: 2px 6px; border-radius: 3px;">${sourceCode}</code>
+          <span style="color: #666; font-size: 12px;">(${sourceSystem})</span>
+        </div>
+        <div>
+          <strong>Target:</strong> 
+          <code style="background: #f1f3f4; padding: 2px 6px; border-radius: 3px;">${concept?.code || 'N/A'}</code>
+          <span style="color: #666; font-size: 12px;">(${targetSystem})</span>
+        </div>
+        ${concept?.display ? `<div><strong>Display:</strong> ${concept.display}</div>` : ''}
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <strong>Equivalence:</strong>
+        ${equivalenceBadge}
+      </div>
+      
+      ${source ? `<div style="font-size: 12px; color: #666;"><strong>ConceptMap:</strong> ${source}</div>` : ''}
+    </div>
+  `;
 
         conceptMapContent.innerHTML = html;
-        notify(
-          `Found ${matches.length} translation(s) for ${originalCode}`,
-          "success"
-        );
-      } // Enhanced horizontal scroll functionality for search results and CSV sections
-
-      // Function to ensure horizontal scroll for wide tables
-      function enableHorizontalScroll() {
-        // Add horizontal scroll for search result table container
-        const tableContainer = document.querySelector(".table-container");
-        if (tableContainer) {
-          tableContainer.style.overflowX = "auto";
-          tableContainer.style.overflowY = "auto";
-          tableContainer.style.maxHeight = "600px";
-          tableContainer.style.border = "1px solid #e9ecef";
-          tableContainer.style.borderRadius = "8px";
-        }
-
-        // Add horizontal scroll for CSV preview
-        const csvPreview = document.getElementById("csvPreview");
-        if (csvPreview) {
-          csvPreview.style.overflowX = "auto";
-          csvPreview.style.overflowY = "auto";
-          csvPreview.style.maxHeight = "400px";
-          csvPreview.style.border = "1px solid #ddd";
-          csvPreview.style.borderRadius = "8px";
-        }
-
-        // Ensure tables don't break layout
-        const tables = document.querySelectorAll("table");
-        tables.forEach((table) => {
-          table.style.minWidth = "100%";
-          table.style.whiteSpace = "nowrap";
-
-          // Make table cells more readable with horizontal scroll
-          const cells = table.querySelectorAll("td, th");
-          cells.forEach((cell) => {
-            cell.style.minWidth = "120px"; // Minimum column width
-            cell.style.maxWidth = "250px"; // Maximum column width
-            cell.style.wordWrap = "break-word";
-            cell.style.whiteSpace = "normal"; // Allow text wrapping in cells
-          });
-        });
       }
 
-      // Function to create custom scrollbar styling
-      function addScrollbarStyles() {
-        const style = document.createElement("style");
-        style.textContent = `
-    /* Custom scrollbar for webkit browsers */
-    .table-container::-webkit-scrollbar,
-    .csv-preview::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
+      function getEquivalenceBadge(equivalence) {
+        const badges = {
+          equivalent: '<span class="equivalence-badge equiv-equivalent">Equivalent</span>',
+          narrower: '<span class="equivalence-badge equiv-narrower">Narrower</span>',
+          broader: '<span class="equivalence-badge equiv-broader">Broader</span>',
+          related: '<span class="equivalence-badge equiv-related">Related</span>',
+          unmatched: '<span class="equivalence-badge" style="background: #f8d7da; color: #721c24;">Unmatched</span>'
+        };
 
-    .table-container::-webkit-scrollbar-track,
-    .csv-preview::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-
-    .table-container::-webkit-scrollbar-thumb,
-    .csv-preview::-webkit-scrollbar-thumb {
-      background: #27ae60;
-      border-radius: 4px;
-    }
-
-    .table-container::-webkit-scrollbar-thumb:hover,
-    .csv-preview::-webkit-scrollbar-thumb:hover {
-      background: #219a52;
-    }
-
-    /* Ensure horizontal scroll indicators */
-    .scroll-indicator {
-      position: relative;
-    }
-
-    .scroll-indicator::after {
-      content: '← Scroll horizontally to see more columns →';
-      position: absolute;
-      bottom: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 12px;
-      color: #666;
-      display: none;
-    }
-
-    .scroll-indicator.has-overflow::after {
-      display: block;
-    }
-  `;
-        document.head.appendChild(style);
+        return badges[equivalence] || '<span class="equivalence-badge" style="background: #e2e3e5; color: #495057;">Unknown</span>';
       }
+      document.addEventListener('DOMContentLoaded', function () {
+        const resizer = document.getElementById('dragMe');
+        const leftSide = document.querySelector('.table-section');
+        const rightSide = document.querySelector('.json-section');
+        const container = document.querySelector('.results-container');
 
-      // Function to detect if content overflows horizontally
-      function checkForOverflow(container) {
-        if (container) {
-          const hasHorizontalScrollbar =
-            container.scrollWidth > container.clientWidth;
-          if (hasHorizontalScrollbar) {
-            container.classList.add("has-overflow", "scroll-indicator");
-          } else {
-            container.classList.remove("has-overflow", "scroll-indicator");
+        let isResizing = false;
+
+        // Mouse events for desktop
+        resizer.addEventListener('mousedown', initResize);
+        document.addEventListener('mousemove', doResize);
+        document.addEventListener('mouseup', stopResize);
+
+        // Touch events for mobile
+        resizer.addEventListener('touchstart', initResize);
+        document.addEventListener('touchmove', doResize);
+        document.addEventListener('touchend', stopResize);
+
+        function initResize(e) {
+          isResizing = true;
+          document.body.style.cursor = 'ew-resize';
+          document.body.style.userSelect = 'none';
+
+          // Prevent text selection during resize
+          e.preventDefault();
+        }
+
+        function doResize(e) {
+          if (!isResizing) return;
+
+          e.preventDefault();
+
+          const containerRect = container.getBoundingClientRect();
+          const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+
+          if (!clientX) return;
+
+          const offsetX = clientX - containerRect.left;
+          const containerWidth = containerRect.width;
+
+          // Calculate percentages
+          const leftWidth = (offsetX / containerWidth) * 100;
+          const rightWidth = 100 - leftWidth;
+
+          // Set minimum widths (30% each side)
+          if (leftWidth < 30 || rightWidth < 30) return;
+
+          // Apply the new widths
+          leftSide.style.flex = `0 0 ${leftWidth}%`;
+          rightSide.style.flex = `0 0 ${rightWidth}%`;
+        }
+
+        function stopResize() {
+          isResizing = false;
+          document.body.style.cursor = 'default';
+          document.body.style.userSelect = 'auto';
+        }
+
+        // Handle window resize to maintain proportions
+        window.addEventListener('resize', function () {
+          // Reset to default if window becomes too small
+          if (window.innerWidth < 768) {
+            leftSide.style.flex = '1';
+            rightSide.style.flex = '1';
           }
-        }
-      }
+        });
 
-      // Enhanced CSV preview creation with horizontal scroll support
-      function createCsvPreview(headers, data) {
-        if (data.length === 0) {
-          csvPreview.style.display = "none";
-          return;
-        }
-
-        const table = `
-    <table style="width: 100%; border-collapse: collapse; min-width: ${
-      headers.length * 150
-    }px;">
-      <thead>
-        <tr>${headers
-          .map(
-            (h) =>
-              `<th style="padding: 8px; border: 1px solid #ddd; background: #34495e; color: #fff; min-width: 120px; position: sticky; top: 0; z-index: 10;">${h}</th>`
-          )
-          .join("")}</tr>
-      </thead>
-      <tbody>
-        ${data
-          .map(
-            (row) => `
-          <tr>${headers
-            .map(
-              (h) =>
-                `<td style="padding: 6px 8px; border: 1px solid #eee; min-width: 120px; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">${(
-                  row[h] || ""
-                )
-                  .toString()
-                  .slice(0, 50)}${
-                  (row[h] || "").toString().length > 50 ? "..." : ""
-                }</td>`
-            )
-            .join("")}</tr>
-        `
-          )
-          .join("")}
-        ${
-          csvData.length > 5
-            ? `<tr><td colspan="${
-                headers.length
-              }" style="text-align:center;font-style:italic;padding: 12px;">... and ${
-                csvData.length - 5
-              } more rows</td></tr>`
-            : ""
-        }
-      </tbody>
-    </table>
-  `;
-
-        csvPreview.innerHTML = table;
-        csvPreview.style.display = "block";
-
-        // Enable horizontal scroll and check for overflow
-        enableHorizontalScroll();
-        setTimeout(() => checkForOverflow(csvPreview), 100);
-      }
-
-      // Enhanced render results function with horizontal scroll
-      function renderResults(data) {
-        let results = [];
-        let totalCount = 0;
-
-        if (data.combined_results) {
-          results = data.combined_results;
-          totalCount = data.total_count;
-          resultsStats.textContent = `Found ${totalCount} results across databases (including doctor-added terms)`;
-        } else if (data.data) {
-          results = data.data;
-          totalCount = data.count;
-          resultsStats.textContent = `Found ${totalCount} results in ${data.database} database`;
-        } else {
-          results = [];
-          totalCount = 0;
-        }
-
-        resultsStats.style.display = totalCount > 0 ? "block" : "none";
-
-        if (!results.length) {
-          tableContent.innerHTML = `<div class="no-results"><h3>No Results Found</h3><p>Try another term or check different database.</p></div>`;
-          return;
-        }
-
-        // Calculate minimum table width based on number of columns
-        const columnCount = 8; // Number of columns in the table
-        const minTableWidth = columnCount * 150; // 150px minimum per column
-
-        const html = `
-    <table style="width: 100%; border-collapse: collapse; min-width: ${minTableWidth}px;">
-      <thead>
-        <tr>
-          <th style="min-width: 100px; position: sticky; left: 0; background: #f8f9fa; z-index: 11;">Database</th>
-          <th style="min-width: 120px;">System</th>
-          <th style="min-width: 100px;">Code</th>
-          <th style="min-width: 150px;">Term</th>
-          <th style="min-width: 200px;">Short Definition</th>
-          <th style="min-width: 250px;">Long Definition</th>
-          <th style="min-width: 150px;">Reference</th>
-          <th style="min-width: 150px;">Ontology Branches</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${results
-          .map(
-            (r) => `
-          <tr>
-            <td style="position: sticky; left: 0; background: white; z-index: 10;"><span class="database-badge badge-${
-              r.source_database || "unknown"
-            }">${r.source_database || "N/A"}</span></td>
-            <td>${r.system || r.System || "N/A"}</td>
-            <td>${r.code || r.Code || "N/A"}</td>
-            <td><strong>${r.term || r.Term || "N/A"}</strong></td>
-            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${(
-              r.short_definition ||
-              r.Short_Definition ||
-              "N/A"
-            )
-              .toString()
-              .slice(0, 120)}${
-              (r.short_definition || r.Short_Definition || "").toString()
-                .length > 120
-                ? "…"
-                : ""
-            }</td>
-            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;">${(
-              r.long_definition ||
-              r.Long_Definition ||
-              "N/A"
-            )
-              .toString()
-              .slice(0, 180)}${
-              (r.long_definition || r.Long_Definition || "").toString().length >
-              180
-                ? "…"
-                : ""
-            }</td>
-            <td>${r.reference || r.Reference || "N/A"}</td>
-            <td>${r.ontology_branches || r.Ontology_Branches || "N/A"}</td>
-          </tr>
-        `
-          )
-          .join("")}
-      </tbody>
-    </table>
-  `;
-
-        tableContent.innerHTML = html;
-
-        // Enable horizontal scroll and check for overflow
-        enableHorizontalScroll();
-        setTimeout(
-          () => checkForOverflow(document.querySelector(".table-container")),
-          100
-        );
-      }
-
-      // Initialize on page load
-      document.addEventListener("DOMContentLoaded", function () {
-        addScrollbarStyles();
-        enableHorizontalScroll();
-
-        // Add resize listener to check overflow when window is resized
-        window.addEventListener("resize", function () {
-          setTimeout(() => {
-            checkForOverflow(document.querySelector(".table-container"));
-            checkForOverflow(document.getElementById("csvPreview"));
-          }, 100);
+        // Double-click to reset to 50/50 split
+        resizer.addEventListener('dblclick', function () {
+          leftSide.style.flex = '1';
+          rightSide.style.flex = '1';
         });
       });
 
-      // Add smooth scroll behavior for horizontal scrolling
-      document.addEventListener("keydown", function (e) {
-        const activeElement = document.activeElement;
-        const scrollableContainers = [
-          document.querySelector(".table-container"),
-          document.getElementById("csvPreview"),
-        ].filter((container) => container && container.contains(activeElement));
-
-        if (scrollableContainers.length > 0) {
-          const container = scrollableContainers[0];
-
-          // Arrow key navigation for horizontal scrolling
-          if (e.key === "ArrowLeft") {
-            container.scrollLeft -= 50;
-            e.preventDefault();
-          } else if (e.key === "ArrowRight") {
-            container.scrollLeft += 50;
-            e.preventDefault();
-          }
-        }
-      });
-      // Enhanced render results function with horizontal scroll
-      function renderResults(data) {
-        let results = [];
-        let totalCount = 0;
-
-        if (data.combined_results) {
-          results = data.combined_results;
-          totalCount = data.total_count;
-          resultsStats.textContent = `Found ${totalCount} results across databases (including doctor-added terms)`;
-        } else if (data.data) {
-          results = data.data;
-          totalCount = data.count;
-          resultsStats.textContent = `Found ${totalCount} results in ${data.database} database`;
-        } else {
-          results = [];
-          totalCount = 0;
-        }
-
-        resultsStats.style.display = totalCount > 0 ? "block" : "none";
-
-        if (!results.length) {
-          tableContent.innerHTML = `<div class="no-results"><h3>No Results Found</h3><p>Try another term or check different database.</p></div>`;
-          return;
-        }
-
-        // Calculate minimum table width based on content
-        const columnCount = 8;
-        const minTableWidth = columnCount * 150; // 150px minimum per column
-
-        const html = `
-    <table style="min-width: ${minTableWidth}px; width: 100%;">
-      <thead>
-        <tr>
-          <th style="min-width: 100px;">Database</th>
-          <th style="min-width: 120px;">System</th>
-          <th style="min-width: 100px;">Code</th>
-          <th style="min-width: 150px;">Term</th>
-          <th style="min-width: 200px;">Short Definition</th>
-          <th style="min-width: 250px;">Long Definition</th>
-          <th style="min-width: 150px;">Reference</th>
-          <th style="min-width: 150px;">Ontology Branches</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${results
-          .map(
-            (r) => `
-          <tr>
-            <td><span class="database-badge badge-${
-              r.source_database || "unknown"
-            }">${r.source_database || "N/A"}</span></td>
-            <td>${r.system || r.System || "N/A"}</td>
-            <td>${r.code || r.Code || "N/A"}</td>
-            <td><strong>${r.term || r.Term || "N/A"}</strong></td>
-            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${(
-              r.short_definition ||
-              r.Short_Definition ||
-              "N/A"
-            )
-              .toString()
-              .slice(0, 120)}${
-              (r.short_definition || r.Short_Definition || "").toString()
-                .length > 120
-                ? "…"
-                : ""
-            }</td>
-            <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;">${(
-              r.long_definition ||
-              r.Long_Definition ||
-              "N/A"
-            )
-              .toString()
-              .slice(0, 180)}${
-              (r.long_definition || r.Long_Definition || "").toString().length >
-              180
-                ? "…"
-                : ""
-            }</td>
-            <td>${r.reference || r.Reference || "N/A"}</td>
-            <td>${r.ontology_branches || r.Ontology_Branches || "N/A"}</td>
-          </tr>
-        `
-          )
-          .join("")}
-      </tbody>
-    </table>
-  `;
-
-        tableContent.innerHTML = html;
-
-        // Check and enable horizontal scroll
-        setTimeout(() => {
-          const tableContainer = document.querySelector(".table-container");
-          if (tableContainer) {
-            const hasHorizontalScrollbar =
-              tableContainer.scrollWidth > tableContainer.clientWidth;
-            if (hasHorizontalScrollbar) {
-              tableContainer.classList.add("has-overflow");
-            } else {
-              tableContainer.classList.remove("has-overflow");
-            }
-          }
-        }, 100);
-      }
-      // Add keyboard navigation for horizontal scrolling
-      document.addEventListener("keydown", function (e) {
-        const tableContainer = document.querySelector(".table-container");
-        if (
-          tableContainer &&
-          (e.target.closest(".table-container") ||
-            document.activeElement === tableContainer)
-        ) {
-          if (e.key === "ArrowLeft") {
-            tableContainer.scrollLeft -= 50;
-            e.preventDefault();
-          } else if (e.key === "ArrowRight") {
-            tableContainer.scrollLeft += 50;
-            e.preventDefault();
-          }
-        }
-      });
-
-      // Add mouse wheel horizontal scrolling support
-      document
-        .querySelector(".table-container")
-        ?.addEventListener("wheel", function (e) {
-          if (e.shiftKey) {
-            e.preventDefault();
-            this.scrollLeft += e.deltaY;
-          }
-        });
     </script>
-  </body>
+</body>
+
 </html>

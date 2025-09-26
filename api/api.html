@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Reference - Medical Terminology Hub</title>
+    <title>API Reference - Enhanced Medical Terminology Hub</title>
     <style>
       * {
         margin: 0;
@@ -17,74 +17,103 @@
         background: #f8f9fa;
         color: #2d3748;
         line-height: 1.6;
+        overflow-x: hidden;
       }
 
       .container {
-        max-width: 1400px;
+        max-width: 100vw;
         margin: 0 auto;
         padding: 20px;
+        box-sizing: border-box;
       }
 
-      /* Header with tabs */
-      .main-header {
-        display: flex;
-        gap: 20px;
-        background: #34495e;
-        padding: 15px 30px;
-        border-radius: 12px;
-        color: #fff;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-         align-items: center;
-        justify-content: center;
-      }
-
-      .main-header .tab {
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: #ecf0f1;
-        padding: 10px 20px;
+      /* Notification styles */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
         border-radius: 8px;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      
+        color: #fff;
+        font-weight: 700;
+        z-index: 9999;
+        transform: translateX(420px);
+        transition: transform 0.25s ease;
+        max-width: 300px;
       }
 
-      .main-header .tab:hover {
-        background-color: #27ae60;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+      .notification.show {
+        transform: translateX(0);
       }
 
-      .main-header .tab.active {
-        background-color: #27ae60;
-        color: white;
+      .notification.success {
+        background: #27ae60;
       }
 
+      .notification.error {
+        background: #e74c3c;
+      }
+
+      /* Header with tabs - Improved Alignment */
+    .main-header {
+      display: flex;
+      gap: 20px;
+      background: #34495e;
+      padding: 15px 30px;
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-header .tab {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #ecf0f1;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .main-header .tab:hover,
+    .main-header .tab.active {
+      background-color: #27ae60;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+    }
+
+    
       /* API Content */
       .api-header {
         background: white;
-        padding: 40px;
+        padding: 30px 20px;
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 30px;
         text-align: center;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .api-header h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: #2c3e50;
         margin-bottom: 15px;
+        word-wrap: break-word;
       }
 
       .api-header p {
-        font-size: 1.2rem;
+        font-size: 1rem;
         color: #6c757d;
-        max-width: 800px;
+        max-width: 100%;
         margin: 0 auto;
+        word-wrap: break-word;
       }
 
       .api-version {
@@ -93,7 +122,7 @@
         color: white;
         padding: 6px 12px;
         border-radius: 20px;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-weight: 600;
         margin-top: 15px;
       }
@@ -101,23 +130,30 @@
       /* Grid Layout */
       .api-grid {
         display: grid;
-        grid-template-columns: 300px 1fr;
-        gap: 30px;
+        grid-template-columns: 280px 1fr;
+        gap: 20px;
         align-items: start;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
       }
 
       /* Sidebar Navigation */
       .api-nav {
         background: white;
-        padding: 25px;
+        padding: 20px;
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         position: sticky;
         top: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
       }
 
       .api-nav h3 {
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: #2c3e50;
         margin-bottom: 15px;
         border-bottom: 2px solid #e9ecef;
@@ -129,16 +165,18 @@
       }
 
       .api-nav li {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       .api-nav a {
         color: #6c757d;
         text-decoration: none;
-        padding: 8px 12px;
+        padding: 6px 10px;
         display: block;
         border-radius: 6px;
         transition: all 0.3s ease;
+        font-size: 0.85rem;
+        word-wrap: break-word;
       }
 
       .api-nav a:hover,
@@ -150,53 +188,68 @@
       /* Main Content */
       .api-content {
         background: white;
-        padding: 30px;
+        padding: 25px;
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
       }
 
       .section {
-        margin-bottom: 50px;
+        margin-bottom: 40px;
       }
 
       .section h2 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         color: #2c3e50;
         margin-bottom: 20px;
         border-bottom: 3px solid #27ae60;
         padding-bottom: 10px;
+        word-wrap: break-word;
       }
 
       .section h3 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: #34495e;
-        margin: 25px 0 15px;
+        margin: 20px 0 15px;
+      }
+
+      .section h4 {
+        font-size: 1rem;
+        color: #34495e;
+        margin: 15px 0 10px;
       }
 
       /* Code blocks */
       .code-block {
         background: #34495e;
         color: #ecf0f1;
-        padding: 20px;
+        padding: 15px;
         border-radius: 8px;
         overflow-x: auto;
         margin: 15px 0;
         font-family: "Courier New", monospace;
-        font-size: 14px;
+        font-size: 13px;
         position: relative;
+        max-width: 100%;
+        box-sizing: border-box;
+        word-wrap: break-word;
+        white-space: pre-wrap;
       }
 
       .copy-btn {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 8px;
+        right: 8px;
         background: rgba(255, 255, 255, 0.1);
         border: none;
         color: #ecf0f1;
-        padding: 5px 10px;
+        padding: 4px 8px;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 11px;
+        transition: background 0.3s ease;
       }
 
       .copy-btn:hover {
@@ -206,12 +259,12 @@
       /* Method badges */
       .method {
         display: inline-block;
-        padding: 4px 8px;
+        padding: 3px 6px;
         border-radius: 4px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: bold;
         text-transform: uppercase;
-        margin-right: 10px;
+        margin-right: 8px;
       }
 
       .method.get {
@@ -237,19 +290,33 @@
         border-collapse: collapse;
         margin: 15px 0;
         background: white;
+        font-size: 0.9rem;
+        overflow-x: auto;
+        display: block;
+        white-space: nowrap;
+      }
+
+      .param-table thead,
+      .param-table tbody {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
       }
 
       .param-table th,
       .param-table td {
-        padding: 12px;
+        padding: 10px 8px;
         text-align: left;
         border-bottom: 1px solid #e9ecef;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
 
       .param-table th {
         background: #f8f9fa;
         font-weight: 600;
         color: #2c3e50;
+        font-size: 0.85rem;
       }
 
       .required {
@@ -261,17 +328,20 @@
       .response-example {
         background: #f8f9fa;
         border-left: 4px solid #27ae60;
-        padding: 20px;
+        padding: 15px;
         margin: 15px 0;
         border-radius: 0 8px 8px 0;
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       .status-code {
         display: inline-block;
-        padding: 4px 8px;
+        padding: 3px 6px;
         border-radius: 4px;
         font-weight: bold;
-        margin-right: 10px;
+        margin-right: 8px;
+        font-size: 0.8rem;
       }
 
       .status-200 {
@@ -291,13 +361,88 @@
         color: #721c24;
       }
 
-      @media (max-width: 768px) {
+      .feature-badge {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 0.65rem;
+        font-weight: bold;
+        margin-left: 8px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
         .api-grid {
           grid-template-columns: 1fr;
+          gap: 20px;
         }
 
         .api-nav {
           position: static;
+          max-height: none;
+        }
+
+        .container {
+          padding: 15px;
+        }
+
+        .api-header {
+          padding: 20px 15px;
+        }
+
+        .api-content {
+          padding: 20px 15px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-header {
+          flex-direction: column;
+          gap: 10px;
+          padding: 15px;
+        }
+
+        .main-header .tab {
+          font-size: 0.9rem;
+          padding: 8px 12px;
+        }
+
+        .api-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .api-header p {
+          font-size: 0.9rem;
+        }
+
+        .param-table {
+          font-size: 0.8rem;
+        }
+
+        .code-block {
+          font-size: 12px;
+          padding: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 10px;
+        }
+
+        .api-header {
+          padding: 15px 10px;
+        }
+
+        .api-content {
+          padding: 15px 10px;
+        }
+
+        .main-header .tab {
+          font-size: 0.8rem;
+          padding: 6px 10px;
         }
       }
     </style>
@@ -314,7 +459,7 @@
           About
         </div>
         <div
-          class="tab"
+          class="tab active"
           data-tab="api"
           onclick="window.location.href='api.html'"
         >
@@ -328,15 +473,14 @@
         >
           Docs
         </div>
-        <div class="tab" data-tab="model">Model</div>
+      <div class="tab" data-tab="model" onclick="window.location.href='http://localhost:5173/'">Model</div>
       </header>
 
       <!-- API Header -->
       <div class="api-header">
         <h1>Medical Terminology API</h1>
         <p>
-          RESTful API for searching and managing cross-cultural medical
-          terminology across Ayurveda, Siddha, Unani, and ICD-11 databases
+          Complete RESTful API for cross-cultural medical terminology with FHIR R4 support, concept mapping, and ICD-11 integration across Ayurveda, Siddha, Unani, and modern medical systems
         </p>
       </div>
 
@@ -349,11 +493,15 @@
             <li><a href="#overview" class="active">Overview</a></li>
             <li><a href="#base-url">Base URL</a></li>
             <li><a href="#authentication">Authentication</a></li>
-            <li><a href="#endpoints">Endpoints</a></li>
+            <li><a href="#core-endpoints">Core Endpoints</a></li>
             <li><a href="#search">Search API</a></li>
             <li><a href="#add-term">Add Terminology</a></li>
-            <li><a href="#databases">Database Info</a></li>
-            <li><a href="#debug">Debug Tools</a></li>
+            <li><a href="#concept-mapping">Concept Mapping</a></li>
+            <li><a href="#icd11-lookup">ICD-11 Lookup</a></li>
+            <li><a href="#fhir-endpoints">FHIR Endpoints</a></li>
+            <li><a href="#database-management">Database Management</a></li>
+            <li><a href="#statistics">Statistics</a></li>
+            <li><a href="#debug-tools">Debug Tools</a></li>
             <li><a href="#errors">Error Handling</a></li>
             <li><a href="#examples">Examples</a></li>
           </ul>
@@ -365,36 +513,63 @@
           <section id="overview" class="section">
             <h2>Overview</h2>
             <p>
-              The Medical Terminology API provides access to a comprehensive
-              database of medical terms from traditional systems (Ayurveda,
-              Siddha, Unani) and modern medical standards (ICD-11). This RESTful
-              API supports healthcare applications, research platforms, and
-              medical information systems.
+              The Enhanced Medical Terminology API provides comprehensive access to traditional and modern medical terminology systems. It bridges AYUSH traditional medicine (Ayurveda, Siddha, Unani) with international standards like ICD-11, offering advanced search capabilities, concept mapping, and FHIR R4 compliance.
             </p>
 
             <h3>Key Features</h3>
             <ul>
-              <li>
-                <strong>Cross-System Search:</strong> Search across multiple
-                medical terminology systems
-              </li>
-              <li>
-                <strong>Doctor Contributions:</strong> Healthcare professionals
-                can add verified terms
-              </li>
-              <li>
-                <strong>CSV Data Import:</strong> Bulk upload medical
-                terminology datasets
-              </li>
-              <li>
-                <strong>Real-time Results:</strong> Fast search with intelligent
-                matching
-              </li>
-              <li>
-                <strong>Structured Data:</strong> Consistent JSON responses with
-                rich metadata
-              </li>
+              <li><strong>Multi-System Search:</strong> Search across 5 medical terminology systems simultaneously</li>
+              <li><strong>Doctor Contributions:</strong> Healthcare professionals can add verified medical terms</li>
+              <li><strong>Concept Mapping:</strong> Cross-system terminology relationships with confidence scoring</li>
+              <li><strong>ICD-11 Integration:</strong> Automated lookup and mapping to WHO ICD-11 codes</li>
+              <li><strong>FHIR R4 Support:</strong> ValueSet $expand and ConceptMap $translate operations</li>
+              <li><strong>Real-time Results:</strong> Multi-threaded search with intelligent relevance ranking</li>
+              <li><strong>Export Capabilities:</strong> Generate FHIR Bundles for interoperability</li>
             </ul>
+
+            <h3>Available Databases</h3>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Database</th>
+                  <th>System</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>ayurveda</code></td>
+                  <td>Ayurveda</td>
+                  <td>Traditional Indian medical system terminology</td>
+                  <td><span class="feature-badge">Active</span></td>
+                </tr>
+                <tr>
+                  <td><code>siddha</code></td>
+                  <td>Siddha</td>
+                  <td>Traditional Tamil medical system terms</td>
+                  <td><span class="feature-badge">Active</span></td>
+                </tr>
+                <tr>
+                  <td><code>unani</code></td>
+                  <td>Unani</td>
+                  <td>Greco-Arabic medical system vocabulary</td>
+                  <td><span class="feature-badge">Active</span></td>
+                </tr>
+                <tr>
+                  <td><code>icd11</code></td>
+                  <td>ICD-11</td>
+                  <td>WHO International Classification of Diseases 11th Revision</td>
+                  <td><span class="feature-badge">Active</span></td>
+                </tr>
+                <tr>
+                  <td><code>doctor</code></td>
+                  <td>Doctor Terms</td>
+                  <td>User-contributed verified medical terminology</td>
+                  <td><span class="feature-badge">Extensible</span></td>
+                </tr>
+              </tbody>
+            </table>
           </section>
 
           <!-- Base URL Section -->
@@ -402,35 +577,34 @@
             <h2>Base URL</h2>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>https://api.medunify.com/v1</pre>
+              <pre>Production: https://api.medterminology.com/v2
+Development: http://localhost:5000</pre>
             </div>
-            <p>
-              <strong>Development:</strong> <code>http://localhost:5000</code>
-            </p>
           </section>
 
           <!-- Authentication Section -->
           <section id="authentication" class="section">
             <h2>Authentication</h2>
             <p>
-              Currently, the API is open for demo purposes. In production, API
-              keys will be required:
+              Currently, the API is open for demo and development purposes. In production, API keys will be required:
             </p>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>Authorization: Bearer YOUR_API_KEY</pre>
+              <pre>Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json</pre>
             </div>
           </section>
 
-          <!-- Endpoints Section -->
-          <section id="endpoints" class="section">
-            <h2>Available Endpoints</h2>
+          <!-- Core Endpoints Section -->
+          <section id="core-endpoints" class="section">
+            <h2>Core API Endpoints</h2>
             <table class="param-table">
               <thead>
                 <tr>
                   <th>Method</th>
                   <th>Endpoint</th>
                   <th>Description</th>
+                  <th>Features</th>
                 </tr>
               </thead>
               <tbody>
@@ -438,26 +612,49 @@
                   <td><span class="method get">GET</span></td>
                   <td>/api/health</td>
                   <td>Check API health status</td>
+                  <td>System health monitoring</td>
                 </tr>
                 <tr>
                   <td><span class="method get">GET</span></td>
                   <td>/api/search</td>
-                  <td>Search medical terminology</td>
+                  <td>Unified medical terminology search</td>
+                  <td>Multi-threaded, relevance ranking</td>
                 </tr>
                 <tr>
                   <td><span class="method post">POST</span></td>
                   <td>/api/add-terminology</td>
-                  <td>Add new medical term</td>
+                  <td>Add new medical term to doctor database</td>
+                  <td>Doctor contributions</td>
+                </tr>
+                <tr>
+                  <td><span class="method post">POST</span></td>
+                  <td>/api/add-mapping</td>
+                  <td>Add concept mapping between systems</td>
+                  <td>Cross-system relationships</td>
+                </tr>
+                <tr>
+                  <td><span class="method get">GET</span></td>
+                  <td>/api/mappings</td>
+                  <td>Get concept mappings for terms</td>
+                  <td>Confidence scoring</td>
+                </tr>
+                <tr>
+                  <td><span class="method post">POST</span></td>
+                  <td>/api/icd11-lookup</td>
+                  <td>ICD-11 code and term lookup</td>
+                  <td><span class="feature-badge">New</span></td>
                 </tr>
                 <tr>
                   <td><span class="method get">GET</span></td>
                   <td>/api/databases</td>
-                  <td>List available databases</td>
+                  <td>List available databases with status</td>
+                  <td>System information</td>
                 </tr>
                 <tr>
                   <td><span class="method get">GET</span></td>
                   <td>/api/debug/{database}</td>
-                  <td>Debug database structure</td>
+                  <td>Debug database structure and content</td>
+                  <td>Development tools</td>
                 </tr>
               </tbody>
             </table>
@@ -465,8 +662,9 @@
 
           <!-- Search API Section -->
           <section id="search" class="section">
-            <h2>Search API</h2>
+            <h2>Unified Search API</h2>
             <p><span class="method get">GET</span> <code>/api/search</code></p>
+            <p>The search endpoint provides intelligent, multi-threaded search across all medical terminology databases with relevance ranking and system filtering.</p>
 
             <h3>Query Parameters</h3>
             <table class="param-table">
@@ -476,6 +674,7 @@
                   <th>Type</th>
                   <th>Required</th>
                   <th>Description</th>
+                  <th>Example</th>
                 </tr>
               </thead>
               <tbody>
@@ -483,72 +682,83 @@
                   <td><code>term</code></td>
                   <td>string</td>
                   <td><span class="required">Yes</span></td>
-                  <td>Medical term to search for</td>
+                  <td>Medical term to search for (case-insensitive)</td>
+                  <td>diabetes, fever, madhumeha</td>
                 </tr>
                 <tr>
                   <td><code>database</code></td>
                   <td>string</td>
                   <td>No</td>
-                  <td>
-                    Specific database: ayurveda, icd11, siddha, unani, doctor
-                  </td>
+                  <td>Specific database to search</td>
+                  <td>ayurveda, icd11, siddha, unani, doctor</td>
                 </tr>
                 <tr>
                   <td><code>system</code></td>
                   <td>string</td>
                   <td>No</td>
                   <td>Filter by medical system</td>
+                  <td>Ayurveda, Siddha, Unani</td>
                 </tr>
                 <tr>
                   <td><code>total_limit</code></td>
                   <td>integer</td>
                   <td>No</td>
-                  <td>Maximum results to return (default: 300)</td>
+                  <td>Maximum total results (default: 300)</td>
+                  <td>50, 100, 200</td>
                 </tr>
                 <tr>
                   <td><code>limit_per_db</code></td>
                   <td>integer</td>
                   <td>No</td>
                   <td>Results per database when searching all</td>
+                  <td>10, 25, 50</td>
                 </tr>
               </tbody>
             </table>
 
-            <h3>Example Request</h3>
+            <h3>Example Requests</h3>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>
-GET /api/search?term=diabetes&database=ayurveda&total_limit=10</pre
-              >
+              <pre># Search across all databases
+GET /api/search?term=diabetes&total_limit=20
+
+# Search specific database
+GET /api/search?term=madhumeha&database=ayurveda
+
+# System-filtered search
+GET /api/search?term=fever&system=Ayurveda&total_limit=15
+
+# Multi-database with limits
+GET /api/search?term=respiratory&limit_per_db=5&total_limit=25</pre>
             </div>
 
-            <h3>Example Response</h3>
+            <h3>Response Format</h3>
             <div class="response-example">
               <span class="status-code status-200">200 OK</span>
               <div class="code-block">
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <pre>
-{
-  "database": "ayurveda",
-  "table_name": "data",
-  "columns_found": ["system", "id", "code", "term", "short_definition"],
-  "searchable_columns": ["term", "short_definition", "long_definition"],
-  "data": [
+                <pre>{
+  "combined_results": [
     {
       "system": "Ayurveda",
-      "id": "AYU001",
-      "code": "D001",
+      "code": "NAMC",
       "term": "Madhumeha",
-      "short_definition": "Ayurvedic term for diabetes",
-      "long_definition": "A metabolic disorder characterized by...",
-      "reference": "Charaka Samhita",
-      "ontology_branches": "Metabolic Disorders",
-      "source_database": "ayurveda"
+      "short_definition": "A disease of high blood sugar",
+      "long_definition": "In Ayurveda, Madhumeha is described as Prameha subtype...",
+      "source_database": "ayurveda",
+      "icd11_code": "5A10",
+      "icd11_term": "Diabetes mellitus"
     }
   ],
-  "count": 1
-}</pre
-                >
+  "total_count": 4,
+  "database_counts": {
+    "ayurveda": 1,
+    "icd11": 1,
+    "siddha": 1,
+    "unani": 1,
+    "doctor": 0
+  }
+}</pre>
               </div>
             </div>
           </section>
@@ -556,10 +766,8 @@ GET /api/search?term=diabetes&database=ayurveda&total_limit=10</pre
           <!-- Add Terminology Section -->
           <section id="add-term" class="section">
             <h2>Add New Terminology</h2>
-            <p>
-              <span class="method post">POST</span>
-              <code>/api/add-terminology</code>
-            </p>
+            <p><span class="method post">POST</span> <code>/api/add-terminology</code></p>
+            <p>Healthcare professionals can contribute verified medical terms to the doctor terminology database.</p>
 
             <h3>Request Body</h3>
             <table class="param-table">
@@ -582,25 +790,25 @@ GET /api/search?term=diabetes&database=ayurveda&total_limit=10</pre
                   <td><code>system</code></td>
                   <td>string</td>
                   <td><span class="required">Yes</span></td>
-                  <td>Medical system (e.g., Ayurveda)</td>
+                  <td>Medical system (e.g., Ayurveda, Modern Medicine)</td>
                 </tr>
                 <tr>
                   <td><code>term</code></td>
                   <td>string</td>
                   <td><span class="required">Yes</span></td>
-                  <td>Medical term</td>
+                  <td>Medical term or condition name</td>
                 </tr>
                 <tr>
                   <td><code>short_definition</code></td>
                   <td>string</td>
                   <td><span class="required">Yes</span></td>
-                  <td>Brief definition</td>
+                  <td>Brief, concise definition</td>
                 </tr>
                 <tr>
                   <td><code>long_definition</code></td>
                   <td>string</td>
                   <td>No</td>
-                  <td>Detailed explanation</td>
+                  <td>Detailed explanation and context</td>
                 </tr>
                 <tr>
                   <td><code>code</code></td>
@@ -612,13 +820,13 @@ GET /api/search?term=diabetes&database=ayurveda&total_limit=10</pre
                   <td><code>reference</code></td>
                   <td>string</td>
                   <td>No</td>
-                  <td>Source reference</td>
+                  <td>Source reference or textbook citation</td>
                 </tr>
                 <tr>
                   <td><code>ontology_branches</code></td>
                   <td>string</td>
                   <td>No</td>
-                  <td>Classification categories</td>
+                  <td>Classification categories or branches</td>
                 </tr>
               </tbody>
             </table>
@@ -626,8 +834,7 @@ GET /api/search?term=diabetes&database=ayurveda&total_limit=10</pre
             <h3>Example Request</h3>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>
-POST /api/add-terminology
+              <pre>POST /api/add-terminology
 Content-Type: application/json
 
 {
@@ -635,59 +842,340 @@ Content-Type: application/json
   "system": "Ayurveda",
   "term": "Pittaja Jwara",
   "short_definition": "Fever caused by pitta dosha imbalance",
-  "long_definition": "A type of fever in Ayurveda characterized by...",
+  "long_definition": "A type of fever in Ayurveda characterized by high temperature, burning sensation, and associated pitta symptoms like acidity and irritability.",
   "code": "PJ001",
-  "reference": "Charaka Samhita",
-  "ontology_branches": "Fever Types, Pitta Disorders"
-}</pre
-              >
+  "reference": "Charaka Samhita, Nidana Sthana",
+  "ontology_branches": "Fever Types, Pitta Disorders, Ayurvedic Pathology"
+}</pre>
             </div>
           </section>
 
-          <!-- Database Info Section -->
-          <section id="databases" class="section">
-            <h2>Database Information</h2>
-            <p>
-              <span class="method get">GET</span> <code>/api/databases</code>
-            </p>
+          <!-- Concept Mapping Section -->
+          <section id="concept-mapping" class="section">
+            <h2>Concept Mapping</h2>
+            <p>Manage cross-system terminology relationships and mappings between different medical systems.</p>
 
-            <h3>Available Databases</h3>
-            <ul>
-              <li>
-                <strong>ayurveda:</strong> Traditional Indian medical system
-                terminology
-              </li>
-              <li>
-                <strong>siddha:</strong> Traditional Tamil medical system terms
-              </li>
-              <li>
-                <strong>unani:</strong> Greco-Arabic medical system vocabulary
-              </li>
-              <li>
-                <strong>icd11:</strong> WHO International Classification of
-                Diseases
-              </li>
-              <li><strong>doctor:</strong> User-contributed medical terms</li>
-            </ul>
+            <h3>Add Concept Mapping</h3>
+            <p><span class="method post">POST</span> <code>/api/add-mapping</code></p>
+
+            <h4>Request Body</h4>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Required</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>source_system</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Source system (ayurveda, siddha, unani)</td>
+                </tr>
+                <tr>
+                  <td><code>source_code</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Source system code</td>
+                </tr>
+                <tr>
+                  <td><code>source_term</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Source system term</td>
+                </tr>
+                <tr>
+                  <td><code>target_system</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Target system (usually icd11)</td>
+                </tr>
+                <tr>
+                  <td><code>target_code</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Target system code</td>
+                </tr>
+                <tr>
+                  <td><code>target_term</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Target system term</td>
+                </tr>
+                <tr>
+                  <td><code>relationship_type</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>equivalent, related-to, broader-than (default: equivalent)</td>
+                </tr>
+                <tr>
+                  <td><code>confidence_score</code></td>
+                  <td>float</td>
+                  <td>No</td>
+                  <td>Confidence level 0.0-1.0 (default: 1.0)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Get Concept Mappings</h3>
+            <p><span class="method get">GET</span> <code>/api/mappings</code></p>
+
+            <h4>Query Parameters</h4>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre># Get mappings for specific term
+GET /api/mappings?source_system=ayurveda&source_code=NAMC
+
+# Get mappings with target system filter
+GET /api/mappings?source_system=ayurveda&source_code=NAMC&target_system=icd11</pre>
+            </div>
+          </section>
+
+          <!-- ICD-11 Lookup Section -->
+          <section id="icd11-lookup" class="section">
+            <h2>ICD-11 Lookup <span class="feature-badge">New</span></h2>
+            <p><span class="method post">POST</span> <code>/api/icd11-lookup</code></p>
+            <p>Automated lookup of ICD-11 codes and terms based on traditional medical terminology with confidence scoring.</p>
+
+            <h3>Request Body</h3>
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Type</th>
+                  <th>Required</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>term</code></td>
+                  <td>string</td>
+                  <td><span class="required">Yes</span></td>
+                  <td>Medical term to find ICD-11 mapping for</td>
+                </tr>
+                <tr>
+                  <td><code>system</code></td>
+                  <td>string</td>
+                  <td>No</td>
+                  <td>Source medical system for context</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Example Request</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>POST /api/icd11-lookup
+Content-Type: application/json
+
+{
+  "term": "Madhumeha",
+  "system": "Ayurveda"
+}</pre>
+            </div>
+
+            <h3>Response</h3>
+            <div class="response-example">
+              <span class="status-code status-200">200 OK</span>
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>{
+  "code": "5A10",
+  "term": "Diabetes mellitus",
+  "system": "http://id.who.int/icd/release/11/mms",
+  "confidence": 0.95
+}</pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- FHIR Endpoints Section -->
+          <section id="fhir-endpoints" class="section">
+            <h2>FHIR R4 Endpoints</h2>
+            <p>Standards-compliant FHIR operations for healthcare interoperability.</p>
+
+            <h3>ValueSet Operations</h3>
+            
+            <h4>ValueSet $expand</h4>
+            <p><span class="method get">GET</span> <code>/fhir/ValueSet/$expand</code></p>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre># Expand specific ValueSet
+GET /fhir/ValueSet/$expand?identifier=ayurveda-terms
+GET /fhir/ValueSet/$expand?identifier=all-traditional
+GET /fhir/ValueSet/$expand?identifier=icd11-terms</pre>
+            </div>
+
+            <h4>ValueSet $validate-code</h4>
+            <p><span class="method post">POST</span> <code>/fhir/ValueSet/$validate-code</code></p>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>POST /fhir/ValueSet/$validate-code
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "code",
+      "valueCode": "NAMC"
+    },
+    {
+      "name": "url",
+      "valueUri": "http://localhost:5000/fhir/ValueSet/ayurveda-terms"
+    }
+  ]
+}</pre>
+            </div>
+
+            <h3>ConceptMap Operations</h3>
+            
+            <h4>ConceptMap $translate</h4>
+            <p><span class="method post">POST</span> <code>/fhir/ConceptMap/$translate</code></p>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>POST /fhir/ConceptMap/$translate
+Content-Type: application/fhir+json
+
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "code",
+      "valueCode": "NAMC"
+    },
+    {
+      "name": "system",
+      "valueUri": "http://localhost:5000/fhir/CodeSystem/ayurveda"
+    },
+    {
+      "name": "targetsystem",
+      "valueUri": "http://localhost:5000/fhir/CodeSystem/icd11"
+    }
+  ]
+}</pre>
+            </div>
+          </section>
+
+          <!-- Database Management Section -->
+          <section id="database-management" class="section">
+            <h2>Database Management</h2>
+            
+            <h3>List Databases</h3>
+            <p><span class="method get">GET</span> <code>/api/databases</code></p>
+            <p>Get comprehensive information about all available databases, their status, and structure.</p>
+
+            <div class="response-example">
+              <span class="status-code status-200">200 OK</span>
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>{
+  "databases": {
+    "ayurveda": {
+      "filename": "Ayurveda.db",
+      "exists": true,
+      "table_name": "data",
+      "columns": ["system", "sr_no", "id", "code", "term", "short_definition"],
+      "status": "available"
+    },
+    "doctor": {
+      "filename": "doctorterminology.db",
+      "exists": true,
+      "table_name": "doctorterminology",
+      "columns": ["id", "doctor_name", "system", "code", "term"],
+      "status": "available"
+    }
+  }
+}</pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- Statistics Section -->
+          <section id="statistics" class="section">
+            <h2>Statistics</h2>
+
+            <h3>Doctor Database Statistics</h3>
+            <p><span class="method get">GET</span> <code>/api/doctor-stats</code></p>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>GET /api/doctor-stats</pre>
+            </div>
+
+            <h3>Concept Mapping Statistics</h3>
+            <p><span class="method get">GET</span> <code>/api/mapping-stats</code></p>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>GET /api/mapping-stats</pre>
+            </div>
+
+            <div class="response-example">
+              <span class="status-code status-200">200 OK</span>
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>{
+  "total_mappings": 156,
+  "source_systems": [
+    {"system": "ayurveda", "count": 65},
+    {"system": "siddha", "count": 45},
+    {"system": "unani", "count": 46}
+  ],
+  "target_systems": [
+    {"system": "icd11", "count": 156}
+  ],
+  "relationships": [
+    {"type": "equivalent", "count": 98},
+    {"type": "related-to", "count": 58}
+  ]
+}</pre>
+              </div>
+            </div>
           </section>
 
           <!-- Debug Tools Section -->
-          <section id="debug" class="section">
+          <section id="debug-tools" class="section">
             <h2>Debug Tools</h2>
-            <p>
-              <span class="method get">GET</span>
-              <code>/api/debug/{database}</code>
-            </p>
+            <p><span class="method get">GET</span> <code>/api/debug/{database}</code></p>
+            <p>Get detailed information about database structure, including tables, columns, and sample data for development and troubleshooting.</p>
 
-            <p>
-              Get detailed information about database structure, including
-              tables, columns, and sample data.
-            </p>
-
-            <h3>Example</h3>
+            <h3>Available Debug Endpoints</h3>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>GET /api/debug/ayurveda</pre>
+              <pre>GET /api/debug/ayurveda
+GET /api/debug/siddha
+GET /api/debug/unani
+GET /api/debug/icd11
+GET /api/debug/doctor</pre>
+            </div>
+
+            <div class="response-example">
+              <span class="status-code status-200">200 OK</span>
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>{
+  "database": "ayurveda",
+  "file_path": "Ayurveda.db",
+  "table_name": "data",
+  "columns": [
+    "system", "sr_no", "id", "code", "term",
+    "short_definition", "long_definition", 
+    "reference", "ontology_branches"
+  ],
+  "sample_data": [
+    {
+      "system": "Ayurveda",
+      "sr_no": 2999,
+      "code": "NAMC",
+      "term": "Madhumeha",
+      "short_definition": "A disease of high blood sugar"
+    }
+  ]
+}</pre>
+              </div>
             </div>
           </section>
 
@@ -701,24 +1189,29 @@ Content-Type: application/json
                 <tr>
                   <th>Code</th>
                   <th>Description</th>
+                  <th>Common Causes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><span class="status-code status-200">200</span></td>
                   <td>Success</td>
+                  <td>Request completed successfully</td>
                 </tr>
                 <tr>
                   <td><span class="status-code status-400">400</span></td>
-                  <td>Bad Request - Missing or invalid parameters</td>
+                  <td>Bad Request</td>
+                  <td>Missing required parameters, invalid JSON</td>
                 </tr>
                 <tr>
                   <td><span class="status-code status-401">401</span></td>
-                  <td>Unauthorized - Invalid API key</td>
+                  <td>Unauthorized</td>
+                  <td>Invalid API key (production only)</td>
                 </tr>
                 <tr>
                   <td><span class="status-code status-500">500</span></td>
                   <td>Internal Server Error</td>
+                  <td>Database connection issues, server errors</td>
                 </tr>
               </tbody>
             </table>
@@ -726,96 +1219,157 @@ Content-Type: application/json
             <h3>Error Response Format</h3>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>
-{
+              <pre>{
   "error": "Search term is required",
   "code": 400,
-  "timestamp": "2025-09-14T00:40:00Z"
-}</pre
-              >
+  "timestamp": "2025-09-21T08:30:00Z"
+}</pre>
             </div>
           </section>
 
           <!-- Examples Section -->
           <section id="examples" class="section">
-            <h2>Usage Examples</h2>
+            <h2>Complete Usage Examples</h2>
 
             <h3>JavaScript (Fetch API)</h3>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>
-// Search for medical terms
-const response = await fetch('/api/search?term=fever&database=ayurveda');
-const data = await response.json();
-console.log(data.data);
+              <pre>// Search for medical terms with ICD-11 mapping
+async function searchTerms(term, database = null) {
+  const params = new URLSearchParams({ term });
+  if (database) params.append('database', database);
+  
+  const response = await fetch(`/api/search?${params}`);
+  const data = await response.json();
+  
+  // Display results with ICD-11 mappings
+  data.combined_results.forEach(result => {
+    console.log(`${result.term} -> ICD-11: ${result.icd11_code} (${result.icd11_term})`);
+  });
+}
 
-// Add new terminology
-const newTerm = {
-  doctor_name: "Dr. Smith",
-  system: "Ayurveda",
-  term: "Vata Dosha",
-  short_definition: "One of three fundamental doshas"
-};
+// Add new terminology with doctor verification
+async function addTerm(termData) {
+  const response = await fetch('/api/add-terminology', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(termData)
+  });
+  
+  if (response.ok) {
+    const result = await response.json();
+    console.log('Term added successfully:', result.id);
+  }
+}
 
-const addResponse = await fetch('/api/add-terminology', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(newTerm)
-});</pre
-              >
-            </div>
-
-            <h3>cURL Examples</h3>
-            <div class="code-block">
-              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>
-# Search across all databases
-curl "http://localhost:5000/api/search?term=diabetes&total_limit=5"
-
-# Search specific database
-curl "http://localhost:5000/api/search?term=fever&database=ayurveda"
-
-# Add new term
-curl -X POST "http://localhost:5000/api/add-terminology" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "doctor_name": "Dr. Patel",
-    "system": "Ayurveda",
-    "term": "Kapha Dosha",
-    "short_definition": "One of three fundamental energies"
-  }'</pre
-              >
+// Get ICD-11 mapping for traditional term
+async function getICD11Mapping(term, system) {
+  const response = await fetch('/api/icd11-lookup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ term, system })
+  });
+  
+  const mapping = await response.json();
+  return mapping;
+}</pre>
             </div>
 
             <h3>Python Requests</h3>
             <div class="code-block">
               <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre>
-import requests
+              <pre>import requests
+import json
 
-# Search example
-response = requests.get('http://localhost:5000/api/search', {
-    'term': 'diabetes',
-    'database': 'ayurveda',
-    'total_limit': 10
-})
+BASE_URL = "http://localhost:5000"
 
-results = response.json()
-print(f"Found {results['count']} results")
+# Search with ICD-11 mapping
+def search_with_icd11(term, database=None):
+    params = {'term': term, 'total_limit': 20}
+    if database:
+        params['database'] = database
+    
+    response = requests.get(f"{BASE_URL}/api/search", params=params)
+    results = response.json()
+    
+    for result in results['combined_results']:
+        print(f"{result['term']} -> ICD-11: {result.get('icd11_code', 'N/A')}")
+    
+    return results
 
-# Add term example
-new_term = {
-    'doctor_name': 'Dr. Sharma',
-    'system': 'Ayurveda',
-    'term': 'Pitta Dosha',
-    'short_definition': 'Fire and water element combination'
-}
+# Add concept mapping
+def add_concept_mapping(source_sys, source_code, source_term, 
+                       target_sys, target_code, target_term, confidence=1.0):
+    mapping_data = {
+        'source_system': source_sys,
+        'source_code': source_code,
+        'source_term': source_term,
+        'target_system': target_sys,
+        'target_code': target_code,
+        'target_term': target_term,
+        'relationship_type': 'equivalent',
+        'confidence_score': confidence
+    }
+    
+    response = requests.post(f"{BASE_URL}/api/add-mapping", json=mapping_data)
+    return response.json()
 
-add_response = requests.post(
-    'http://localhost:5000/api/add-terminology',
-    json=new_term
-)</pre
-              >
+# Get statistics
+def get_system_stats():
+    doctor_stats = requests.get(f"{BASE_URL}/api/doctor-stats").json()
+    mapping_stats = requests.get(f"{BASE_URL}/api/mapping-stats").json()
+    
+    print(f"Doctor terms: {doctor_stats['total_terminology']}")
+    print(f"Total mappings: {mapping_stats['total_mappings']}")
+
+# Example usage
+search_with_icd11("diabetes", "ayurveda")
+get_system_stats()</pre>
+            </div>
+
+            <h3>cURL Examples</h3>
+            <div class="code-block">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre># Complete system health check
+curl "http://localhost:5000/api/health"
+
+# Search with enhanced results
+curl "http://localhost:5000/api/search?term=madhumeha&database=ayurveda&total_limit=10"
+
+# Add doctor terminology
+curl -X POST "http://localhost:5000/api/add-terminology" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "doctor_name": "Dr. Priya Sharma",
+    "system": "Ayurveda",
+    "term": "Vata Vyadhi",
+    "short_definition": "Disorders caused by vitiated vata dosha",
+    "long_definition": "A group of neurological and movement disorders...",
+    "reference": "Charaka Samhita"
+  }'
+
+# Add concept mapping
+curl -X POST "http://localhost:5000/api/add-mapping" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source_system": "ayurveda",
+    "source_code": "VV001",
+    "source_term": "Vata Vyadhi",
+    "target_system": "icd11",
+    "target_code": "8A00",
+    "target_term": "Neurological disorders",
+    "relationship_type": "related-to",
+    "confidence_score": 0.85
+  }'
+
+# Get ICD-11 mapping
+curl -X POST "http://localhost:5000/api/icd11-lookup" \
+  -H "Content-Type: application/json" \
+  -d '{"term": "Pittaja Jwara", "system": "Ayurveda"}'
+
+# Get comprehensive statistics
+curl "http://localhost:5000/api/mapping-stats"
+curl "http://localhost:5000/api/doctor-stats"</pre>
             </div>
           </section>
         </div>
@@ -823,75 +1377,22 @@ add_response = requests.post(
     </div>
 
     <script>
-      // Tab click logic
-      document.querySelectorAll(".main-header .tab").forEach((tab) => {
-        tab.addEventListener("click", (e) => {
-          document
-            .querySelectorAll(".main-header .tab")
-            .forEach((t) => t.classList.remove("active"));
-          e.target.classList.add("active");
-          const tabName = e.target.getAttribute("data-tab");
-          console.log(`Switched to ${tabName.toUpperCase()} tab`);
-        });
-      });
-
-      // Smooth scrolling for navigation
-      document.querySelectorAll(".api-nav a").forEach((link) => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          document
-            .querySelectorAll(".api-nav a")
-            .forEach((l) => l.classList.remove("active"));
-          e.target.classList.add("active");
-
-          const targetId = e.target.getAttribute("href").substring(1);
-          document.getElementById(targetId).scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        });
-      });
-
-      // Copy code functionality
-      function copyCode(button) {
-        const codeBlock = button.nextElementSibling;
-        const text = codeBlock.textContent;
-
-        navigator.clipboard.writeText(text).then(() => {
-          const originalText = button.textContent;
-          button.textContent = "Copied!";
-          button.style.background = "rgba(39, 174, 96, 0.3)";
-
-          setTimeout(() => {
-            button.textContent = originalText;
-            button.style.background = "rgba(255, 255, 255, 0.1)";
-          }, 2000);
-        });
+      // Notification function
+      function notify(msg, type = "success") {
+        const old = document.querySelector(".notification");
+        if (old) old.remove();
+        const n = document.createElement("div");
+        n.className = `notification ${type}`;
+        n.textContent = msg;
+        document.body.appendChild(n);
+        setTimeout(() => n.classList.add("show"), 50);
+        setTimeout(() => {
+          n.classList.remove("show");
+          setTimeout(() => n.remove(), 300);
+        }, 3500);
       }
 
-      // Highlight current section on scroll
-      window.addEventListener("scroll", () => {
-        const sections = document.querySelectorAll(".section");
-        const navLinks = document.querySelectorAll(".api-nav a");
-
-        let current = "";
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-          if (scrollY >= sectionTop - 200) {
-            current = section.getAttribute("id");
-          }
-        });
-
-        navLinks.forEach((link) => {
-          link.classList.remove("active");
-          if (link.getAttribute("href").substring(1) === current) {
-            link.classList.add("active");
-          }
-        });
-      });
-
-      // Tab navigation for API page
+      // Tab click logic with proper navigation
       document.querySelectorAll(".main-header .tab").forEach((tab) => {
         tab.addEventListener("click", (e) => {
           document
@@ -906,22 +1407,42 @@ add_response = requests.post(
               window.location.href = "enhanced_index.html";
               break;
             case "api":
-              // Already on API page
+              notify("API Documentation Active", "success");
               break;
             case "demo":
-              window.location.href = "enhanced_index.html";
+              window.location.href = "enhanced_index.html#demo";
               break;
             case "docs":
               window.location.href = "doc.html";
               break;
             case "model":
-              alert("Model page coming soon");
+              window.open("http://localhost:5173/", "_blank");
               break;
           }
         });
       });
 
-      // Copy code functionality
+      // Smooth scrolling for navigation
+      document.querySelectorAll(".api-nav a").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          document
+            .querySelectorAll(".api-nav a")
+            .forEach((l) => l.classList.remove("active"));
+          e.target.classList.add("active");
+
+          const targetId = e.target.getAttribute("href").substring(1);
+          const element = document.getElementById(targetId);
+          if (element) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Copy code functionality with enhanced feedback
       function copyCode(button) {
         const codeBlock = button.nextElementSibling;
         const text = codeBlock.textContent;
@@ -935,8 +1456,38 @@ add_response = requests.post(
             button.textContent = originalText;
             button.style.background = "rgba(255, 255, 255, 0.1)";
           }, 2000);
+
+          notify("Code copied to clipboard!", "success");
+        }).catch(() => {
+          notify("Failed to copy code", "error");
         });
       }
+
+      // Highlight current section on scroll
+      window.addEventListener("scroll", () => {
+        const sections = document.querySelectorAll(".section");
+        const navLinks = document.querySelectorAll(".api-nav a");
+
+        let current = "";
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          if (scrollY >= sectionTop - 200) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href").substring(1) === current) {
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // Set active tab on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector('.main-header .tab[data-tab="api"]').classList.add('active');
+      });
     </script>
   </body>
 </html>

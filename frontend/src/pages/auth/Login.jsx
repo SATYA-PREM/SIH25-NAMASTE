@@ -110,7 +110,7 @@ export default function Login() {
               </svg>
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">AYUSH EHR</h2>
+              <h2 className="text-2xl font-bold text-white">AYUSH EMR</h2>
               <p className="text-blue-100 text-sm">Secure Login Portal</p>
             </div>
           </div>
@@ -239,7 +239,7 @@ export default function Login() {
 
           <div className="text-center">
             <Link
-              to="/AddPatient"
+              to="/register"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
             >
               New User? Register Now →

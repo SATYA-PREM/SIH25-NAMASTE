@@ -11,7 +11,7 @@ const FHIRTerminologySearch = ({ onSelect, selectedSystem = null }) => {
   const [translatedCode, setTranslatedCode] = useState(null)
   const [showMapping, setShowMapping] = useState(false)
 
-  const API_BASE = 'http://localhost:5000/api'
+  const API_BASE = 'http://localhost:8000/api'
 
   // Debounced search function
   const debouncedSearch = useCallback(
