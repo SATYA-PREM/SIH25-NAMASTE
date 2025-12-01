@@ -31,16 +31,17 @@ const AddPatient = () => {
     currentMedications: '',
 
     // AYUSH Specific
-    constitution: '', // Prakriti for Ayurveda
+    constitution: '',
     preferredTreatment: '',
     practitioner: '',
+    ayushNotes: ''
   })
 
   const tabs = [
-    { id: 'basic', label: 'Basic Info', icon: User, color: 'blue', description: 'Personal details and identification' },
-    { id: 'address', label: 'Address', icon: MapPin, color: 'green', description: 'Residential and contact information' },
-    { id: 'medical', label: 'Medical', icon: Heart, color: 'red', description: 'Medical history and emergency contacts' },
-    { id: 'ayush', label: 'AYUSH', icon: Stethoscope, color: 'purple', description: 'Traditional medicine preferences' }
+    { id: 'basic', label: 'Basic Info', icon: User, description: 'Personal details and identification' },
+    { id: 'address', label: 'Address', icon: MapPin, description: 'Residential and contact information' },
+    { id: 'medical', label: 'Medical', icon: Heart, description: 'Medical history and emergency contacts' },
+    { id: 'ayush', label: 'AYUSH', icon: Stethoscope, description: 'Traditional medicine preferences' }
   ]
 
   // Auto-save functionality
@@ -73,7 +74,6 @@ const AddPatient = () => {
 
   const searchPatientByAbha = () => {
     if (searchAbha) {
-      // Mock search functionality
       setFormData(prev => ({ ...prev, abhaId: searchAbha }))
       setSearchAbha('')
       alert('ABHA ID verified and linked')
@@ -109,7 +109,6 @@ const AddPatient = () => {
     setError('')
 
     try {
-      // Validate required fields
       const requiredFields = ['name', 'abhaId', 'dateOfBirth', 'gender', 'phone']
       const missingFields = requiredFields.filter((field) => !formData[field])
 
@@ -117,9 +116,7 @@ const AddPatient = () => {
         throw new Error(`Please fill in: ${missingFields.join(', ')}`)
       }
 
-      // Mock API call
       await new Promise((resolve) => setTimeout(resolve, 2000))
-
       console.log('Patient data:', formData)
       alert(`Patient ${formData.name} added successfully!`)
     } catch (err) {
@@ -129,46 +126,68 @@ const AddPatient = () => {
     }
   }
 
+  const getTabColorClasses = (tabId, isActive) => {
+    const colors = {
+      basic: {
+        active: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-200',
+        inactive: 'bg-blue-100 text-blue-600',
+        icon: 'text-blue-600'
+      },
+      address: {
+        active: 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-200',
+        inactive: 'bg-green-100 text-green-600',
+        icon: 'text-green-600'
+      },
+      medical: {
+        active: 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-200',
+        inactive: 'bg-red-100 text-red-600',
+        icon: 'text-red-600'
+      },
+      ayush: {
+        active: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-200',
+        inactive: 'bg-purple-100 text-purple-600',
+        icon: 'text-purple-600'
+      }
+    }
+    return colors[tabId] || colors.basic
+  }
+
   const renderBasicInfo = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <User className="w-4 h-4 text-blue-500" />
-            <span>Full Name <span className="text-red-500">*</span></span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Full Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="Enter patient's full name"
             required
           />
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Shield className="w-4 h-4 text-blue-500" />
-            <span>ABHA ID <span className="text-red-500">*</span></span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            ABHA ID <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             name="abhaId"
             value={formData.abhaId}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="XX-XXXX-XXXX-XXXX"
-            pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
             required
           />
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Calendar className="w-4 h-4 text-blue-500" />
-            <span>Date of Birth <span className="text-red-500">*</span></span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Date of Birth <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <input
@@ -176,11 +195,11 @@ const AddPatient = () => {
               name="dateOfBirth"
               value={formData.dateOfBirth}
               onChange={handleChange}
-              className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 font-medium"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
               required
             />
             {formData.dateOfBirth && (
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-green-600 font-medium">
+              <div className="mt-1 text-sm text-green-600 font-medium">
                 {calculateAge(formData.dateOfBirth)}
               </div>
             )}
@@ -188,14 +207,14 @@ const AddPatient = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-800 mb-3">
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
             Gender <span className="text-red-500">*</span>
           </label>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 font-medium"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900"
             required
           >
             <option value="">Select Gender</option>
@@ -206,32 +225,30 @@ const AddPatient = () => {
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Phone className="w-4 h-4 text-blue-500" />
-            <span>Phone Number <span className="text-red-500">*</span></span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Phone Number <span className="text-red-500">*</span>
           </label>
           <input
             type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="+91-XXXXXXXXXX"
             required
           />
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Mail className="w-4 h-4 text-blue-500" />
-            <span>Email Address</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Email Address
           </label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="patient@example.com"
           />
         </div>
@@ -243,22 +260,21 @@ const AddPatient = () => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="lg:col-span-2">
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <MapPin className="w-4 h-4 text-green-500" />
-            <span>Address</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Address
           </label>
           <textarea
             name="address"
             value={formData.address}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 font-medium resize-none placeholder-gray-500"
-            placeholder="Enter complete address including house number, street, landmark"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 resize-none placeholder-gray-400"
+            placeholder="Enter complete address"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-800 mb-3">
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
             City
           </label>
           <input
@@ -266,13 +282,13 @@ const AddPatient = () => {
             name="city"
             value={formData.city}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="Enter city"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-800 mb-3">
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
             State
           </label>
           <input
@@ -280,13 +296,13 @@ const AddPatient = () => {
             name="state"
             value={formData.state}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="Enter state"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-800 mb-3">
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
             PIN Code
           </label>
           <input
@@ -294,9 +310,8 @@ const AddPatient = () => {
             name="pincode"
             value={formData.pincode}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="XXXXXX"
-            pattern="[0-9]{6}"
           />
         </div>
       </div>
@@ -307,15 +322,14 @@ const AddPatient = () => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Heart className="w-4 h-4 text-red-500" />
-            <span>Blood Group</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Blood Group
           </label>
           <select
             name="bloodGroup"
             value={formData.bloodGroup}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 font-medium"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900"
           >
             <option value="">Select Blood Group</option>
             <option value="A+">A+</option>
@@ -330,62 +344,58 @@ const AddPatient = () => {
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <User className="w-4 h-4 text-red-500" />
-            <span>Emergency Contact Name</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Emergency Contact Name
           </label>
           <input
             type="text"
             name="emergencyContact"
             value={formData.emergencyContact}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="Emergency contact name"
           />
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Phone className="w-4 h-4 text-red-500" />
-            <span>Emergency Contact Phone</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Emergency Contact Phone
           </label>
           <input
             type="tel"
             name="emergencyPhone"
             value={formData.emergencyPhone}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="+91-XXXXXXXXXX"
           />
         </div>
 
         <div className="lg:col-span-2">
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4 text-red-500" />
-            <span>Known Allergies</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Known Allergies
           </label>
           <textarea
             name="allergies"
             value={formData.allergies}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 font-medium resize-none placeholder-gray-500"
-            placeholder="List any known allergies, drug reactions, or food sensitivities..."
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 resize-none placeholder-gray-400"
+            placeholder="List any known allergies..."
           />
         </div>
 
         <div className="lg:col-span-2">
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <FileText className="w-4 h-4 text-red-500" />
-            <span>Current Medications</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Current Medications
           </label>
           <textarea
             name="currentMedications"
             value={formData.currentMedications}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 font-medium resize-none placeholder-gray-500"
-            placeholder="List current medications, dosages, and ongoing treatments..."
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all text-gray-900 resize-none placeholder-gray-400"
+            placeholder="List current medications..."
           />
         </div>
       </div>
@@ -396,15 +406,14 @@ const AddPatient = () => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Stethoscope className="w-4 h-4 text-purple-500" />
-            <span>Constitution (Prakriti)</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Constitution (Prakriti)
           </label>
           <select
             name="constitution"
             value={formData.constitution}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900 font-medium"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900"
           >
             <option value="">Select Constitution</option>
             <option value="Vata">Vata (Air & Space)</option>
@@ -418,15 +427,14 @@ const AddPatient = () => {
         </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <Heart className="w-4 h-4 text-purple-500" />
-            <span>Preferred Treatment System</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Preferred Treatment System
           </label>
           <select
             name="preferredTreatment"
             value={formData.preferredTreatment}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900 font-medium"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900"
           >
             <option value="">Select Treatment System</option>
             <option value="Ayurveda">Ayurveda</option>
@@ -439,32 +447,31 @@ const AddPatient = () => {
         </div>
 
         <div className="lg:col-span-2">
-          <label className="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-            <User className="w-4 h-4 text-purple-500" />
-            <span>Assigned Practitioner</span>
+          <label className="block text-sm font-semibold text-gray-800 mb-2">
+            Assigned Practitioner
           </label>
           <input
             type="text"
             name="practitioner"
             value={formData.practitioner}
             onChange={handleChange}
-            className="w-full px-4 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900 font-medium placeholder-gray-500"
+            className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900 placeholder-gray-400"
             placeholder="Dr. [Name] - Practitioner specialization"
           />
         </div>
 
-        {/* AYUSH Specific Additional Fields */}
         <div className="lg:col-span-2">
-          <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-4">
-            <h4 className="font-semibold text-purple-900 mb-3 flex items-center space-x-2">
-              <Stethoscope className="w-4 h-4" />
-              <span>Traditional Medicine Notes</span>
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <h4 className="font-semibold text-purple-900 mb-3">
+              Traditional Medicine Notes
             </h4>
             <textarea
               name="ayushNotes"
+              value={formData.ayushNotes}
+              onChange={handleChange}
               rows={3}
-              className="w-full px-3 py-3 bg-white border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900 placeholder-gray-500 resize-none"
-              placeholder="Additional notes about traditional medicine preferences, previous AYUSH treatments, etc."
+              className="w-full px-3 py-3 bg-white border border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-900 placeholder-gray-400 resize-none"
+              placeholder="Additional notes about traditional medicine preferences..."
             />
           </div>
         </div>
@@ -489,58 +496,59 @@ const AddPatient = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Professional Header */}
-      <div className="bg-white shadow-lg border-b-2 border-gray-100">
-        <div className="px-8 py-6">
+      {/* Header */}
+      <div className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <button className="p-3 hover:bg-gray-100 rounded-xl transition-colors group">
-                <ArrowLeft className="w-6 h-6 text-gray-600 group-hover:text-gray-900" />
+              <button 
+                onClick={() => window.history.back()}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5 text-gray-600" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-gray-900">
                   Patient Registration System
                 </h1>
-                <p className="text-gray-600 text-sm flex items-center space-x-4 mt-1">
+                <p className="text-sm text-gray-600 flex items-center space-x-2 mt-1">
                   <span>AYUSH Electronic Medical Records</span>
                   <span className="text-gray-400">•</span>
-                  <span className="flex items-center space-x-1">
-                    <Clock className="w-4 h-4" />
-                    <span>{currentTime.toLocaleTimeString()}</span>
-                  </span>
+                  <Clock className="w-4 h-4" />
+                  <span>{currentTime.toLocaleTimeString()}</span>
                   {savedData && (
                     <>
                       <span className="text-gray-400">•</span>
-                      <span className="flex items-center space-x-1 text-green-600 font-medium">
-                        <CheckCircle className="w-4 h-4" />
-                        <span>Auto-saved</span>
-                      </span>
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                      <span className="text-green-600">Auto-saved</span>
                     </>
                   )}
                 </p>
               </div>
             </div>
+            
             <div className="flex items-center space-x-4">
               {/* ABHA Search */}
-              <div className="flex items-center space-x-2 bg-gray-50 rounded-xl p-3 border-2 border-gray-200">
-                <Search className="w-5 h-5 text-gray-500" />
+              <div className="flex items-center bg-gray-50 rounded-lg p-2 border border-gray-200">
+                <Search className="w-4 h-4 text-gray-500 mr-2" />
                 <input
                   type="text"
                   placeholder="Search by ABHA ID"
                   value={searchAbha}
                   onChange={(e) => setSearchAbha(e.target.value)}
-                  className="bg-transparent text-sm border-none outline-none w-48 font-medium"
+                  className="bg-transparent text-sm border-none outline-none w-40"
                 />
                 <button
                   onClick={searchPatientByAbha}
-                  className="px-4 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 font-semibold transition-colors"
+                  className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
                 >
                   Search
                 </button>
               </div>
-              <div className="text-right bg-blue-50 px-6 py-3 rounded-xl border-2 border-blue-200">
-                <div className="text-xs text-blue-600 font-bold">Registration ID</div>
-                <div className="font-mono text-lg font-bold text-blue-900">
+              
+              <div className="text-right bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+                <div className="text-xs text-blue-600 font-semibold">Registration ID</div>
+                <div className="font-mono text-sm font-bold text-blue-900">
                   REG-{Date.now().toString().slice(-6)}
                 </div>
               </div>
@@ -549,64 +557,65 @@ const AddPatient = () => {
         </div>
       </div>
 
-      <div className="flex h-full">
-        {/* Enhanced Sidebar */}
-        <div className="w-96 bg-white shadow-2xl border-r-2 border-gray-200 overflow-y-auto">
-          <div className="p-8">
-            <div className="flex items-center justify-between mb-8">
-              <h3 className="text-xl font-bold text-gray-900">
-                Registration Steps
-              </h3>
-              <div className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-green-500" />
-                <span className="text-sm font-medium text-green-600">Secure</span>
+      <div className="flex min-h-screen">
+        {/* Sidebar */}
+        <div className="w-80 bg-white shadow-lg border-r border-gray-200 fixed h-full overflow-y-auto z-40">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-gray-900">Registration Steps</h3>
+              <div className="flex items-center space-x-1">
+                <Shield className="w-4 h-4 text-green-500" />
+                <span className="text-xs font-medium text-green-600">Secure</span>
               </div>
             </div>
-            <div className="space-y-4">
+
+            <div className="space-y-3">
               {tabs.map((tab, index) => {
                 const Icon = tab.icon
                 const isCompleted = validateTab(tab.id)
                 const isActive = activeTab === tab.id
+                const colorClasses = getTabColorClasses(tab.id, isActive)
                 
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center justify-between p-5 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] ${
+                    className={`w-full flex items-center justify-between p-4 rounded-lg transition-all duration-200 border-2 ${
                       isActive
-                        ? `bg-gradient-to-r from-${tab.color}-500 to-${tab.color}-600 text-white shadow-xl shadow-${tab.color}-200 border-2 border-${tab.color}-400`
-                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700 hover:shadow-lg border-2 border-gray-200'
+                        ? `${colorClasses.active} border-transparent`
+                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
                     }`}
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-xl ${
+                    <div className="flex items-center space-x-3">
+                      <div className={`p-2 rounded-lg ${
                         isActive 
                           ? 'bg-white bg-opacity-25' 
-                          : `bg-${tab.color}-100`
+                          : colorClasses.inactive
                       }`}>
-                        <Icon className={`w-6 h-6 ${
+                        <Icon className={`w-5 h-5 ${
                           isActive 
                             ? 'text-white' 
-                            : `text-${tab.color}-600`
+                            : colorClasses.icon
                         }`} />
                       </div>
                       <div className="text-left">
-                        <div className="font-bold text-base">{tab.label}</div>
-                        <div className={`text-sm ${
-                          isActive ? 'text-white text-opacity-90' : 'text-gray-500'
+                        <div className="font-semibold text-sm">{tab.label}</div>
+                        <div className={`text-xs ${
+                          isActive ? 'text-white opacity-90' : 'text-gray-500'
                         }`}>
                           {tab.description}
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className={`text-sm px-3 py-1 rounded-full font-bold ${
+                    
+                    <div className="flex items-center space-x-2">
+                      <div className={`text-xs px-2 py-1 rounded-full font-semibold ${
                         isActive ? 'bg-white bg-opacity-25 text-white' : 'bg-gray-200 text-gray-700'
                       }`}>
                         {index + 1}
                       </div>
                       {isCompleted && (
-                        <CheckCircle className={`w-6 h-6 ${
+                        <CheckCircle className={`w-5 h-5 ${
                           isActive ? 'text-white' : 'text-green-500'
                         }`} />
                       )}
@@ -615,33 +624,32 @@ const AddPatient = () => {
                 )
               })}
             </div>
-          </div>
 
-          {/* Enhanced Progress Section */}
-          <div className="px-8 pb-8">
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border-2 border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-base font-bold text-gray-900">
-                  Progress Overview
-                </div>
-                <FileText className="w-5 h-5 text-gray-600" />
+            {/* Progress */}
+            <div className="mt-6 bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-sm font-semibold text-gray-900">Progress Overview</div>
+                <FileText className="w-4 h-4 text-gray-600" />
               </div>
-              <div className="space-y-4">
+              
+              <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600 font-medium">Completed Steps</span>
-                  <span className="font-bold text-gray-900 text-lg">
+                  <span className="text-gray-600">Completed Steps</span>
+                  <span className="font-semibold text-gray-900">
                     {tabs.filter(tab => validateTab(tab.id)).length}/{tabs.length}
                   </span>
                 </div>
-                <div className="w-full bg-gray-300 rounded-full h-4 overflow-hidden">
+                
+                <div className="w-full bg-gray-300 rounded-full h-2">
                   <div 
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 h-4 rounded-full transition-all duration-700 shadow-inner"
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 rounded-full transition-all duration-500"
                     style={{ 
                       width: `${(tabs.filter(tab => validateTab(tab.id)).length / tabs.length) * 100}%` 
                     }}
-                  ></div>
+                  />
                 </div>
-                <div className="text-sm text-gray-600 font-medium">
+                
+                <div className="text-xs text-gray-600">
                   {tabs.filter(tab => validateTab(tab.id)).length === tabs.length 
                     ? '✅ Ready to register patient' 
                     : '⏳ Complete all required fields'
@@ -651,12 +659,12 @@ const AddPatient = () => {
             </div>
 
             {/* Quick Actions */}
-            <div className="mt-6 space-y-3">
-              <button className="w-full flex items-center justify-center space-x-2 p-4 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl transition-all duration-200 text-sm font-semibold border-2 border-blue-200">
+            <div className="mt-4 space-y-2">
+              <button className="w-full flex items-center justify-center space-x-2 p-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors text-sm font-medium border border-blue-200">
                 <Plus className="w-4 h-4" />
                 <span>Add Medical History</span>
               </button>
-              <button className="w-full flex items-center justify-center space-x-2 p-4 bg-green-50 hover:bg-green-100 text-green-700 rounded-xl transition-all duration-200 text-sm font-semibold border-2 border-green-200">
+              <button className="w-full flex items-center justify-center space-x-2 p-3 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg transition-colors text-sm font-medium border border-green-200">
                 <FileText className="w-4 h-4" />
                 <span>Upload Documents</span>
               </button>
@@ -664,17 +672,17 @@ const AddPatient = () => {
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <div className="flex-1 overflow-y-auto p-8">
-          <div className="max-w-5xl mx-auto">
+        {/* Main Content */}
+        <div className="flex-1 ml-80 min-h-screen">
+          <div className="max-w-4xl mx-auto p-6">
             {/* Current Tab Content */}
-            <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-200 p-10 mb-8">
-              <div className="mb-10">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8 mb-6">
+              <div className="mb-8">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-3xl font-bold text-gray-900">
+                  <h2 className="text-2xl font-bold text-gray-900">
                     {tabs.find(tab => tab.id === activeTab)?.label} Information
                   </h2>
-                  <div className={`px-4 py-2 rounded-full text-sm font-bold ${
+                  <div className={`px-3 py-1 rounded-full text-sm font-medium ${
                     validateTab(activeTab) 
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-yellow-100 text-yellow-800'
@@ -682,8 +690,7 @@ const AddPatient = () => {
                     {validateTab(activeTab) ? 'Complete' : 'In Progress'}
                   </div>
                 </div>
-                <div className="h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full w-32 mb-2"></div>
-                <p className="text-gray-600 text-lg">
+                <p className="text-gray-600">
                   {tabs.find(tab => tab.id === activeTab)?.description}
                 </p>
               </div>
@@ -693,23 +700,21 @@ const AddPatient = () => {
 
             {/* Error Message */}
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 rounded-2xl p-6 mb-8 shadow-lg">
+              <div className="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <AlertCircle className="h-6 w-6 text-red-500" />
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-red-800">Registration Error</h3>
-                    <p className="text-sm text-red-700 font-medium mt-1">{error}</p>
+                  <AlertCircle className="h-5 w-5 text-red-500 mr-3" />
+                  <div>
+                    <h3 className="text-sm font-semibold text-red-800">Registration Error</h3>
+                    <p className="text-sm text-red-700 mt-1">{error}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Enhanced Action Buttons */}
-            <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-200 p-8">
-              <div className="flex items-center justify-between">
-                <div className="flex space-x-4">
+            {/* Action Buttons */}
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex space-x-3">
                   <button
                     type="button"
                     onClick={() => {
@@ -719,9 +724,9 @@ const AddPatient = () => {
                       }
                     }}
                     disabled={tabs.findIndex(tab => tab.id === activeTab) === 0}
-                    className="px-8 py-4 border-2 border-gray-300 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                    className="px-6 py-3 border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                   >
-                    <ArrowLeft className="w-5 h-5" />
+                    <ArrowLeft className="w-4 h-4" />
                     <span>Previous</span>
                   </button>
                   
@@ -734,69 +739,57 @@ const AddPatient = () => {
                       }
                     }}
                     disabled={tabs.findIndex(tab => tab.id === activeTab) === tabs.length - 1}
-                    className="px-8 py-4 bg-gray-100 hover:bg-gray-200 rounded-xl font-bold text-gray-900 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                    className="px-6 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                   >
                     <span>Next</span>
-                    <ArrowLeft className="w-5 h-5 rotate-180" />
+                    <ArrowLeft className="w-4 h-4 rotate-180" />
                   </button>
                 </div>
 
-                <div className="flex space-x-4">
+                <div className="flex space-x-3">
                   <button
                     type="button"
-                    className="px-8 py-4 border-2 border-gray-300 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2 hover:shadow-lg"
+                    className="px-6 py-3 border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center space-x-2"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                     <span>Cancel</span>
                   </button>
                   
                   <button
-                    type="button"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                    className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center space-x-3"
-                  >
-                    {loading ? (
-                      <>
-                        <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Registering Patient...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Save className="w-6 h-6" />
-                        <span>Register Patient</span>
-                      </>
-                    )}
-                  </button>
+              onClick={() => (window.location.href = "PatientDoctor")}
+              className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Register
+            </button>
                 </div>
               </div>
 
               {/* Registration Summary */}
-              <div className="mt-8 pt-8 border-t-2 border-gray-200">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-200">
-                    <div className="text-2xl font-bold text-blue-600">
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="text-lg font-bold text-blue-600 mb-1">
                       {formData.name ? '✓' : '○'}
                     </div>
-                    <div className="text-sm font-medium text-blue-800">Patient Name</div>
+                    <div className="text-xs font-medium text-blue-800">Patient Name</div>
                   </div>
-                  <div className="text-center p-4 bg-green-50 rounded-xl border border-green-200">
-                    <div className="text-2xl font-bold text-green-600">
+                  <div className="text-center p-3 bg-green-50 rounded-lg border border-green-200">
+                    <div className="text-lg font-bold text-green-600 mb-1">
                       {formData.abhaId ? '✓' : '○'}
                     </div>
-                    <div className="text-sm font-medium text-green-800">ABHA ID</div>
+                    <div className="text-xs font-medium text-green-800">ABHA ID</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-xl border border-purple-200">
-                    <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-center p-3 bg-purple-50 rounded-lg border border-purple-200">
+                    <div className="text-lg font-bold text-purple-600 mb-1">
                       {formData.phone ? '✓' : '○'}
                     </div>
-                    <div className="text-sm font-medium text-purple-800">Contact Info</div>
+                    <div className="text-xs font-medium text-purple-800">Contact Info</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-200">
-                    <div className="text-2xl font-bold text-orange-600">
+                  <div className="text-center p-3 bg-orange-50 rounded-lg border border-orange-200">
+                    <div className="text-lg font-bold text-orange-600 mb-1">
                       {formData.constitution ? '✓' : '○'}
                     </div>
-                    <div className="text-sm font-medium text-orange-800">AYUSH Data</div>
+                    <div className="text-xs font-medium text-orange-800">AYUSH Data</div>
                   </div>
                 </div>
               </div>

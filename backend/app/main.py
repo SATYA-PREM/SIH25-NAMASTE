@@ -8,16 +8,18 @@ from .config import settings
 from .database import init_database
 from .routes import auth, patients, diseases, fhir, version
 
+
 # Initialize database on startup
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    print("🚀 Initializing AYUSH EMR API...")
+    print("🚀 Initializing AYUSH EHR API...")
     init_database()
     print("✅ Database initialized successfully!")
     yield
     # Shutdown
-    print("👋 Shutting down AYUSH EMR API...")
+    print("👋 Shutting down AYUSH EHR API...")
+
 
 # Create FastAPI app with auto-generated docs
 app = FastAPI(
@@ -40,7 +42,12 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5000",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
@@ -53,10 +60,12 @@ app.include_router(diseases.router, prefix="/api")
 app.include_router(fhir.router, prefix="/api")
 app.include_router(version.router, prefix="/api")
 
+
 @app.get("/", include_in_schema=False)
 async def root():
     """Redirect root to API documentation"""
     return RedirectResponse(url="/docs")
+
 
 @app.get("/api/health")
 async def health_check():
@@ -65,14 +74,14 @@ async def health_check():
         "status": "healthy",
         "service": settings.app_name,
         "version": settings.app_version,
-        "message": "AYUSH EMR API is running successfully! 🌿"
+        "message": "AYUSH EHR API is running successfully! 🌿"
     }
+
 
 @app.get("/api/info")
 async def api_info():
     """Get API information and available endpoints"""
     return {
-
         "name": settings.app_name,
         "version": settings.app_version,
         "description": settings.description,
@@ -102,11 +111,12 @@ async def api_info():
         }
     }
 
+
 if __name__ == "__main__":
     uvicorn.run(
         "app.main:app",
-        host="0.0.0.0",
-        port=8000,
+        host="127.0.0.1",  # Localhost
+        port=500,          # Predefined port
         reload=True,
         log_level="info"
     )

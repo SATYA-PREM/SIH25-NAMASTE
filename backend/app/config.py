@@ -1,10 +1,10 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings 
 from typing import Optional
 import os
 
 class Settings(BaseSettings):
     # App Settings
-    app_name: str = "AYUSH EMR API"
+    app_name: str = "AYUSH EHR API"
     app_version: str = "1.0.0"
     description: str = "Electronic Medical Record system for AYUSH practitioners with WHO disease codes"
 

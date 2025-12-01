@@ -1,8 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Search, FileText, Users, CalendarCheck, User, Bell, Settings, Download, Share2, Eye, EyeOff, ChevronDown, Activity, TrendingUp, Clock } from 'lucide-react'
+import { 
+  Search, FileText, Users, CalendarCheck, User, Bell, Settings, 
+  Download, Share2, Eye, EyeOff, ChevronDown, Activity, TrendingUp, 
+  Clock, LogOut 
+} from 'lucide-react'
 
 export default function PatientDashboard() {
-  const user = { identifier: 'P-1001', name: 'John Patterson', email: 'john.patterson@email.com' }
+  const user = { identifier: 'P-1001', name: 'Rajesh Kumar', email: 'rajesh.kumar@gmail.com' }
 
   const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
@@ -112,6 +116,63 @@ export default function PatientDashboard() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Simplified logout function - no backend communication
+  const handleLogout = async () => {
+    try {
+      // Show confirmation dialog
+      const confirmed = window.confirm('Are you sure you want to logout?');
+      if (!confirmed) return;
+
+      console.log(`Logging out user: ${user.identifier}`);
+
+      // Clear all local storage
+      localStorage.clear();
+      
+      // Clear session storage
+      sessionStorage.clear();
+      
+      // Clear all cookies
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      // Clear cache if supported
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          names.forEach(name => {
+            caches.delete(name);
+          });
+        });
+      }
+
+      // Clear React state
+      setReports([]);
+      setQuery('');
+      setActiveReportId(null);
+      setActiveTab('dashboard');
+
+      // Success message
+      alert('Logged out successfully!');
+      
+      // Redirect to home page
+      window.location.href = '/';
+      
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if there's an error, still try to redirect
+      window.location.href = '/';
+    }
+  };
+
+  // Enhanced navigation handler
+  const handleNavigation = (tabId) => {
+    if (tabId === 'logout') {
+      handleLogout();
+    } else {
+      setActiveTab(tabId);
+    }
+  };
+
   const metrics = useMemo(() => {
     const total = reports.length
     const resolved = reports.reduce(
@@ -137,12 +198,14 @@ export default function PatientDashboard() {
     )
   })
 
+  // Updated navigation items with logout tab
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Activity, active: true },
     { id: 'appointments', label: 'Appointments', icon: CalendarCheck },
     { id: 'prescriptions', label: 'Prescriptions', icon: FileText },
     { id: 'doctors', label: 'My Doctors', icon: Users },
     { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'logout', label: 'Logout', icon: LogOut },
   ]
 
   if (loading) {
@@ -174,20 +237,22 @@ export default function PatientDashboard() {
                 <Activity className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-slate-900">HealthFlow</h3>
+                <h3 className="text-xl font-bold text-slate-900">AYUSH EHR</h3>
                 <p className="text-xs text-slate-500">Patient Portal</p>
               </div>
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation with Logout */}
           <nav className="flex-1 p-4 space-y-2">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => handleNavigation(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  activeTab === item.id
+                  item.id === 'logout'
+                    ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-600/25 hover:from-red-700 hover:to-rose-700'
+                    : activeTab === item.id
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25'
                     : 'text-slate-600 hover:bg-slate-100/70 hover:text-slate-900'
                 }`}
@@ -223,17 +288,6 @@ export default function PatientDashboard() {
               </div>
 
               <div className="flex items-center gap-4">
-                {/* Enhanced Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search records, doctors, conditions..."
-                    className="w-80 pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
-                  />
-                </div>
-
                 {/* Notifications */}
                 <button className="relative p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-all duration-200">
                   <Bell className="w-6 h-6" />
@@ -305,6 +359,28 @@ export default function PatientDashboard() {
                     <Clock className="w-6 h-6 text-purple-600" />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-3 mb-8">
+              {/* Search Box */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search doctors, diseases, organisation..."
+                  className="w-[400px] pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                />
+              </div>
+
+              {/* Generate Report Button */}
+              <div>
+                <button className="gap-2 px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-200 shadow-lg shadow-green-600/25"
+                            onClick={() => window.location.href = "repo"}
+>
+                  Generate Report
+                </button>
               </div>
             </div>
 
@@ -462,9 +538,7 @@ export default function PatientDashboard() {
 
                         {/* Action Buttons */}
                         <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                          <button 
-                            onClick={() => generatePDF(report)}
-                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg shadow-blue-600/25">
+                          <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg shadow-blue-600/25">
                             <Download className="w-4 h-4" />
                             Download PDF
                           </button>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AYUSH EMR API Test Script
+AYUSH EHR API Test Script
 Tests the main functionality of the API
 """
 
@@ -12,9 +12,9 @@ import sys
 BASE_URL = "http://localhost:8000"
 
 def test_api():
-    """Test the AYUSH EMR API endpoints"""
+    """Test the AYUSH EHR API Test endpoints"""
 
-    print("🧪 Testing AYUSH EMR API")
+    print("🧪 Testing AYUSH EHR API")
     print("=" * 50)
 
     # Test 1: Health Check

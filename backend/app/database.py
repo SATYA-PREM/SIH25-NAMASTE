@@ -112,6 +112,8 @@ def init_database():
             INSERT OR IGNORE INTO doctors (doctor_id, name, specialization, qualification, license_number, mobile_number, email, is_verified)
             VALUES ('DOC001', 'Dr. Rajesh Kumar', 'Ayurveda', 'BAMS, MD', 'AYU12345', '+919876543210', 'dr.rajesh@example.com', TRUE)
         """)
+        
+        
 
         print("Database initialized successfully!")
 

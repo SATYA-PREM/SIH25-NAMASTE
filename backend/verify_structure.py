@@ -8,7 +8,7 @@ import os
 
 def verify_imports():
     """Test that all our modules can be imported correctly"""
-    print("🔍 Verifying AYUSH EMR Backend Structure...")
+    print("🔍 Verifying AYUSH EHR Backend Structure...")
     print("=" * 50)
 
     try:

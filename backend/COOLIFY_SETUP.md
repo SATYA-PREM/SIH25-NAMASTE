@@ -62,7 +62,7 @@ SECRET_KEY=your-production-secret-key-min-32-characters
 ### **Optional Variables (with defaults):**
 
 ```bash
-APP_NAME=AYUSH EMR API
+APP_NAME=AYUSH EHR API
 APP_VERSION=1.0.0
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 DATABASE_URL=sqlite:///./data/ayush_emr.db

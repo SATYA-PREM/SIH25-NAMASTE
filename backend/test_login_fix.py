@@ -12,7 +12,7 @@ BASE_URL = "http://localhost:8000"
 def test_fixed_login():
     """Test the fixed login flow"""
 
-    print("🔧 Testing Fixed AYUSH EMR Login")
+    print("🔧 Testing Fixed AYUSH EHR Login")
     print("=" * 50)
 
     # Test ABHA ID from your request

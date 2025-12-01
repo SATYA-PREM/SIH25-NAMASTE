@@ -700,62 +700,52 @@
       padding: 52px 20px;
       color: #7f8c8d;
     }
-
     .json-section {
-      position: relative;
-      z-index: 1;
-    }
+  position: relative;
+  z-index: 1;
+}
 
-    .json-upload-area {
-      top: 60px;
-      /* Adjust based on your header height */
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #2d3748;
-      z-index: 2;
-    }
+.json-upload-area {
+  top: 60px; /* Adjust based on your header height */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #2d3748;
+  z-index: 2;
+}
+.table-container {
+  box-sizing: border-box;
+  padding-right: 8px; /* Reserve space for scrollbar */
+  scrollbar-gutter: stable;
+}
 
-    .table-container {
-      box-sizing: border-box;
-      padding-right: 8px;
-      /* Reserve space for scrollbar */
-      scrollbar-gutter: stable;
-    }
+.code-block {
+  box-sizing: border-box;
+  padding-right: 8px; /* Reserve space for scrollbar */  
+  scrollbar-gutter: stable;
+}
+.results-container {
+  min-height: 0; /* Important for flex children */
+  overflow: hidden;
+}
 
-    .code-block {
-      box-sizing: border-box;
-      padding-right: 8px;
-      /* Reserve space for scrollbar */
-      scrollbar-gutter: stable;
-    }
+.table-section,
+.json-section {
+  min-width: 0; /* Prevent flex items from overflowing */
+  overflow: hidden;
+}
 
-    .results-container {
-      min-height: 0;
-      /* Important for flex children */
-      overflow: hidden;
-    }
-
-    .table-section,
-    .json-section {
-      min-width: 0;
-      /* Prevent flex items from overflowing */
-      overflow: hidden;
-    }
-
-    .table-container,
-    .code-block {
-      overflow-y: auto;
-      overflow-x: hidden;
-      height: 100%;
-    }
-
-    .resizer {
-      z-index: 10;
-      position: relative;
-      flex-shrink: 0;
-      /* Prevent resizer from shrinking */
-    }
+.table-container,
+.code-block {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
+.resizer {
+  z-index: 10;
+  position: relative;
+  flex-shrink: 0; /* Prevent resizer from shrinking */
+}
 
 
     .notification {
@@ -1467,62 +1457,6 @@
         width: 100%;
       }
     }
-
-    .table-container th:nth-child(5),
-    .table-container td:nth-child(5) {
-      /* ICD-11 Code */
-      min-width: 120px;
-      max-width: 150px;
-    }
-
-    .table-container th:nth-child(6),
-    .table-container td:nth-child(6) {
-      /* ICD-11 Term */
-      min-width: 180px;
-      max-width: 250px;
-    }
-
-    /* Shift other columns */
-    .table-container th:nth-child(7),
-    .table-container td:nth-child(7) {
-      /* Short Definition */
-      min-width: 200px;
-      max-width: 300px;
-    }
-
-    .table-container th:nth-child(8),
-    .table-container td:nth-child(8) {
-      /* Long Definition */
-      min-width: 250px;
-      max-width: 400px;
-    }
-
-    .table-container th:nth-child(9),
-    .table-container td:nth-child(9) {
-      /* Reference */
-      min-width: 120px;
-      max-width: 180px;
-    }
-
-    .table-container th:nth-child(10),
-    .table-container td:nth-child(10) {
-      /* Ontology Branches */
-      min-width: 150px;
-      max-width: 200px;
-    }
-
-    .icd11-mapping {
-      background: #fff3e0;
-      color: #f57c00;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-weight: 600;
-    }
-
-    .no-mapping {
-      color: #95a5a6;
-      font-style: italic;
-    }
   </style>
 </head>
 
@@ -2161,8 +2095,8 @@ Example:
         }
       }
 
-      // Enhanced renderResults function with ICD-11 lookup
-      async function renderResults(data) {
+      // Enhanced renderResults function with horizontal scroll support
+      function renderResults(data) {
         let results = [];
         let totalCount = 0;
 
@@ -2179,284 +2113,64 @@ Example:
           totalCount = 0;
         }
 
-        resultsStats.style.display = totalCount > 0 ? 'block' : 'none';
+        resultsStats.style.display = totalCount > 0 ? "block" : "none";
 
         if (!results.length) {
           tableContent.innerHTML = `
             <div class="no-results">
-                <h3>No Results Found</h3>
-                <p>Try another term or check different database.</p>
+              <h3>No Results Found</h3>
+              <p>Try another term or check different database.</p>
             </div>
-        `;
+          `;
           return;
         }
 
-        // Fetch ICD-11 mappings for each result
-        const enhancedResults = await Promise.all(results.map(async (r) => {
-          try {
-            // Call ICD-11 lookup API
-            const icd11Response = await fetch(`${API_BASE}/api/icd11-lookup`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                term: r.term || r.Term,
-                system: r.system || r.System
-              })
-            });
-
-            if (icd11Response.ok) {
-              const icd11Data = await icd11Response.json();
-              return {
-                ...r,
-                icd11_code: icd11Data.code || 'N/A',
-                icd11_term: icd11Data.term || 'N/A'
-              };
-            }
-          } catch (error) {
-            console.error('ICD-11 lookup failed:', error);
-          }
-
-          return {
-            ...r,
-            icd11_code: 'N/A',
-            icd11_term: 'N/A'
-          };
-        }));
-
         const html = `
-        <div class="export-section" style="margin-bottom: 15px; text-align: right;">
-            <button id="exportBundleBtn" class="search-btn" style="background: #8e44ad;">
-                <span>📦</span> Export Bundle
-            </button>
-        </div>
-        <table style="width: 100%; border-collapse: collapse;">
+          <table style="width: 100%; border-collapse: collapse;">
             <thead>
-                <tr>
-                    <th>Database</th>
-                    <th>System</th>
-                    <th>Code</th>
-                    <th>Term</th>
-                    <th>ICD-11 Code</th>
-                    <th>ICD-11 Term</th>
-                    <th>Short Definition</th>
-                    <th>Long Definition</th>
-                    <th>Reference</th>
-                    <th>Ontology Branches</th>
-                </tr>
+              <tr>
+                <th>Database</th>
+                <th>System</th>
+                <th>Code</th>
+                <th>Term</th>
+                <th>Short Definition</th>
+                <th>Long Definition</th>
+                <th>Reference</th>
+                <th>Ontology Branches</th>
+              </tr>
             </thead>
             <tbody>
-                ${enhancedResults.map(r => `
-                    <tr>
-                        <td>
-                            <span class="database-badge badge-${(r.sourcedatabase || r.source_database || 'unknown').toLowerCase()}">
-                                ${r.sourcedatabase || r.source_database || 'N/A'}
-                            </span>
-                        </td>
-                        <td>${r.system || r.System || 'N/A'}</td>
-                        <td>${r.code || r.Code || 'N/A'}</td>
-                        <td><strong>${r.term || r.Term || 'N/A'}</strong></td>
-                        <td><span class="${r.icd11_code !== 'N/A' ? 'icd11-mapping' : 'no-mapping'}">${r.icd11_code}</span></td>
-                        <td>${r.icd11_term}</td>
-                        <td title="${(r.shortdefinition || r.short_definition || r.ShortDefinition || 'N/A').toString()}">
-                            ${(r.shortdefinition || r.short_definition || r.ShortDefinition || 'N/A').toString().slice(0, 120)}${(r.shortdefinition || r.short_definition || r.ShortDefinition || '').toString().length > 120 ? '...' : ''}
-                        </td>
-                        <td title="${(r.longdefinition || r.long_definition || r.LongDefinition || 'N/A').toString()}">
-                            ${(r.longdefinition || r.long_definition || r.LongDefinition || 'N/A').toString().slice(0, 180)}${(r.longdefinition || r.long_definition || r.LongDefinition || '').toString().length > 180 ? '...' : ''}
-                        </td>
-                        <td>${r.reference || r.Reference || 'N/A'}</td>
-                        <td>${r.ontologybranches || r.ontology_branches || r.OntologyBranches || 'N/A'}</td>
-                    </tr>
-                `).join('')}
+              ${results.map(r => `
+                <tr>
+                  <td>
+                    <span class="database-badge badge-${(r.sourcedatabase || r.source_database || 'unknown').toLowerCase()}">
+                      ${r.sourcedatabase || r.source_database || 'N/A'}
+                    </span>
+                  </td>
+                  <td>${r.system || r.System || 'N/A'}</td>
+                  <td>${r.code || r.Code || 'N/A'}</td>
+                  <td><strong>${r.term || r.Term || 'N/A'}</strong></td>
+                  <td title="${(r.shortdefinition || r.short_definition || r.ShortDefinition || 'N/A').toString()}">
+                    ${(r.shortdefinition || r.short_definition || r.ShortDefinition || 'N/A').toString().slice(0, 120)}${(r.shortdefinition || r.short_definition || r.ShortDefinition || '').toString().length > 120 ? '...' : ''}
+                  </td>
+                  <td title="${(r.longdefinition || r.long_definition || r.LongDefinition || 'N/A').toString()}">
+                    ${(r.longdefinition || r.long_definition || r.LongDefinition || 'N/A').toString().slice(0, 180)}${(r.longdefinition || r.long_definition || r.LongDefinition || '').toString().length > 180 ? '...' : ''}
+                  </td>
+                  <td>${r.reference || r.Reference || 'N/A'}</td>
+                  <td>${r.ontologybranches || r.ontology_branches || r.OntologyBranches || 'N/A'}</td>
+                </tr>
+              `).join('')}
             </tbody>
-        </table>
-    `;
+          </table>
+        `;
 
         tableContent.innerHTML = html;
 
-        // Add export bundle functionality
-        document.getElementById('exportBundleBtn').addEventListener('click', () => exportBundle(enhancedResults));
-
         // Check for overflow after rendering
-        setTimeout(() => checkTableOverflow(), 100);
+        setTimeout(() => {
+          checkTableOverflow();
+        }, 100);
       }
-      // Export Bundle Functionality
-      function exportBundle(results) {
-        if (!results || results.length === 0) {
-          notify('No results to export', 'error');
-          return;
-        }
-
-        const bundle = {
-          resourceType: "Bundle",
-          id: `terminology-bundle-${Date.now()}`,
-          meta: {
-            lastUpdated: new Date().toISOString(),
-            profile: ["http://terminology.hub/fhir/Bundle/terminology-search-results"]
-          },
-          identifier: {
-            system: "http://terminology.hub/bundle-identifier",
-            value: `bundle-${Date.now()}`
-          },
-          type: "searchset",
-          timestamp: new Date().toISOString(),
-          total: results.length,
-          entry: results.map((result, index) => ({
-            fullUrl: `http://terminology.hub/terminology/${result.code || result.Code || index}`,
-            resource: {
-              resourceType: "CodeSystem",
-              id: `terminology-${index}`,
-              url: `http://terminology.hub/CodeSystem/${result.system || result.System}`,
-              identifier: [
-                {
-                  system: "http://terminology.hub/identifier",
-                  value: result.code || result.Code || `term-${index}`
-                }
-              ],
-              version: "1.0.0",
-              name: (result.system || result.System || 'Unknown').replace(/\s+/g, ''),
-              title: `${result.system || result.System} Terminology`,
-              status: "active",
-              experimental: false,
-              date: new Date().toISOString(),
-              publisher: "Medical Terminology Hub",
-              description: result.longdefinition || result.long_definition || result.LongDefinition || 'No description available',
-              concept: [
-                {
-                  code: result.code || result.Code || `term-${index}`,
-                  display: result.term || result.Term || 'Unknown Term',
-                  definition: result.shortdefinition || result.short_definition || result.ShortDefinition || 'No definition available',
-                  property: [
-                    {
-                      code: "source_database",
-                      valueString: result.sourcedatabase || result.source_database || 'Unknown'
-                    },
-                    {
-                      code: "reference",
-                      valueString: result.reference || result.Reference || 'No reference'
-                    },
-                    {
-                      code: "ontology_branches",
-                      valueString: result.ontologybranches || result.ontology_branches || result.OntologyBranches || 'No branches'
-                    },
-                    ...(result.icd11_code && result.icd11_code !== 'N/A' ? [{
-                      code: "icd11_mapping",
-                      valueString: `${result.icd11_code}: ${result.icd11_term}`
-                    }] : [])
-                  ]
-                }
-              ]
-            },
-            search: {
-              mode: "match",
-              score: 1.0
-            }
-          }))
-        };
-
-        // Create downloadable file
-        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/fhir+json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `terminology-bundle-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        notify(`FHIR Bundle exported with ${results.length} entries`, 'success');
-      }
-
-
-
-      // Export Bundle Functionality
-      function exportBundle(results) {
-        if (!results || results.length === 0) {
-          notify('No results to export', 'error');
-          return;
-        }
-
-        const bundle = {
-          resourceType: "Bundle",
-          id: `terminology-bundle-${Date.now()}`,
-          meta: {
-            lastUpdated: new Date().toISOString(),
-            profile: ["http://terminology.hub/fhir/Bundle/terminology-search-results"]
-          },
-          identifier: {
-            system: "http://terminology.hub/bundle-identifier",
-            value: `bundle-${Date.now()}`
-          },
-          type: "searchset",
-          timestamp: new Date().toISOString(),
-          total: results.length,
-          entry: results.map((result, index) => ({
-            fullUrl: `http://terminology.hub/terminology/${result.code || result.Code || index}`,
-            resource: {
-              resourceType: "CodeSystem",
-              id: `terminology-${index}`,
-              url: `http://terminology.hub/CodeSystem/${result.system || result.System}`,
-              identifier: [
-                {
-                  system: "http://terminology.hub/identifier",
-                  value: result.code || result.Code || `term-${index}`
-                }
-              ],
-              version: "1.0.0",
-              name: (result.system || result.System || 'Unknown').replace(/\s+/g, ''),
-              title: `${result.system || result.System} Terminology`,
-              status: "active",
-              experimental: false,
-              date: new Date().toISOString(),
-              publisher: "Medical Terminology Hub",
-              description: result.longdefinition || result.long_definition || result.LongDefinition || 'No description available',
-              concept: [
-                {
-                  code: result.code || result.Code || `term-${index}`,
-                  display: result.term || result.Term || 'Unknown Term',
-                  definition: result.shortdefinition || result.short_definition || result.ShortDefinition || 'No definition available',
-                  property: [
-                    {
-                      code: "source_database",
-                      valueString: result.sourcedatabase || result.source_database || 'Unknown'
-                    },
-                    {
-                      code: "reference",
-                      valueString: result.reference || result.Reference || 'No reference'
-                    },
-                    {
-                      code: "ontology_branches",
-                      valueString: result.ontologybranches || result.ontology_branches || result.OntologyBranches || 'No branches'
-                    },
-                    ...(result.icd11_code && result.icd11_code !== 'N/A' ? [{
-                      code: "icd11_mapping",
-                      valueString: `${result.icd11_code}: ${result.icd11_term}`
-                    }] : [])
-                  ]
-                }
-              ]
-            },
-            search: {
-              mode: "match",
-              score: 1.0
-            }
-          }))
-        };
-
-        // Create downloadable file
-        const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/fhir+json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `terminology-bundle-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-
-        notify(`FHIR Bundle exported with ${results.length} entries`, 'success');
-      }
-
 
       function setLoading(on) {
         if (on) {
@@ -3603,79 +3317,79 @@ Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,
 
         return badges[equivalence] || '<span class="equivalence-badge" style="background: #e2e3e5; color: #495057;">Unknown</span>';
       }
-      document.addEventListener('DOMContentLoaded', function () {
-        const resizer = document.getElementById('dragMe');
-        const leftSide = document.querySelector('.table-section');
-        const rightSide = document.querySelector('.json-section');
-        const container = document.querySelector('.results-container');
+document.addEventListener('DOMContentLoaded', function() {
+  const resizer = document.getElementById('dragMe');
+  const leftSide = document.querySelector('.table-section');
+  const rightSide = document.querySelector('.json-section');
+  const container = document.querySelector('.results-container');
 
-        let isResizing = false;
+  let isResizing = false;
 
-        // Mouse events for desktop
-        resizer.addEventListener('mousedown', initResize);
-        document.addEventListener('mousemove', doResize);
-        document.addEventListener('mouseup', stopResize);
+  // Mouse events for desktop
+  resizer.addEventListener('mousedown', initResize);
+  document.addEventListener('mousemove', doResize);
+  document.addEventListener('mouseup', stopResize);
 
-        // Touch events for mobile
-        resizer.addEventListener('touchstart', initResize);
-        document.addEventListener('touchmove', doResize);
-        document.addEventListener('touchend', stopResize);
+  // Touch events for mobile
+  resizer.addEventListener('touchstart', initResize);
+  document.addEventListener('touchmove', doResize);
+  document.addEventListener('touchend', stopResize);
 
-        function initResize(e) {
-          isResizing = true;
-          document.body.style.cursor = 'ew-resize';
-          document.body.style.userSelect = 'none';
+  function initResize(e) {
+    isResizing = true;
+    document.body.style.cursor = 'ew-resize';
+    document.body.style.userSelect = 'none';
+    
+    // Prevent text selection during resize
+    e.preventDefault();
+  }
 
-          // Prevent text selection during resize
-          e.preventDefault();
-        }
+  function doResize(e) {
+    if (!isResizing) return;
+    
+    e.preventDefault();
+    
+    const containerRect = container.getBoundingClientRect();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    
+    if (!clientX) return;
+    
+    const offsetX = clientX - containerRect.left;
+    const containerWidth = containerRect.width;
+    
+    // Calculate percentages
+    const leftWidth = (offsetX / containerWidth) * 100;
+    const rightWidth = 100 - leftWidth;
+    
+    // Set minimum widths (30% each side)
+    if (leftWidth < 30 || rightWidth < 30) return;
+    
+    // Apply the new widths
+    leftSide.style.flex = `0 0 ${leftWidth}%`;
+    rightSide.style.flex = `0 0 ${rightWidth}%`;
+  }
 
-        function doResize(e) {
-          if (!isResizing) return;
+  function stopResize() {
+    isResizing = false;
+    document.body.style.cursor = 'default';
+    document.body.style.userSelect = 'auto';
+  }
 
-          e.preventDefault();
+  // Handle window resize to maintain proportions
+  window.addEventListener('resize', function() {
+    // Reset to default if window becomes too small
+    if (window.innerWidth < 768) {
+      leftSide.style.flex = '1';
+      rightSide.style.flex = '1';
+    }
+  });
 
-          const containerRect = container.getBoundingClientRect();
-          const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-
-          if (!clientX) return;
-
-          const offsetX = clientX - containerRect.left;
-          const containerWidth = containerRect.width;
-
-          // Calculate percentages
-          const leftWidth = (offsetX / containerWidth) * 100;
-          const rightWidth = 100 - leftWidth;
-
-          // Set minimum widths (30% each side)
-          if (leftWidth < 30 || rightWidth < 30) return;
-
-          // Apply the new widths
-          leftSide.style.flex = `0 0 ${leftWidth}%`;
-          rightSide.style.flex = `0 0 ${rightWidth}%`;
-        }
-
-        function stopResize() {
-          isResizing = false;
-          document.body.style.cursor = 'default';
-          document.body.style.userSelect = 'auto';
-        }
-
-        // Handle window resize to maintain proportions
-        window.addEventListener('resize', function () {
-          // Reset to default if window becomes too small
-          if (window.innerWidth < 768) {
-            leftSide.style.flex = '1';
-            rightSide.style.flex = '1';
-          }
-        });
-
-        // Double-click to reset to 50/50 split
-        resizer.addEventListener('dblclick', function () {
-          leftSide.style.flex = '1';
-          rightSide.style.flex = '1';
-        });
-      });
+  // Double-click to reset to 50/50 split
+  resizer.addEventListener('dblclick', function() {
+    leftSide.style.flex = '1';
+    rightSide.style.flex = '1';
+  });
+});
 
     </script>
 </body>

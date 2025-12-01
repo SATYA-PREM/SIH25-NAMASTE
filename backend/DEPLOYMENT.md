@@ -28,7 +28,7 @@ SECRET_KEY=your-super-secret-production-key-min-32-characters
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 # Optional Variables (with defaults)
-APP_NAME=AYUSH EMR API
+APP_NAME=AYUSH EHR API
 APP_VERSION=1.0.0
 DATABASE_URL=sqlite:///./data/ayush_emr.db
 WHO_API_URL=http://your-who-service-url:5000
@@ -195,7 +195,7 @@ curl https://your-domain.com/api/info
 
 ```bash
 curl https://your-domain.com/api/health
-# Expected: {"status": "healthy", "service": "AYUSH EMR API"}
+# Expected: {"status": "healthy", "service": "AYUSH EHR API"}
 ```
 
 ### 2. **API Documentation**

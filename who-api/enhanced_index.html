@@ -1,0 +1,2214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enhanced Medical Terminology Search</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        color: #333;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* New header with tabs */
+      .main-header {
+        display: flex;
+        gap: 20px;
+        background: #34495e;
+        padding: 15px 30px;
+        border-radius: 12px;
+        color: #fff;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .main-header .tab {
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #ecf0f1;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .main-header .tab:hover,
+      .main-header .tab.active {
+        background-color: #27ae60;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+      }
+
+      /* Hero Landing Section */
+      .hero-landing {
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+        padding: 80px 0;
+        margin-bottom: 50px;
+      }
+
+      .hero-content {
+        max-width: 900px;
+        margin: 0 auto 60px;
+        text-align: left;
+        padding: 0 30px;
+      }
+
+      .hero-title {
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        line-height: 1.2;
+        margin-bottom: 25px;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-description {
+        font-size: 1.2rem;
+        color: #5a6c7d;
+        line-height: 1.6;
+        margin-bottom: 35px;
+        font-weight: 400;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 0;
+      }
+
+      .btn-primary {
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary:hover {
+        background: #219a52;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #5a6c7d;
+        border: 2px solid #e1e8ed;
+        padding: 14px 32px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-secondary:hover {
+        background: #f8f9fa;
+        border-color: #cbd5e0;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 30px;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 35px 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f4f7;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        border-color: #e3f2fd;
+      }
+
+      .feature-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        line-height: 1.3;
+      }
+
+      .feature-description {
+        font-size: 1rem;
+        color: #5a6c7d;
+        line-height: 1.6;
+        margin: 0;
+        font-weight: 400;
+      }
+
+      /* Search Interface Section */
+      .search-interface-section {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+      .search-interface-section h2 {
+        color: #2c3e50;
+        font-size: 1.8rem;
+        text-align: center;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 15px;
+      }
+      .search-section {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .search-input {
+        flex: 1;
+        min-width: 300px;
+        padding: 15px 20px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+      .search-input:focus {
+        outline: none;
+        border-color: #27ae60;
+      }
+      .database-select {
+        padding: 15px 20px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 16px;
+        min-width: 150px;
+      }
+      .search-btn,
+      .add-btn {
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        transition: all 0.2s;
+      }
+      .search-btn {
+        background: #27ae60;
+        color: #fff;
+      }
+      .search-btn:hover {
+        background: #219a52;
+      }
+      .search-btn:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+      }
+      .add-btn {
+        background: #3498db;
+        color: #fff;
+        margin-top: 15px;
+      }
+      .add-btn:hover {
+        background: #2980b9;
+      }
+      .options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+      .limit-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .limit-input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 90px;
+      }
+      .add-section {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        display: none;
+      }
+      .add-section h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 20px;
+      }
+      .form-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+      .form-group {
+        flex: 1;
+        min-width: 220px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      .form-group textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .save-btn {
+        background: #e74c3c;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      .save-btn:hover {
+        background: #c0392b;
+      }
+      .cancel-btn {
+        background: #95a5a6;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .cancel-btn:hover {
+        background: #7f8c8d;
+      }
+      .results-container {
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 30px;
+        align-items: start;
+      }
+      .table-section,
+      .json-section {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .section-header,
+      .json-header {
+        background: #34495e;
+        color: #fff;
+        padding: 15px 20px;
+        margin: -20px -20px 20px;
+        border-radius: 12px 12px 0 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+      .results-stats {
+        background: #ecf0f1;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+      .table-container {
+        overflow-x: auto;
+        max-height: 600px;
+        overflow-y: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+      }
+      th {
+        background: #f8f9fa;
+        padding: 12px 8px;
+        text-align: left;
+        border-bottom: 2px solid #e9ecef;
+        font-weight: 700;
+        color: #495057;
+        white-space: nowrap;
+        font-size: 14px;
+      }
+      td {
+        padding: 12px 8px;
+        border-bottom: 1px solid #e9ecef;
+        vertical-align: top;
+        font-size: 13px;
+      }
+      tr:nth-child(even) {
+        background: #f8f9fa;
+      }
+      tr:hover {
+        background: #e3f2fd;
+      }
+      .database-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .badge-ayurveda {
+        background: #e8f5e8;
+        color: #2e7d32;
+      }
+      .badge-icd11 {
+        background: #fff3e0;
+        color: #f57c00;
+      }
+      .badge-siddha {
+        background: #f3e5f5;
+        color: #7b1fa2;
+      }
+      .badge-unani {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+      .badge-doctor {
+        background: #fce4ec;
+        color: #c2185b;
+      }
+      .code-block {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        max-height: 500px;
+        overflow-y: auto;
+      }
+      .no-results {
+        text-align: center;
+        padding: 52px 20px;
+        color: #7f8c8d;
+      }
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 700;
+        z-index: 9999;
+        transform: translateX(420px);
+        transition: transform 0.25s ease;
+      }
+      .notification.show {
+        transform: translateX(0);
+      }
+      .notification.success {
+        background: #27ae60;
+      }
+      .notification.error {
+        background: #e74c3c;
+      }
+
+      /* CSV Section Styles */
+      .csv-container {
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 30px;
+        margin-top: 30px;
+      }
+      .csv-section,
+      .csv-json-section {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .csv-section h2,
+      .csv-json-section h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .csv-upload-area {
+        border: 2px dashed #3498db;
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 25px;
+        background: #f8fbff;
+        transition: all 0.3s ease;
+      }
+      .csv-upload-area:hover {
+        border-color: #2980b9;
+        background: #f0f8ff;
+      }
+      .csv-upload-area.dragover {
+        border-color: #27ae60;
+        background: #f0fff4;
+      }
+      .csv-textarea {
+        width: 100%;
+        min-height: 200px;
+        padding: 15px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.4;
+        resize: vertical;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .csv-textarea:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+      .csv-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      .csv-btn {
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .convert-json-btn {
+        background: #f39c12;
+        color: #fff;
+      }
+      .convert-json-btn:hover {
+        background: #e67e22;
+      }
+      .upload-csv-btn {
+        background: #16a085;
+        color: #fff;
+      }
+      .upload-csv-btn:hover {
+        background: #138d75;
+      }
+      .clear-csv-btn {
+        background: #e74c3c;
+        color: #fff;
+      }
+      .clear-csv-btn:hover {
+        background: #c0392b;
+      }
+      .sample-csv-btn {
+        background: #9b59b6;
+        color: #fff;
+      }
+      .sample-csv-btn:hover {
+        background: #8e44ad;
+      }
+      .csv-info {
+        background: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+      .csv-preview {
+        max-height: 300px;
+        overflow: auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-top: 15px;
+        overflow-x: auto;
+      }
+      .csv-preview table {
+        font-size: 12px;
+      }
+      .csv-preview th {
+        background: #34495e;
+        color: #fff;
+        padding: 8px;
+      }
+      .csv-preview td {
+        padding: 6px 8px;
+        border-bottom: 1px solid #eee;
+      }
+      .json-download {
+        background: #34495e;
+        color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .download-btn {
+        background: #27ae60;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .download-btn:hover {
+        background: #219a52;
+      }
+      .csv-stats {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+      }
+      .csv-stat {
+        background: #3498db;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      /* Custom scrollbar styling for webkit browsers */
+      .code-block::-webkit-scrollbar,
+      .table-container::-webkit-scrollbar,
+      .csv-textarea::-webkit-scrollbar,
+      .csv-preview::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      .code-block::-webkit-scrollbar-track,
+      .table-container::-webkit-scrollbar-track,
+      .csv-textarea::-webkit-scrollbar-track,
+      .csv-preview::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      .code-block::-webkit-scrollbar-thumb,
+      .table-container::-webkit-scrollbar-thumb,
+      .csv-textarea::-webkit-scrollbar-thumb,
+      .csv-preview::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+
+      .code-block::-webkit-scrollbar-thumb:hover,
+      .table-container::-webkit-scrollbar-thumb:hover,
+      .csv-textarea::-webkit-scrollbar-thumb:hover,
+      .csv-preview::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .spinner {
+        animation: spin 1s linear infinite;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero-landing {
+          padding: 60px 0;
+        }
+        .hero-title {
+          font-size: 2.4rem;
+        }
+        .hero-description {
+          font-size: 1.1rem;
+        }
+        .hero-buttons {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+          text-align: center;
+          max-width: 280px;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+        .feature-card {
+          padding: 25px 20px;
+        }
+        .results-container,
+        .csv-container {
+          grid-template-columns: 1fr;
+        }
+        .database-select {
+          min-width: 180px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-content {
+          padding: 0 20px;
+        }
+        .features-grid {
+          padding: 0 20px;
+        }
+        .hero-title {
+          font-size: 2rem;
+        }
+      }
+      /* ValueSet and ConceptMap Sections */
+.valueset-section,
+.conceptmap-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.valueset-section h2,
+.conceptmap-section h2 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 15px;
+}
+
+.fhir-operations {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.fhir-btn {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.expand-btn {
+  background: #3498db;
+  color: #fff;
+}
+
+.expand-btn:hover {
+  background: #2980b9;
+}
+
+.validate-btn {
+  background: #27ae60;
+  color: #fff;
+}
+
+.validate-btn:hover {
+  background: #219a52;
+}
+
+.translate-btn {
+  background: #e67e22;
+  color: #fff;
+}
+
+.translate-btn:hover {
+  background: #d35400;
+}
+
+.fhir-input {
+  padding: 12px 15px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-right: 10px;
+  min-width: 200px;
+}
+
+.fhir-select {
+  padding: 12px 15px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-right: 10px;
+  min-width: 150px;
+}
+
+.fhir-results {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.mapping-result {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 4px solid #27ae60;
+}
+
+.equivalence-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.equiv-equivalent { background: #d4edda; color: #155724; }
+.equiv-narrower { background: #fff3cd; color: #856404; }
+.equiv-broader { background: #f8d7da; color: #721c24; }
+.equiv-related { background: #cce7ff; color: #004085; }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- New header with tabs -->
+      <header class="main-header">
+        <div
+          class="tab"
+          data-tab="about"
+          onclick="window.location.href='enhanced_index.html'"
+        >
+          About
+        </div>
+        <div
+          class="tab"
+          data-tab="api"
+          onclick="window.location.href='api.html'"
+        >
+          API
+        </div>
+        <div class="tab" data-tab="demo">Demo</div>
+        <div
+          class="tab"
+          data-tab="docs"
+          onclick="window.location.href='doc.html'"
+        >
+          Docs
+        </div>
+        <div class="tab" data-tab="model">Model</div>
+      </header>
+
+      <!-- Hero Landing Section -->
+      <section class="hero-landing">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            MedUnify API × Cross-Cultural Medical Terminology Hub
+          </h1>
+          <p class="hero-description">
+            Demo-ready microservice bridging AYUSH traditional systems
+            (Ayurveda, Siddha, Unani) and modern ICD-11 standards using advanced
+            search algorithms. Discover terms, map cross-references, expand
+            medical vocabularies, and enable doctor contributions—no external
+            setup required.
+          </p>
+
+          <div class="hero-buttons">
+            <button class="btn-primary">Read the Docs</button>
+            <button class="btn-secondary">Try the Demo</button>
+          </div>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3 class="feature-title">Cross-System Mapping</h3>
+            <p class="feature-description">
+              Search across Ayurveda, Siddha, Unani, and ICD-11 databases with
+              intelligent cross-referencing for comprehensive medical
+              terminology coverage.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3 class="feature-title">Doctor Contributions</h3>
+            <p class="feature-description">
+              Enable healthcare professionals to add verified medical terms with
+              structured data validation and real-time database integration.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3 class="feature-title">CSV Data Ingestion</h3>
+            <p class="feature-description">
+              Load medical terminology datasets from CSV files to power rapid
+              deployment and bulk data operations efficiently.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <h3 class="feature-title">API-First Design</h3>
+            <p class="feature-description">
+              RESTful API endpoints with JSON responses, ready for integration
+              into healthcare applications and medical research platforms.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search Interface Section -->
+      <section class="search-interface-section">
+        <h2>🔍 Medical Terminology Search Interface</h2>
+
+        <div class="search-section">
+          <input
+            id="searchInput"
+            class="search-input"
+            placeholder="Enter medical terminology to search..."
+          />
+          <select id="databaseSelect" class="database-select">
+            <option value="">All Databases</option>
+            <option value="ayurveda">Ayurveda</option>
+            <option value="icd11">ICD-11</option>
+            <option value="siddha">Siddha</option>
+            <option value="unani">Unani</option>
+            <option value="doctor">Doctor Added</option>
+          </select>
+          <button id="searchBtn" class="search-btn">
+            <span>🔍</span> Search
+          </button>
+        </div>
+
+        <button id="addBtn" class="add-btn">
+          <span>➕</span> Add Terminology
+        </button>
+
+        <div class="options">
+          <div class="limit-group">
+            <label for="limitInput">Limit:</label>
+            <input
+              id="limitInput"
+              class="limit-input"
+              type="number"
+              min="1"
+              max="1000"
+              value="300"
+            />
+          </div>
+          <div>
+            <span>🟢</span>
+            <span>Enhanced API Online</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ValueSet Section -->
+
+
+
+      <!-- Add Terminology Form -->
+      <div id="addSection" class="add-section">
+        <h2>Add New Medical Terminology</h2>
+        <form id="addForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="doctorName">Doctor Name *</label>
+              <input id="doctorName" name="doctor_name" required />
+            </div>
+            <div class="form-group">
+              <label for="systemField">System *</label>
+              <input
+                id="systemField"
+                name="system"
+                required
+                placeholder="e.g., Ayurveda, Modern Medicine"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="codeField">Code</label>
+              <input
+                id="codeField"
+                name="code"
+                placeholder="e.g., A01.1, AYU001"
+              />
+            </div>
+            <div class="form-group">
+              <label for="termField">Term *</label>
+              <input
+                id="termField"
+                name="term"
+                required
+                placeholder="Medical term or condition"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="shortDefinition">Short Definition *</label>
+              <textarea
+                id="shortDefinition"
+                name="short_definition"
+                required
+                placeholder="Brief description"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="longDefinition">Long Definition</label>
+              <textarea
+                id="longDefinition"
+                name="long_definition"
+                placeholder="Detailed description, symptoms, treatment, etc."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="referenceField">Reference</label>
+              <input
+                id="referenceField"
+                name="reference"
+                placeholder="Source reference, book, journal, etc."
+              />
+            </div>
+            <div class="form-group">
+              <label for="ontologyBranches">Ontology Branches</label>
+              <input
+                id="ontologyBranches"
+                name="ontology_branches"
+                placeholder="Related categories or branches"
+              />
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 18px">
+            <button type="submit" class="save-btn">💾 Save Terminology</button>
+            <button type="button" id="cancelBtn" class="cancel-btn">
+              ❌ Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Results -->
+      <div class="results-container">
+        <div class="table-section">
+          <div class="section-header">Search Results</div>
+          <div
+            id="resultsStats"
+            class="results-stats"
+            style="display: none"
+          ></div>
+          <div class="table-container">
+            <div id="tableContent">
+              <div class="no-results">
+                <h3>🔍 Ready to Search</h3>
+                <p>Enter a medical term above to search across databases</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="json-section">
+          <div class="json-header">Raw JSON Response</div>
+          <div id="jsonResponse" class="code-block">
+            // JSON appears here after search
+          </div>
+        </div>
+      </div>
+
+      <!-- CSV Ignition Section -->
+      <div class="csv-container">
+        <div class="csv-section">
+          <h2>📊 CSV Data Ignition</h2>
+
+          <div class="csv-info">
+            <strong>Expected CSV Format:</strong><br />
+            doctor_name,system,code,term,short_definition,long_definition,reference,ontology_branches
+          </div>
+
+          <div class="csv-upload-area" id="csvUploadArea">
+            <div>📁 Drop CSV file here or click to select</div>
+            <div style="font-size: 13px; color: #666; margin-top: 8px">
+              Supports .csv files
+            </div>
+            <input
+              type="file"
+              id="csvFileInput"
+              accept=".csv"
+              style="display: none"
+            />
+          </div>
+
+          <textarea
+            id="csvTextarea"
+            class="csv-textarea"
+            placeholder="Paste CSV data here or upload a file above...&#10;&#10;Example:&#10;Dr. Smith,Ayurveda,AYU001,Vata Dosha,Primary life force,Detailed description...,Classical Text,Tridosha"
+          ></textarea>
+
+          <div id="csvStats" class="csv-stats" style="display: none">
+            <div class="csv-stat" id="rowCount">Rows: 0</div>
+            <div class="csv-stat" id="colCount">Columns: 0</div>
+          </div>
+
+          <div class="csv-buttons">
+            <button id="convertJsonBtn" class="csv-btn convert-json-btn">
+              <span>📄</span> Convert to JSON
+            </button>
+            <button id="uploadCsvBtn" class="csv-btn upload-csv-btn">
+              <span>⬆️</span> Add to Database
+            </button>
+            <button id="sampleCsvBtn" class="csv-btn sample-csv-btn">
+              <span>📋</span> Load Sample
+            </button>
+            <button id="clearCsvBtn" class="csv-btn clear-csv-btn">
+              <span>🗑️</span> Clear
+            </button>
+          </div>
+
+          <div id="csvPreview" class="csv-preview" style="display: none"></div>
+        </div>
+
+        <div class="csv-json-section">
+          <h2>📋 JSON Output</h2>
+
+          <div id="jsonDownload" class="json-download" style="display: none">
+            <div style="margin-bottom: 10px">Ready for download</div>
+            <button id="downloadJsonBtn" class="download-btn">
+              💾 Download JSON
+            </button>
+          </div>
+
+          <div id="csvJsonOutput" class="code-block">
+            // Converted JSON will appear here
+          </div>
+        </div>
+      </div>
+      <section class="valueset-section">
+  <h2>📚 FHIR ValueSet Operations</h2>
+  
+  <div class="fhir-operations">
+    <select id="valueSetSelect" class="fhir-select">
+      <option value="ayurveda-terms">Ayurveda Terms</option>
+      <option value="siddha-terms">Siddha Terms</option>
+      <option value="unani-terms">Unani Terms</option>
+      <option value="icd11-terms">ICD-11 Terms</option>
+      <option value="all-traditional">All Traditional Systems</option>
+    </select>
+    
+    <button id="expandBtn" class="fhir-btn expand-btn">
+      <span>🔍</span> $expand
+    </button>
+    
+    <input id="validateCodeInput" class="fhir-input" placeholder="Enter code to validate">
+    
+    <button id="validateBtn" class="fhir-btn validate-btn">
+      <span>✅</span> $validate-code
+    </button>
+  </div>
+  
+  <div id="valueSetResults" class="fhir-results" style="display: none;">
+    <h4>ValueSet Expansion Results:</h4>
+    <div id="valueSetContent"></div>
+  </div>
+</section>
+
+<!-- ConceptMap Section -->
+<section class="conceptmap-section">
+  <h2>🔄 FHIR ConceptMap Operations</h2>
+  
+  <div class="fhir-operations">
+    <select id="sourceSystemSelect" class="fhir-select">
+      <option value="ayurveda">Ayurveda</option>
+      <option value="siddha">Siddha</option>
+      <option value="unani">Unani</option>
+    </select>
+    
+    <span style="margin: 0 10px;">→</span>
+    
+    <select id="targetSystemSelect" class="fhir-select">
+      <option value="icd11">ICD-11</option>
+      <option value="snomed">SNOMED CT</option>
+    </select>
+    
+    <input id="translateCodeInput" class="fhir-input" placeholder="Enter code to translate">
+    
+    <button id="translateBtn" class="fhir-btn translate-btn">
+      <span>🔄</span> $translate
+    </button>
+  </div>
+  
+  <div id="conceptMapResults" class="fhir-results" style="display: none;">
+    <h4>Translation Results:</h4>
+    <div id="conceptMapContent"></div>
+  </div>
+</section>
+    </div>
+
+    <script>
+      const API_BASE = "http://localhost:5000";
+      let currentResults = null;
+      let csvData = [];
+      let jsonData = null;
+
+      const searchInput = document.getElementById("searchInput");
+      const databaseSelect = document.getElementById("databaseSelect");
+      const searchBtn = document.getElementById("searchBtn");
+      const addBtn = document.getElementById("addBtn");
+      const addSection = document.getElementById("addSection");
+      const addForm = document.getElementById("addForm");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const limitInput = document.getElementById("limitInput");
+      const resultsStats = document.getElementById("resultsStats");
+      const tableContent = document.getElementById("tableContent");
+      const jsonResponse = document.getElementById("jsonResponse");
+
+      // CSV Elements
+      const csvUploadArea = document.getElementById("csvUploadArea");
+      const csvFileInput = document.getElementById("csvFileInput");
+      const csvTextarea = document.getElementById("csvTextarea");
+      const csvStats = document.getElementById("csvStats");
+      const rowCount = document.getElementById("rowCount");
+      const colCount = document.getElementById("colCount");
+      const convertJsonBtn = document.getElementById("convertJsonBtn");
+      const uploadCsvBtn = document.getElementById("uploadCsvBtn");
+      const sampleCsvBtn = document.getElementById("sampleCsvBtn");
+      const clearCsvBtn = document.getElementById("clearCsvBtn");
+      const csvPreview = document.getElementById("csvPreview");
+      const jsonDownload = document.getElementById("jsonDownload");
+      const downloadJsonBtn = document.getElementById("downloadJsonBtn");
+      const csvJsonOutput = document.getElementById("csvJsonOutput");
+
+      // Tab click logic
+      // Tab click logic with proper navigation
+      document.querySelectorAll(".main-header .tab").forEach((tab) => {
+        tab.addEventListener("click", (e) => {
+          document
+            .querySelectorAll(".main-header .tab")
+            .forEach((t) => t.classList.remove("active"));
+          e.target.classList.add("active");
+
+          const tabName =
+            e.target.getAttribute("data-tab") ||
+            e.target.textContent.trim().toLowerCase();
+
+          // Navigation logic
+          switch (tabName) {
+            case "about":
+              // Stay on current page (enhanced_index.html) - this is the about/home page
+              notify("Welcome to MedUnify API Hub", "success");
+              break;
+
+            case "api":
+              // Navigate to API documentation page
+              window.location.href = "api.html";
+              break;
+
+            case "demo":
+              // Scroll to demo section on current page
+              document
+                .querySelector(".search-interface-section")
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              notify("Switched to Demo section", "success");
+              break;
+
+            case "docs":
+              // Navigate to documentation page
+              window.location.href = "doc.html";
+              break;
+
+            case "model":
+              // You can add model page navigation here
+              notify("Model page coming soon", "success");
+              break;
+
+            default:
+              notify(`Switched to ${tabName.toUpperCase()} tab`, "success");
+          }
+        });
+      });
+
+      // Toggle Add Section
+      addBtn.addEventListener("click", () => {
+        const isOpen = addSection.style.display === "block";
+        if (isOpen) {
+          addSection.style.display = "none";
+        } else {
+          addSection.style.display = "block";
+          addSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+
+      // Cancel button
+      cancelBtn.addEventListener("click", () => {
+        addSection.style.display = "none";
+        addForm.reset();
+      });
+
+      // Form submission
+      addForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fd = new FormData(addForm);
+        const data = {};
+        for (const [k, v] of fd.entries()) data[k] = v.toString().trim();
+
+        if (
+          !data.doctor_name ||
+          !data.system ||
+          !data.term ||
+          !data.short_definition
+        ) {
+          notify("Please fill in all required fields", "error");
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API_BASE}/api/add-terminology`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+          const out = await res.json();
+          if (res.ok) {
+            notify("Terminology added successfully!", "success");
+            addSection.style.display = "none";
+            addForm.reset();
+            if (currentResults) performSearch();
+          } else {
+            notify(out.error || "Failed to add terminology", "error");
+          }
+        } catch (err) {
+          notify("Network error while adding terminology", "error");
+          console.error(err);
+        }
+      });
+
+      // FIXED SEARCH FUNCTIONALITY
+      async function performSearch() {
+        const term = searchInput.value.trim();
+
+        if (!term) {
+          notify("Please enter a search term", "error");
+          searchInput.focus();
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          // Build search parameters
+          const params = new URLSearchParams({
+            term: term,
+            total_limit: limitInput.value || 300,
+          });
+
+          if (databaseSelect.value) {
+            params.append("database", databaseSelect.value);
+          }
+
+          const url = `${API_BASE}/api/search?${params}`;
+          console.log("🔍 Making search request to:", url);
+
+          // Make the API request with proper headers
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            mode: "cors", // Handle CORS
+          });
+
+          console.log("📡 Response status:", response.status);
+          console.log(
+            "📡 Response headers:",
+            Object.fromEntries(response.headers.entries())
+          );
+
+          // Check if response is ok
+          if (!response.ok) {
+            let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+            try {
+              const errorData = await response.json();
+              errorMessage = errorData.error || errorMessage;
+            } catch {
+              errorMessage = (await response.text()) || errorMessage;
+            }
+            throw new Error(errorMessage);
+          }
+
+          // Parse response data
+          const data = await response.json();
+          console.log("📊 Response data:", data);
+
+          // Check for API-level errors
+          if (data.error) {
+            throw new Error(data.error);
+          }
+
+          // Store and render results
+          currentResults = data;
+          renderResults(data);
+          jsonResponse.textContent = JSON.stringify(data, null, 2);
+
+          // Show success notification
+          const resultCount = data.count || data.total_count || 0;
+          notify(`Found ${resultCount} results`, "success");
+        } catch (err) {
+          console.error("❌ Search failed:", err);
+
+          // Show user-friendly error
+          let errorMsg = "Search failed";
+          if (err.message.includes("fetch")) {
+            errorMsg =
+              "Cannot connect to API server. Make sure it's running on localhost:5000";
+          } else if (err.message.includes("CORS")) {
+            errorMsg = "CORS error. Check server configuration";
+          } else {
+            errorMsg = err.message;
+          }
+
+          notify(errorMsg, "error");
+
+          // Show error in results
+          tableContent.innerHTML = `
+            <div class="no-results">
+              <h3>❌ Search Error</h3>
+              <p>${errorMsg}</p>
+              <p><small>Check browser console for details</small></p>
+            </div>`;
+
+          // Show error in JSON response
+          jsonResponse.textContent = JSON.stringify(
+            {
+              error: errorMsg,
+              timestamp: new Date().toISOString(),
+              details: err.stack,
+            },
+            null,
+            2
+          );
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function renderResults(data) {
+        let results = [];
+        let totalCount = 0;
+
+        if (data.combined_results) {
+          results = data.combined_results;
+          totalCount = data.total_count;
+          resultsStats.textContent = `Found ${totalCount} results across databases (including doctor-added terms)`;
+        } else if (data.data) {
+          results = data.data;
+          totalCount = data.count;
+          resultsStats.textContent = `Found ${totalCount} results in ${data.database} database`;
+        } else {
+          results = [];
+          totalCount = 0;
+        }
+
+        resultsStats.style.display = totalCount > 0 ? "block" : "none";
+
+        if (!results.length) {
+          tableContent.innerHTML = `<div class="no-results"><h3>No Results Found</h3><p>Try another term or check different database.</p></div>`;
+          return;
+        }
+
+        const html = `
+        <table>
+          <thead>
+            <tr>
+              <th>Database</th>
+              <th>System</th>
+              <th>Code</th>
+              <th>Term</th>
+              <th>Short Definition</th>
+              <th>Long Definition</th>
+              <th>Reference</th>
+              <th>Ontology Branches</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${results
+              .map(
+                (r) => `
+              <tr>
+                <td><span class="database-badge badge-${
+                  r.source_database || "unknown"
+                }">${r.source_database || "N/A"}</span></td>
+                <td>${r.system || r.System || "N/A"}</td>
+                <td>${r.code || r.Code || "N/A"}</td>
+                <td><strong>${r.term || r.Term || "N/A"}</strong></td>
+                <td>${(r.short_definition || r.Short_Definition || "N/A")
+                  .toString()
+                  .slice(0, 120)}${
+                  (r.short_definition || r.Short_Definition || "").toString()
+                    .length > 120
+                    ? "…"
+                    : ""
+                }</td>
+                <td>${(r.long_definition || r.Long_Definition || "N/A")
+                  .toString()
+                  .slice(0, 180)}${
+                  (r.long_definition || r.Long_Definition || "").toString()
+                    .length > 180
+                    ? "…"
+                    : ""
+                }</td>
+                <td>${r.reference || r.Reference || "N/A"}</td>
+                <td>${r.ontology_branches || r.Ontology_Branches || "N/A"}</td>
+              </tr>
+            `
+              )
+              .join("")}
+          </tbody>
+        </table>
+      `;
+        tableContent.innerHTML = html;
+      }
+
+      function setLoading(on) {
+        if (on) {
+          searchBtn.disabled = true;
+          searchBtn.innerHTML =
+            '<span class="spinner" style="width:16px;height:16px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Searching...';
+          tableContent.innerHTML = `<div class="no-results"><div class="spinner" style="width:40px;height:40px;border:4px solid transparent;border-top-color:#27ae60;border-radius:50%;margin:0 auto 15px;animation:spin 1s linear infinite"></div><p>Searching databases...</p></div>`;
+        } else {
+          searchBtn.disabled = false;
+          searchBtn.innerHTML = "<span>🔍</span> Search";
+        }
+      }
+
+      function notify(msg, type = "success") {
+        const old = document.querySelector(".notification");
+        if (old) old.remove();
+        const n = document.createElement("div");
+        n.className = `notification ${type}`;
+        n.textContent = msg;
+        document.body.appendChild(n);
+        setTimeout(() => n.classList.add("show"), 50);
+        setTimeout(() => {
+          n.classList.remove("show");
+          setTimeout(() => n.remove(), 300);
+        }, 3500);
+      }
+
+      // Search event listeners
+      searchBtn.addEventListener("click", performSearch);
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") performSearch();
+      });
+
+      // ============ CSV Functionality ============
+
+      // File drag and drop
+      csvUploadArea.addEventListener("click", () => csvFileInput.click());
+      csvUploadArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        csvUploadArea.classList.add("dragover");
+      });
+      csvUploadArea.addEventListener("dragleave", () => {
+        csvUploadArea.classList.remove("dragover");
+      });
+      csvUploadArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        csvUploadArea.classList.remove("dragover");
+        const files = e.dataTransfer.files;
+        if (files.length > 0) handleFileUpload(files[0]);
+      });
+
+      csvFileInput.addEventListener("change", (e) => {
+        if (e.target.files.length > 0) handleFileUpload(e.target.files[0]);
+      });
+
+      function handleFileUpload(file) {
+        if (!file.name.toLowerCase().endsWith(".csv")) {
+          notify("Please select a CSV file", "error");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          csvTextarea.value = e.target.result;
+          parseCsvData();
+        };
+        reader.readAsText(file);
+      }
+
+      // CSV parsing and preview
+      csvTextarea.addEventListener("input", parseCsvData);
+
+      function parseCsvData() {
+        const csvText = csvTextarea.value.trim();
+        if (!csvText) {
+          csvStats.style.display = "none";
+          csvPreview.style.display = "none";
+          csvData = [];
+          return;
+        }
+
+        try {
+          const lines = csvText.split("\n").filter((line) => line.trim());
+          if (lines.length < 2) {
+            csvStats.style.display = "none";
+            csvPreview.style.display = "none";
+            return;
+          }
+
+          const headers = lines[0]
+            .split(",")
+            .map((h) => h.trim().replace(/"/g, ""));
+          csvData = lines.slice(1).map((line) => {
+            const values = line
+              .split(",")
+              .map((v) => v.trim().replace(/"/g, ""));
+            const obj = {};
+            headers.forEach((header, index) => {
+              obj[header] = values[index] || "";
+            });
+            return obj;
+          });
+
+          // Update stats
+          rowCount.textContent = `Rows: ${csvData.length}`;
+          colCount.textContent = `Columns: ${headers.length}`;
+          csvStats.style.display = "flex";
+
+          // Create preview
+          createCsvPreview(headers, csvData.slice(0, 5));
+        } catch (error) {
+          notify("Error parsing CSV data", "error");
+          console.error(error);
+        }
+      }
+
+      function createCsvPreview(headers, data) {
+        if (data.length === 0) {
+          csvPreview.style.display = "none";
+          return;
+        }
+
+        const table = `
+        <table>
+          <thead>
+            <tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+          </thead>
+          <tbody>
+            ${data
+              .map(
+                (row) => `
+              <tr>${headers
+                .map(
+                  (h) =>
+                    `<td>${(row[h] || "").toString().slice(0, 50)}${
+                      (row[h] || "").toString().length > 50 ? "..." : ""
+                    }</td>`
+                )
+                .join("")}</tr>
+            `
+              )
+              .join("")}
+            ${
+              csvData.length > 5
+                ? `<tr><td colspan="${
+                    headers.length
+                  }" style="text-align:center;font-style:italic;">... and ${
+                    csvData.length - 5
+                  } more rows</td></tr>`
+                : ""
+            }
+          </tbody>
+        </table>
+      `;
+        csvPreview.innerHTML = table;
+        csvPreview.style.display = "block";
+      }
+
+      // Convert to JSON
+      convertJsonBtn.addEventListener("click", () => {
+        if (csvData.length === 0) {
+          notify("No CSV data to convert", "error");
+          return;
+        }
+
+        jsonData = csvData.map((row, index) => ({
+          id: index + 1,
+          doctor_name: row.doctor_name || row.Doctor_Name || "",
+          system: row.system || row.System || "",
+          code: row.code || row.Code || "",
+          term: row.term || row.Term || "",
+          short_definition: row.short_definition || row.Short_Definition || "",
+          long_definition: row.long_definition || row.Long_Definition || "",
+          reference: row.reference || row.Reference || "",
+          ontology_branches:
+            row.ontology_branches || row.Ontology_Branches || "",
+        }));
+
+        csvJsonOutput.textContent = JSON.stringify(jsonData, null, 2);
+        jsonDownload.style.display = "block";
+        notify(`Converted ${jsonData.length} records to JSON`, "success");
+      });
+
+      // Download JSON
+      downloadJsonBtn.addEventListener("click", () => {
+        if (!jsonData) {
+          notify("No JSON data to download", "error");
+          return;
+        }
+
+        const blob = new Blob([JSON.stringify(jsonData, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `medical_terminology_${
+          new Date().toISOString().split("T")[0]
+        }.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        notify("JSON file downloaded successfully", "success");
+      });
+
+      // Upload to database
+      uploadCsvBtn.addEventListener("click", async () => {
+        if (csvData.length === 0) {
+          notify("No CSV data to upload", "error");
+          return;
+        }
+
+        const requiredFields = [
+          "doctor_name",
+          "system",
+          "term",
+          "short_definition",
+        ];
+        const invalidRows = csvData.filter((row, index) => {
+          return requiredFields.some((field) => {
+            const value =
+              row[field] ||
+              row[field.charAt(0).toUpperCase() + field.slice(1)] ||
+              row[field.replace(/_/g, " ")] ||
+              row[
+                field
+                  .split("_")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ")
+              ];
+            return !value || value.toString().trim() === "";
+          });
+        });
+
+        if (invalidRows.length > 0) {
+          notify(
+            `${invalidRows.length} rows missing required fields (doctor_name, system, term, short_definition)`,
+            "error"
+          );
+          return;
+        }
+
+        uploadCsvBtn.disabled = true;
+        uploadCsvBtn.innerHTML =
+          '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Uploading...';
+
+        try {
+          let successCount = 0;
+          let errorCount = 0;
+
+          for (const row of csvData) {
+            const payload = {
+              doctor_name: (row.doctor_name || row.Doctor_Name || "")
+                .toString()
+                .trim(),
+              system: (row.system || row.System || "").toString().trim(),
+              code: (row.code || row.Code || "").toString().trim(),
+              term: (row.term || row.Term || "").toString().trim(),
+              short_definition: (
+                row.short_definition ||
+                row.Short_Definition ||
+                ""
+              )
+                .toString()
+                .trim(),
+              long_definition: (
+                row.long_definition ||
+                row.Long_Definition ||
+                ""
+              )
+                .toString()
+                .trim(),
+              reference: (row.reference || row.Reference || "")
+                .toString()
+                .trim(),
+              ontology_branches: (
+                row.ontology_branches ||
+                row.Ontology_Branches ||
+                ""
+              )
+                .toString()
+                .trim(),
+            };
+
+            try {
+              const response = await fetch(`${API_BASE}/api/add-terminology`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+
+              if (response.ok) {
+                successCount++;
+              } else {
+                errorCount++;
+              }
+            } catch (error) {
+              errorCount++;
+            }
+          }
+
+          if (successCount > 0) {
+            notify(
+              `Successfully uploaded ${successCount} terminology records`,
+              "success"
+            );
+            if (errorCount > 0) {
+              notify(`${errorCount} records failed to upload`, "error");
+            }
+          } else {
+            notify("Failed to upload any records", "error");
+          }
+        } catch (error) {
+          notify("Network error during upload", "error");
+          console.error(error);
+        } finally {
+          uploadCsvBtn.disabled = false;
+          uploadCsvBtn.innerHTML = "<span>⬆️</span> Add to Database";
+        }
+      });
+
+      // Load sample CSV
+      sampleCsvBtn.addEventListener("click", () => {
+        const sampleCsv = `doctor_name,system,code,term,short_definition,long_definition,reference,ontology_branches
+Dr. Rajesh Kumar,Ayurveda,AYU001,Vata Dosha,"Primary life force responsible for movement and circulation","Vata is one of the three fundamental doshas in Ayurvedic medicine, governing bodily functions related to movement, circulation, breathing, and nervous system activity. It is composed of air and space elements.",Charaka Samhita,Tridosha Theory
+Dr. Priya Sharma,Ayurveda,AYU002,Pitta Dosha,"Bio-energy responsible for digestion and metabolism","Pitta dosha governs all metabolic processes, digestion, absorption, assimilation, nutrition, temperature regulation, and energy production. It consists of fire and water elements.",Sushruta Samhita,Tridosha Theory
+Dr. Anand Patel,Unani,UNA001,Mizaj,Constitutional temperament in Unani medicine,"Mizaj refers to the individual constitutional makeup determined by the balance of four humors (Akhlat). It determines a person's physical and mental characteristics, disease susceptibility, and treatment response.",Canon of Medicine - Ibn Sina,Humoral Theory
+Dr. Sarah Johnson,Modern Medicine,ICD001,Hypertension,High blood pressure condition,"Hypertension is a chronic medical condition characterized by persistently elevated arterial blood pressure. It is a major risk factor for cardiovascular diseases including stroke, heart attack, and kidney disease.",WHO Guidelines,Cardiovascular Disorders
+Dr. Tamil Selvan,Siddha,SID001,Vali,Life force similar to Vata in Siddha system,"Vali is one of the three vital forces (Mukkutram) in Siddha medicine, corresponding to air element and responsible for all movements in the body including circulation, respiration, and nervous functions.",Thirumoolar Writings,Mukkutram Theory`;
+
+        csvTextarea.value = sampleCsv;
+        parseCsvData();
+        notify("Sample CSV data loaded", "success");
+      });
+
+      // Clear CSV
+      clearCsvBtn.addEventListener("click", () => {
+        csvTextarea.value = "";
+        csvData = [];
+        jsonData = null;
+        csvStats.style.display = "none";
+        csvPreview.style.display = "none";
+        jsonDownload.style.display = "none";
+        csvJsonOutput.textContent = "// Converted JSON will appear here";
+        notify("CSV data cleared", "success");
+      });
+
+      // Button handlers
+      document.querySelector(".btn-primary").addEventListener("click", () => {
+        document.querySelector('.main-header .tab[data-tab="docs"]')?.click();
+      });
+
+      document.querySelector(".btn-secondary").addEventListener("click", () => {
+        document.querySelector('.main-header .tab[data-tab="demo"]')?.click();
+        document.querySelector(".search-interface-section")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+
+      // API health check on load
+      window.addEventListener("load", async () => {
+        try {
+          const r = await fetch(`${API_BASE}/api/health`);
+          const h = await r.json();
+          console.log("✅ API health:", h);
+          notify("API connection successful", "success");
+        } catch (err) {
+          console.error("❌ API connection failed:", err);
+          notify(
+            "⚠️ API server not responding. Start Flask API (python enhanced_medical_api.py)",
+            "error"
+          );
+        }
+      });
+
+      // Debug function for testing API calls
+      window.testAPI = async function () {
+        console.log("🧪 Testing API endpoints...");
+
+        try {
+          // Test health endpoint
+          const healthRes = await fetch(`${API_BASE}/api/health`);
+          console.log(
+            "Health check:",
+            healthRes.status,
+            await healthRes.text()
+          );
+
+          // Test search endpoint
+          const searchRes = await fetch(`${API_BASE}/api/search?term=test`);
+          console.log("Search test:", searchRes.status, await searchRes.text());
+
+          // Test databases endpoint
+          const dbRes = await fetch(`${API_BASE}/api/databases`);
+          console.log("Databases:", dbRes.status, await dbRes.text());
+        } catch (err) {
+          console.error("API Debug Error:", err);
+        }
+      };
+
+      // FHIR ValueSet and ConceptMap Operations
+const valueSetSelect = document.getElementById("valueSetSelect");
+const expandBtn = document.getElementById("expandBtn");
+const validateBtn = document.getElementById("validateBtn");
+const validateCodeInput = document.getElementById("validateCodeInput");
+const valueSetResults = document.getElementById("valueSetResults");
+const valueSetContent = document.getElementById("valueSetContent");
+
+const sourceSystemSelect = document.getElementById("sourceSystemSelect");
+const targetSystemSelect = document.getElementById("targetSystemSelect");
+const translateBtn = document.getElementById("translateBtn");
+const translateCodeInput = document.getElementById("translateCodeInput");
+const conceptMapResults = document.getElementById("conceptMapResults");
+const conceptMapContent = document.getElementById("conceptMapContent");
+
+// ValueSet $expand operation
+expandBtn.addEventListener("click", async () => {
+  const selectedValueSet = valueSetSelect.value;
+  
+  try {
+    expandBtn.disabled = true;
+    expandBtn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Expanding...';
+    
+    const response = await fetch(`${API_BASE}/fhir/ValueSet/$expand?identifier=${selectedValueSet}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/fhir+json',
+        'Content-Type': 'application/fhir+json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    renderValueSetExpansion(data);
+    valueSetResults.style.display = "block";
+    notify(`Expanded ValueSet: ${data.expansion?.contains?.length || 0} concepts`, "success");
+    
+  } catch (err) {
+    console.error("ValueSet $expand failed:", err);
+    notify(`ValueSet expansion failed: ${err.message}`, "error");
+    valueSetContent.innerHTML = `<p style="color: #e74c3c;">Error: ${err.message}</p>`;
+    valueSetResults.style.display = "block";
+  } finally {
+    expandBtn.disabled = false;
+    expandBtn.innerHTML = '<span>🔍</span> $expand';
+  }
+});
+
+// ValueSet $validate-code operation
+validateBtn.addEventListener("click", async () => {
+  const code = validateCodeInput.value.trim();
+  const selectedValueSet = valueSetSelect.value;
+  
+  if (!code) {
+    notify("Please enter a code to validate", "error");
+    return;
+  }
+  
+  try {
+    validateBtn.disabled = true;
+    validateBtn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Validating...';
+    
+    const response = await fetch(`${API_BASE}/fhir/ValueSet/$validate-code`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/fhir+json',
+        'Content-Type': 'application/fhir+json',
+      },
+      body: JSON.stringify({
+        resourceType: "Parameters",
+        parameter: [
+          {
+            name: "url",
+            valueUri: `http://localhost:5000/fhir/ValueSet/${selectedValueSet}`
+          },
+          {
+            name: "code",
+            valueCode: code
+          }
+        ]
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    renderValidationResult(data, code);
+    valueSetResults.style.display = "block";
+    
+  } catch (err) {
+    console.error("ValueSet $validate-code failed:", err);
+    notify(`Code validation failed: ${err.message}`, "error");
+  } finally {
+    validateBtn.disabled = false;
+    validateBtn.innerHTML = '<span>✅</span> $validate-code';
+  }
+});
+
+// ConceptMap $translate operation
+translateBtn.addEventListener("click", async () => {
+  const code = translateCodeInput.value.trim();
+  const sourceSystem = sourceSystemSelect.value;
+  const targetSystem = targetSystemSelect.value;
+  
+  if (!code) {
+    notify("Please enter a code to translate", "error");
+    return;
+  }
+  
+  try {
+    translateBtn.disabled = true;
+    translateBtn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border:2px solid transparent;border-top-color:white;border-radius:50%;display:inline-block"></span> Translating...';
+    
+    const response = await fetch(`${API_BASE}/fhir/ConceptMap/$translate`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/fhir+json',
+        'Content-Type': 'application/fhir+json',
+      },
+      body: JSON.stringify({
+        resourceType: "Parameters",
+        parameter: [
+          {
+            name: "url",
+            valueUri: `http://localhost:5000/fhir/ConceptMap/${sourceSystem}-to-${targetSystem}`
+          },
+          {
+            name: "code",
+            valueCode: code
+          },
+          {
+            name: "system",
+            valueUri: `http://localhost:5000/fhir/CodeSystem/${sourceSystem}`
+          },
+          {
+            name: "targetsystem",
+            valueUri: `http://localhost:5000/fhir/CodeSystem/${targetSystem}`
+          }
+        ]
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    renderTranslationResult(data, code, sourceSystem, targetSystem);
+    conceptMapResults.style.display = "block";
+    
+  } catch (err) {
+    console.error("ConceptMap $translate failed:", err);
+    notify(`Code translation failed: ${err.message}`, "error");
+  } finally {
+    translateBtn.disabled = false;
+    translateBtn.innerHTML = '<span>🔄</span> $translate';
+  }
+});
+
+// Render ValueSet expansion results
+function renderValueSetExpansion(valueSet) {
+  if (!valueSet.expansion || !valueSet.expansion.contains) {
+    valueSetContent.innerHTML = '<p>No concepts found in ValueSet expansion.</p>';
+    return;
+  }
+  
+  const concepts = valueSet.expansion.contains;
+  const html = `
+    <div style="margin-bottom: 15px;">
+      <strong>ValueSet:</strong> ${valueSet.title || valueSet.name || 'Unknown'}<br>
+      <strong>Total Concepts:</strong> ${concepts.length}<br>
+      <strong>Expansion Timestamp:</strong> ${valueSet.expansion.timestamp || 'Unknown'}
+    </div>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="background: #f8f9fa;">
+          <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Code</th>
+          <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Display</th>
+          <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">System</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${concepts.map(concept => `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd;"><code>${concept.code || 'N/A'}</code></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${concept.display || 'N/A'}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; font-size: 12px;">${concept.system || 'N/A'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+  
+  valueSetContent.innerHTML = html;
+}
+
+// Render validation result
+function renderValidationResult(result, originalCode) {
+  const isValid = result.parameter?.find(p => p.name === 'result')?.valueBoolean;
+  const message = result.parameter?.find(p => p.name === 'message')?.valueString;
+  const display = result.parameter?.find(p => p.name === 'display')?.valueString;
+  
+  const html = `
+    <div class="mapping-result" style="border-left-color: ${isValid ? '#27ae60' : '#e74c3c'};">
+      <div style="display: flex; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 20px; margin-right: 10px;">${isValid ? '✅' : '❌'}</span>
+        <strong>Validation Result for Code: <code>${originalCode}</code></strong>
+      </div>
+      <div><strong>Valid:</strong> ${isValid ? 'Yes' : 'No'}</div>
+      ${display ? `<div><strong>Display:</strong> ${display}</div>` : ''}
+      ${message ? `<div><strong>Message:</strong> ${message}</div>` : ''}
+    </div>
+  `;
+  
+  valueSetContent.innerHTML = html;
+  notify(`Code ${originalCode} is ${isValid ? 'valid' : 'invalid'}`, isValid ? 'success' : 'error');
+}
+
+// Render translation result
+function renderTranslationResult(result, originalCode, sourceSystem, targetSystem) {
+  const matches = result.parameter?.filter(p => p.name === 'match') || [];
+  
+  if (matches.length === 0) {
+    conceptMapContent.innerHTML = `
+      <div class="mapping-result" style="border-left-color: #e74c3c;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 20px; margin-right: 10px;">❌</span>
+          <strong>No Translation Found</strong>
+        </div>
+        <div>No mapping found for code <code>${originalCode}</code> from ${sourceSystem} to ${targetSystem}</div>
+      </div>
+    `;
+    notify(`No translation found for ${originalCode}`, 'error');
+    return;
+  }
+  
+  const html = `
+    <div style="margin-bottom: 15px;">
+      <strong>Source:</strong> <code>${originalCode}</code> (${sourceSystem})<br>
+      <strong>Target System:</strong> ${targetSystem}<br>
+      <strong>Matches Found:</strong> ${matches.length}
+    </div>
+    ${matches.map((match, index) => {
+      const concept = match.part?.find(p => p.name === 'concept')?.valueCoding;
+      const equivalence = match.part?.find(p => p.name === 'relationship')?.valueCode || 'equivalent';
+      const source = match.part?.find(p => p.name === 'source')?.valueUri;
+      
+      return `
+        <div class="mapping-result">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <strong>Match ${index + 1}</strong>
+            <span class="equivalence-badge equiv-${equivalence}">${equivalence}</span>
+          </div>
+          <div><strong>Target Code:</strong> <code>${concept?.code || 'N/A'}</code></div>
+          <div><strong>Target Display:</strong> ${concept?.display || 'N/A'}</div>
+          <div><strong>Target System:</strong> <span style="font-size: 12px;">${concept?.system || 'N/A'}</span></div>
+          ${source ? `<div><strong>Source:</strong> <span style="font-size: 12px;">${source}</span></div>` : ''}
+        </div>
+      `;
+    }).join('')}
+  `;
+  
+  conceptMapContent.innerHTML = html;
+  notify(`Found ${matches.length} translation(s) for ${originalCode}`, 'success');
+}
+
+    </script>
+  </body>
+</html>

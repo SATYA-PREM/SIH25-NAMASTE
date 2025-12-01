@@ -23,63 +23,73 @@ export default function Login() {
   }
 
   const handleGenerateOTP = async () => {
-    if (!formData.abhaId) {
-      setError('Please enter ABHA ID or Mobile Number')
-      return
-    }
+  const patientId = formData.abhaId; // use whatever is entered
+  if (!patientId) {
+    setError('Please enter ABHA ID or Mobile Number');
+    return;
+  }
+  setLoading(true);
+  setError('');
 
-    setLoading(true)
-    setError('')
-
-    try {
-      const result = await generateOTP(formData.abhaId, formData.userType)
-
-      if (result.success) {
-        setOtpGenerated(true)
-        setGeneratedOtp(result.otp || '') // For testing purposes
-        setError('')
-        // Show success message with OTP for testing
-        if (result.otp) {
-          setError(`OTP Generated: ${result.otp} (For testing only)`)
-        } else {
-          setError('OTP sent successfully!')
-        }
+  try {
+    // Always use patient userType, even if doctor/admin is selected
+    const result = await generateOTP(patientId, "patient");
+    if (result.success) {
+      setOtpGenerated(true);
+      setGeneratedOtp(result.otp || '');
+      setError('');
+      if (result.otp) {
+        setError(`OTP Generated: ${result.otp} (For testing only)`);
       } else {
-        setError(result.error || 'Failed to generate OTP')
+        setError('OTP sent successfully!');
       }
-    } catch (error) {
-      console.error('OTP generation error:', error)
-      setError('Failed to generate OTP. Please try again.')
-    } finally {
-      setLoading(false)
+    } else {
+      setError(result.error || 'Failed to generate OTP');
     }
+  } catch (error) {
+    console.error('OTP generation error:', error);
+    setError('Failed to generate OTP. Please try again.');
+  } finally {
+    setLoading(false);
   }
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!otpGenerated) {
-      setError('Please generate OTP first')
-      return
-    }
-
-    if (!formData.otp) {
-      setError('Please enter OTP')
-      return
-    }
-
-    setLoading(true)
-    setError('')
-
-    try {
-      await login(formData)
-      navigate('/dashboard')
-    } catch (error) {
-      console.error('Login error:', error)
-      setError(error.message || 'Invalid OTP. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!otpGenerated) {
+    setError('Please generate OTP first');
+    return;
   }
+  if (!formData.otp) {
+    setError('Please enter OTP');
+    return;
+  }
+  setLoading(true);
+  setError('');
+  try {
+    // Still always pass userType as "patient"
+    await login({
+      abhaId: formData.abhaId,
+      otp: formData.otp,
+      userType: "patient",
+    });
+
+    // Now use the user's dropdown to decide where to go
+    if (formData.userType === "doctor") {
+      navigate('/DoctorDashboard');
+    } else if (formData.userType === "admin") {
+      navigate('/govt');
+    } else {
+      navigate('/PatientDashboard');
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    setError(error.message || 'Invalid OTP. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const closeModal = () => {
     setIsModalOpen(false)
@@ -110,7 +120,7 @@ export default function Login() {
               </svg>
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">AYUSH EMR</h2>
+              <h2 className="text-2xl font-bold text-white">AYUSH EHR</h2>
               <p className="text-blue-100 text-sm">Secure Login Portal</p>
             </div>
           </div>
@@ -239,7 +249,7 @@ export default function Login() {
 
           <div className="text-center">
             <Link
-              to="/register"
+              to="/AddPatient"
               className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
             >
               New User? Register Now →
