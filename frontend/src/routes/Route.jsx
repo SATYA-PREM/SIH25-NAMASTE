@@ -10,8 +10,7 @@ import FHIRDemo from '../pages/FHIRDemo'
 import Govt from '../pages/user/Govt'
 import Repo from '../pages/user/Repo'
 import Company from '../pages/user/Company'
-
-
+import web from "../../../api/index.html"
 import PatientList from '../pages/patients/PatientList'
 import AddPatient from '../pages/patients/AddPatient'
 import AddPatient1 from '../pages/patients/AddPatient1'
@@ -34,7 +33,7 @@ function Endpoint() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
             <Route path="/AddPatient" element={<AddPatient />} />
-
+<Route path="/web" element={<web />} />
                         
 
 
