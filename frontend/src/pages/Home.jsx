@@ -91,7 +91,7 @@ function Home() {
               <a href="#features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Features</a>
               <a href="#solution" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Solution</a>
               <a href="#compliance" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Compliance</a>
-              <a href="http://127.0.0.1:5500/api/enhanced_index.html" className="text-blue-800 hover:text-gray-900 font-bold transition-colors">API</a>
+              <a href="who-api\enhanced_index.htmll" className="text-blue-800 hover:text-gray-900 font-bold transition-colors">API</a>
 
             </div>
 
