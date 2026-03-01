@@ -42,7 +42,6 @@ function Endpoint() {
           <Route element={<ProtectedRoute />}>
             <Route path="/govt" element={<Govt />} />
             <Route path="/company" element={<Company />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
             <Route path="/PatientDashboard" element={<PatientDashboard />} />
