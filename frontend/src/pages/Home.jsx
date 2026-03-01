@@ -78,7 +78,7 @@ function Home() {
               <div className="relative">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
                   <Activity className="h-6 w-6 text-white" />
-                </div>
+                </div>z
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
               <div>
@@ -91,7 +91,7 @@ function Home() {
               <a href="#features" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Features</a>
               <a href="#solution" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Solution</a>
               <a href="#compliance" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Compliance</a>
-              <a href="/web" className="text-blue-800 hover:text-gray-900 font-bold transition-colors">API</a>
+              <a href="https://sih-25-namaste-5y54.vercel.app/" className="text-blue-800 hover:text-gray-900 font-bold transition-colors">API</a>
 
             </div>
 
