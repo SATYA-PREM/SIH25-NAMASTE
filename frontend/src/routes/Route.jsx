@@ -33,9 +33,7 @@ function Endpoint() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
-            <Route path="/AddPatient" element={<AddPatient />} />
-
-                        
+            <Route path="/AddPatient" element={<AddPatient />} />                        
 
 
           </Route>
